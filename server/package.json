@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "te***REMOVED***": "echo \"Error: no te***REMOVED*** specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espressodespresso/Collins_Team_3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/espressodespresso/Collins_Team_3/issues"
+  },
+  "homepage": "https://github.com/espressodespresso/Collins_Team_3#readme"
+}
