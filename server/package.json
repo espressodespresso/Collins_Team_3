@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/espressodespresso/Collins_Team_3/issues"
   },
-  "homepage": "https://github.com/espressodespresso/Collins_Team_3#readme"
+  "homepage": "https://github.com/espressodespresso/Collins_Team_3#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
