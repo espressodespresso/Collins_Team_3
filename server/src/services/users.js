@@ -28,6 +28,5 @@ const getUserAccessToken = async () => {
     }
 }
 
-
-
 export {getUserAccessToken}
+

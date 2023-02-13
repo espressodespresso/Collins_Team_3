@@ -1,5 +1,6 @@
 import express from 'express'
 import { auth } from './modules/auth.js'
+import router from './api/router.js'
 
 const app = express()
 
@@ -12,5 +13,6 @@ app.get('/', (req, res) => {
     res.json({message: 'hello'})
 })
 
+app.use('/', router)
 
 export default app
