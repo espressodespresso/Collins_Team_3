@@ -1,4 +1,5 @@
 import fetch, { Headers } from "node-fetch";
+import config from "../config/index.js"
 import { createJWT } from "../modules/auth.js";
 
 con***REMOVED*** getUserAccessToken = async (username, password) => {
@@ -7,7 +8,7 @@ con***REMOVED*** getUserAccessToken = async (username, password) => {
 
     try{
         con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
-        con***REMOVED*** auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
+        con***REMOVED*** auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
 
         con***REMOVED*** response = await fetch(url, {
             method: "POST",

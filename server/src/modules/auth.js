@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken'
+import config from '../config/index.js'
 
 export con***REMOVED*** createJWT = (user) => {
-    con***REMOVED*** token = jwt.sign({id: user.id, username: user.username}, process.env.JWT_SECRET)
+    con***REMOVED*** token = jwt.sign({id: user.id, username: user.username}, config.jwt_secret)
     return token
 }
 
@@ -23,7 +24,7 @@ export con***REMOVED*** auth = (req, res, next) => {
     }
 
     try{
-        con***REMOVED*** user = jwt.verify(token, process.env.JWT_SECRET)
+        con***REMOVED*** user = jwt.verify(token, config.jwt_secret)
         req.user = user
         next()
     }catch(e){
