@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken'
+import config from '../config/index.js'
 
 export const createJWT = (user) => {
-    const token = jwt.sign({id: user.id, username: user.username}, process.env.JWT_SECRET)
+    const token = jwt.sign({id: user.id, username: user.username}, config.jwt_secret)
     return token
 }
 
@@ -23,7 +24,7 @@ export const auth = (req, res, next) => {
     }
 
     try{
-        const user = jwt.verify(token, process.env.JWT_SECRET)
+        const user = jwt.verify(token, config.jwt_secret)
         req.user = user
         next()
     }catch(e){
