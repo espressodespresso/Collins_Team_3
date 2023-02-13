@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import app from './server.js'
-import { getUserAccessToken } from "./services/users.js";
 import rootCas from 'ssl-root-cas'
 import * as https from "https";
 

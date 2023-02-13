@@ -1,9 +1,8 @@
 import { Router } from 'express'
+import { login } from '../services/users.js'
 
 con***REMOVED*** router = Router()
 
-router.get('/login', async (req, res) => {
-    res.json({message: 'hello users'})
-})
+router.po***REMOVED***('/login', login)
 
 export default router
