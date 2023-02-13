@@ -12,4 +12,5 @@ app.get('/', (req, res) => {
     res.json({message: 'hello'})
 })
 
+
 export default app
