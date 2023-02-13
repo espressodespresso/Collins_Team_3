@@ -1,4 +1,5 @@
 import fetch, { Headers } from "node-fetch";
+import config from "../config/index.js"
 
 con***REMOVED*** getUserAccessToken = async () => {
 
@@ -6,7 +7,7 @@ con***REMOVED*** getUserAccessToken = async () => {
 
     try{
         con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
-        con***REMOVED*** auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
+        con***REMOVED*** auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
 
         con***REMOVED*** response = await fetch(url, {
             method: "POST",
@@ -24,6 +25,7 @@ con***REMOVED*** getUserAccessToken = async () => {
     }catch(e){
         userAccessToken = null
     }finally{
+        console.log(config.client_id)
         return userAccessToken
     }
 }
