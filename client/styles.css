@@ -151,7 +151,16 @@ input[type=checkbox] {
 }
 .shapebar{
   z-index: 16;
+  display: flex;
+  position: relative;
+  ju***REMOVED***ify-content: flex-end;
+  margin-top: 80vh;
+  max-height: 2rem;
+} img {
+    aspect-ratio: 1 / 1;
+
 }
+
 input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
     transition: all 0.3s;
     box-sizing: border-box;
