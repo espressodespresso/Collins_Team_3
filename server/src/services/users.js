@@ -1,4 +1,5 @@
 import fetch, { Headers } from "node-fetch";
+import config from "../config/index.js"
 
 const getUserAccessToken = async () => {
 
@@ -6,7 +7,7 @@ const getUserAccessToken = async () => {
 
     try{
         const url = 'https://hallam.sci-toolset.com/api/v1/token'
-        const auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
+        const auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
 
         const response = await fetch(url, {
             method: "POST",
@@ -24,6 +25,7 @@ const getUserAccessToken = async () => {
     }catch(e){
         userAccessToken = null
     }finally{
+        console.log(config.client_id)
         return userAccessToken
     }
 }
