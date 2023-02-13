@@ -2,12 +2,11 @@
 #map{
   width: 100vw;
   height: 100vh;
-  margin-top: 5%;
+  margin-top: 6vh;
   position: fixed;
 }
 
 #content{
-    display: inline-flex;
     align-items: flex-***REMOVED***art;
 }
 
@@ -150,8 +149,8 @@ input[type=checkbox] {
     float: left;
     margin-top: 3px;
 }
-.ShapeBar{
-  z-index: 10;
+.shapebar{
+  z-index: 16;
 }
 input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
     transition: all 0.3s;
