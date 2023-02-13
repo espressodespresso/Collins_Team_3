@@ -1,3 +1,8 @@
-import {generateToken} from "./services/users.js";
+import * as dotenv from 'dotenv'
+import app from './server.js'
 
-generateToken()
+dotenv.config()
+
+app.listen(process.env.DEV_PORT, () => {
+    console.log(`Server started on http://localhost:${process.env.DEV_PORT}`)
+})
