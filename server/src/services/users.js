@@ -1,9 +1,10 @@
 import fetch, { Headers } from "node-fetch";
 import config from "../config/index.js"
+import { createJWT } from "../modules/auth.js";
 
-const getUserAccessToken = async () => {
+const getUserAccessToken = async (username, password) => {
 
-    let userAccessToken;
+    let responseJSON;
 
     try{
         const url = 'https://hallam.sci-toolset.com/api/v1/token'
@@ -17,18 +18,36 @@ const getUserAccessToken = async () => {
                 "Host": "hallam.sci-toolset",
                 "Authorization": auth
             }),
-            body: `grant_type=password&username=${process.env.USER_NAME}&password=${process.env.PASSWORD}`,
+            body: `grant_type=password&username=${username}&password=${password}`,
         })
 
-        userAccessToken = await response.text()
+        responseJSON = await response.json()
 
     }catch(e){
-        userAccessToken = null
+        console.error(e)
     }finally{
-        console.log(config.client_id)
-        return userAccessToken
+        if(!responseJSON || !responseJSON.access_token){
+            return null;
+        }
+        return responseJSON
     }
 }
 
-export {getUserAccessToken}
+const login = async (req, res) => {
+    const {access_token, refresh_token} = await getUserAccessToken(req.body.username, req.body.password)
+
+    if(!access_token || !refresh_token){
+        res.status(401).json({message: "Invalid username & password"})
+    }
+
+    //generate userId for cache, store access_token and refresh_tokek in cache
+    //append userID to user object
+    const user = {username: req.body.username}
+
+    const token = createJWT(user)
+
+    res.json({token})
+};
+
+export {getUserAccessToken, login}
 

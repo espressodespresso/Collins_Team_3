@@ -11,7 +11,7 @@ export const auth = (req, res, next) => {
 
     if(!bearer){
         res.status(401)
-        res.json({message: "not authorized"})
+        res.json({message: "No auth"})
         return
     }
 
@@ -19,7 +19,7 @@ export const auth = (req, res, next) => {
 
     if(!token){
         res.status(401)
-        res.json({message: "empty token"})
+        res.json({message: "Empty token"})
         return
     }
 
@@ -28,7 +28,7 @@ export const auth = (req, res, next) => {
         req.user = user
         next()
     }catch(e){
-        console.log(e)
+        console.error(e)
         res.status(401)
         res.send("Invalid token")
         return
