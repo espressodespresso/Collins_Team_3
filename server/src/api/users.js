@@ -1,9 +1,8 @@
 import { Router } from 'express'
+import { login } from '../services/users.js'
 
 const router = Router()
 
-router.get('/login', async (req, res) => {
-    res.json({message: 'hello users'})
-})
+router.post('/login', login)
 
 export default router
