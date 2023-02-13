@@ -1,22 +1,46 @@
 <!DOCTYPE html>
 <head>
-    <title>Collins Map</title>
+    
     
     <link rel="***REMOVED***ylesheet" href="https://unpkg.com/leaflet@1.9.3/di***REMOVED***/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/di***REMOVED***/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-    <link rel="***REMOVED***ylesheet" href="main.css">
+    <link rel="***REMOVED***ylesheet" href="***REMOVED***yles.css">
     
 </head>
+	<div id = "content">
+    
+        <div id="map"></div>
+    </div>
+<div class="header"></div>
+  <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+  <label for="openSidebarMenu" class="sidebarIconToggle">
+    <div class="spinner diagonal part-1"></div>
+    <div class="spinner horizontal"></div>
+    <div class="spinner diagonal part-2"></div>
+  </label>
+  <div id="sidebarMenu">
+    <ul class="sidebarMenuInner">
+      <input type="text" placeholder="Search..."></input>
+      <li>PLACEHOLDER</li>
+      <li>PLACEHOLDER</li>
+      <li>PLACEHOLDER</li>
+      <li>PLACEHOLDER</li>
+      <li>PLACEHOLDER</li>
+    </ul>
+  </div>
+
+  <div class="shapebar">    
+    <img id="circleImg" src="Pictures/Circle.png" onclick="selectShape(1)"/>
+    <img id="rectangleImg" src="Pictures/Rectangle.png" onclick="selectShape(2)" />
+    <img id="polygoneImg" src="Pictures/Polygone.png" onclick="selectShape(3)" />
+  </div>
+
 <body>
 
-    <div id = "map">
-		
-	</div>
-    <div id = "PopOutPanel">
-    <p>HEY</p>
-    <p>Bye</p>
+
+	
+        
     </div>
-	
-	<script src="main.js"></script>
-	
+	<script src="script.js"></script>
+</div>
 </body>
