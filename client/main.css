@@ -1,5 +1,6 @@
 #map{
-    display: flex;
+    width: 600px;
+    height: 400px;
 }
 
 #PopOutPannel{
