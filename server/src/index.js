@@ -1,3 +1,8 @@
-import {generateToken} from "./services/users.js";
+import * as dotenv from 'dotenv'
+import app from './server.js'
 
-generateToken()
+dotenv.config()
+
+app.li***REMOVED***en(process.env.DEV_PORT, () => {
+    console.log(`Server ***REMOVED***arted on http://localho***REMOVED***:${process.env.DEV_PORT}`)
+})
