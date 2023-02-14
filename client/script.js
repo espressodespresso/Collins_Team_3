@@ -5,14 +5,6 @@ L.tileLayer('https://tile.open***REMOVED***reetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 
-var polygon = L.polygon([
-    [51.509, -0.08],
-    [51.503, -0.06],
-    [51.51, -0.047]
-]).addTo(map);
-
-//var marker = L.marker([51.51, -0.047]).addTo(map);
-
 var object = {
     "type": "Feature",
     "geometry": {
