@@ -5,7 +5,8 @@ import merge from "lodash";
 const router = Router()
 
 router.get('/mission', async (req, res) => {
-    console.log(await getMissions())
+    res.send(await getMissions())
+    //console.log(await getMissions())
 })
 router.get('/mission/:id', (req, res) => {
     console.log("mission id:" + req.params.id)
@@ -44,11 +45,18 @@ const getMissions = async () => {
                 })
                 footprints[i] = await getFootprintResponse.json()
             }
+            merge.mergeWith(missions, footprints)
+
+            var geoJSONFormat = {}
             for(let i=0; i < missions.length; i++) {
-                merge.mergeWith(missions, footprints)
+                var currentMission = missions[i]
+                geoJSONFormat[currentMission.id] = {"type":"Mission","geometry":{"type":currentMission.type
+                        ,"coordinates":currentMission.coordinates},"properties":{"name":currentMission.name
+                        , "aircraftTakeOffTime": currentMission.aircraftTakeOffTime,}}
             }
 
-            return missions
+
+            return geoJSONFormat
         } else {
             return statusMessage(getMissionsResponse.status)
         }
@@ -56,6 +64,8 @@ const getMissions = async () => {
         console.error(e)
     }
 }
+
+
 
 function statusMessage(code) {
     switch (code) {
