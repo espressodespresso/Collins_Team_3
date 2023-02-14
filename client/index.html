@@ -7,40 +7,41 @@
     <link rel="***REMOVED***ylesheet" href="***REMOVED***yles.css">
     
 </head>
-	<div id = "content">
-    
-        <div id="map"></div>
+<body>
+
+  <div class="header">
+    <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+    <label for="openSidebarMenu" class="sidebarIconToggle">
+      <div class="spinner diagonal part-1"></div>
+      <div class="spinner horizontal"></div>
+      <div class="spinner diagonal part-2"></div>
+    </label>
+    <div id="sidebarMenu">
+      <ul class="sidebarMenuInner">
+        <input type="text" placeholder="Search..."></input>
+        <li>PLACEHOLDER</li>
+        <li>PLACEHOLDER</li>
+        <li>PLACEHOLDER</li>
+        <li>PLACEHOLDER</li>
+        <li>PLACEHOLDER</li>
+      </ul>
     </div>
-<div class="header"></div>
-  <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
-  <label for="openSidebarMenu" class="sidebarIconToggle">
-    <div class="spinner diagonal part-1"></div>
-    <div class="spinner horizontal"></div>
-    <div class="spinner diagonal part-2"></div>
-  </label>
-  <div id="sidebarMenu">
-    <ul class="sidebarMenuInner">
-      <input type="text" placeholder="Search..."></input>
-      <li>PLACEHOLDER</li>
-      <li>PLACEHOLDER</li>
-      <li>PLACEHOLDER</li>
-      <li>PLACEHOLDER</li>
-      <li>PLACEHOLDER</li>
-    </ul>
   </div>
+
+	<div id = "map-container">
+    
+    <div id="map"></div>
+  </div>
+
 
   <div class="shapebar">    
     <img id="circleImg" src="Pictures/Circle.png" onclick="selectShape(1)"/>
     <img id="rectangleImg" src="Pictures/Rectangle.png" onclick="selectShape(2)" />
     <img id="polygoneImg" src="Pictures/Polygone.png" onclick="selectShape(3)" />
   </div>
-
-<body>
-
-
 	
         
-    </div>
+</div>
 	<script src="script.js"></script>
 </div>
 </body>
