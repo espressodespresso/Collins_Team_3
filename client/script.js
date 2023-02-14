@@ -4,19 +4,21 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-function selectShape(sShape){
-    switch (sShape){
-        case 1:
-            // Circle
-            console.log("Circle");
-            break;
-        case 2:
-            // Rectangle
-            console.log("Rectangle");
-            break;
-        case 3:
-            // Polygone
-            console.log("Polygone");
-            break;
-    }
-}
+var options = {
+    position: 'bottomright',
+    drawMarker: true,
+    drawPolyline: true,
+    drawRectangle: true,
+    drawCircle: true,
+    cutPolygon: true,
+    editMode: true,
+    rmovalMode: true,
+};
+
+map.pm.addControls(options);
+map.pm.disableDraw('Poly');
+map.on('pm:create', function (e) {
+    console.log(e);
+    e.shape;
+    e.layer;
+});

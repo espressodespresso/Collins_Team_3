@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <head>
-    
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-    <link rel="stylesheet" href="styles.css">
-    
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+  <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
 </head>
+
 <body>
 
   <div class="header">
@@ -26,26 +28,13 @@
         <li>PLACEHOLDER</li>
       </ul>
     </div>
-    
+
   </div>
 
-	<div id = "map-container">
-    
+  <div id="map-container">
     <div id="map"></div>
-
-    <div class="shapebar">    
-      <img id="circleImg" src="Pictures/Circle.png" onclick="selectShape(1)"/>
-      <img id="rectangleImg" src="Pictures/Rectangle.png" onclick="selectShape(2)" />
-      <img id="polygoneImg" src="Pictures/Polygone.png" onclick="selectShape(3)" />
-    </div>
-
   </div>
-
-
-
-	
-        
-</div>
-	<script src="script.js"></script>
-</div>
+  </div>
+  <script src="script.js"></script>
+  </div>
 </body>
