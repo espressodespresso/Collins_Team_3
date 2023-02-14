@@ -59,7 +59,7 @@ body {
 .mainInner div{
     display:table-cell;
     vertical-align: middle;
-    font-size: 3em;
+    font-size: 2em;
     font-weight: bold;
     letter-spacing: 1.25px;
 }
@@ -67,10 +67,8 @@ body {
     height: 100%;
     position: fixed;
     left: 0;
-    width: 250px;
+    width: 200px;
     margin-top: 60px;
-    transform: translateX(-250px);
-    transition: transform 250ms ease-in-out;
     background: linear-gradient(180deg, grey 0%, #404040 100%);
 }
 .sidebarMenuInner{
@@ -89,7 +87,7 @@ body {
 }
 .sidebarMenuInner li span{
     display: block;
-    font-size: 14px;
+    font-size: 5px;
     color: rgba(255, 255, 255, 0.50);
 }
 .sidebarMenuInner li a{
