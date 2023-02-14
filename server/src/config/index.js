@@ -19,6 +19,7 @@ else{
 
 const config = merge({
     stage,
+    accesstoken: process.env.ACCESS_TOKEN,
     env: process.env.NODE_ENV,
     port: process.env.PORT,
     cert_url: process.env.CA_CERT_URL,
