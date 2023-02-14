@@ -1,4 +1,4 @@
-var map = L.map('map', {zoomControl: false}).setView([51.505, -0.09], 13);
+var map = L.map('map', {zoomControl: false}).setView([54.247468, -4.438477], 6);
 
 L.tileLayer('https://tile.open***REMOVED***reetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.open***REMOVED***reetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -29,6 +29,17 @@ var workplease = new L.GeoJSON(object, {
     }
   }).addTo(map);
 
+
+var popup = L.popup();
+
+function onMapClick(e) {
+    popup
+        .setLatLng(e.latlng)
+        .setContent("You clicked the map at " + e.latlng.toString())
+        .openOn(map);
+}
+
+map.on('click', onMapClick);
 /*
 function selectShape(sShape){
     switch (sShape){
