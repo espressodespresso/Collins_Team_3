@@ -6,8 +6,8 @@
   position: fixed;
 }
 
-#content{
-    align-items: flex-start;
+#map-container{
+    
 }
 
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
@@ -154,7 +154,8 @@ input[type=checkbox] {
   display: flex;
   position: relative;
   justify-content: flex-end;
-  margin-top: 80vh;
+  margin-top: 90vh;
+  margin-right: 5vw;
   max-height: 2rem;
 } img {
     aspect-ratio: 1 / 1;
