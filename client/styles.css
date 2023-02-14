@@ -1,9 +1,9 @@
-
 #map{
   width: 100vw;
   height: 100vh;
   margin-top: 6vh;
   position: fixed;
+  z-index: -1;
 }
 
 #map-container{
