@@ -3,13 +3,10 @@ import config from "../config/index.js"
 import { createJWT } from "../modules/auth.js";
 
 con***REMOVED*** getUserAccessToken = async (username, password) => {
-
-    let responseJSON;
+    con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
+    con***REMOVED*** auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
 
     try{
-        con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
-        con***REMOVED*** auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
-
         con***REMOVED*** response = await fetch(url, {
             method: "POST",
             headers: new Headers({
@@ -20,33 +17,39 @@ con***REMOVED*** getUserAccessToken = async (username, password) => {
             }),
             body: `grant_type=password&username=${username}&password=${password}`,
         })
+    
+        con***REMOVED*** responseText = await response.text()
+        con***REMOVED*** responseJSON = responseText === ""? {}: JSON.parse(responseText)
+        
+        if(!responseJSON.hasOwnProperty('access_token') || !responseJSON.hasOwnProperty('refresh_token')){
+            return null
+        }
 
-        responseJSON = await response.json()
-
+        return {
+            access_token: responseJSON.access_token, 
+            refresh_token: responseJSON.refresh_token
+        }
     }catch(e){
         console.error(e)
-    }finally{
-        if(!responseJSON || !responseJSON.access_token){
-            return null;
-        }
-        return responseJSON
+        throw(e)
     }
 }
 
 con***REMOVED*** login = async (req, res) => {
-    con***REMOVED*** {access_token, refresh_token} = await getUserAccessToken(req.body.username, req.body.password)
-
-    if(!access_token || !refresh_token){
-        res.***REMOVED***atus(401).json({message: "Invalid username & password"})
+    con***REMOVED*** tokens = await getUserAccessToken(req.body.username, req.body.password)
+   
+    try{
+        if(!tokens){
+            res.***REMOVED***atus(401).json({message: "Invalid username & password"})
+        }else{
+            con***REMOVED*** user = {username: req.body.username}
+            con***REMOVED*** token = createJWT(user)
+        
+            res.json({token})
+        }
+    }catch(e){
+        res.***REMOVED***atus(500).json({message: "Server error"})
     }
-
-    //generate userId for cache, ***REMOVED***ore access_token and refresh_tokek in cache
-    //append userID to user object
-    con***REMOVED*** user = {username: req.body.username}
-
-    con***REMOVED*** token = createJWT(user)
-
-    res.json({token})
 };
 
 export {getUserAccessToken, login}
