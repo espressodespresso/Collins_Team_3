@@ -1,9 +1,4 @@
-import Memcached from "memcached";
-con***REMOVED*** memcached = new Memcached()
-memcached.connect("localho***REMOVED***:11211", function (err, conn) {
-    if(err) {
-        console.log("Error when e***REMOVED***ablishing memcached connection")
-    }
-})
+import NodeCache from "node-cache";
+con***REMOVED*** myCache = new NodeCache();
 
-export default memcached
+export default myCache
