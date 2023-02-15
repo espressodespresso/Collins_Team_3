@@ -1,6 +1,8 @@
 import fetch, { Headers } from "node-fetch";
 import config from "../config/index.js"
 import { createJWT } from "../modules/auth.js";
+import {v4 as uuidv4} from 'uuid'
+import localCache from '../db.js'
 
 con***REMOVED*** getUserAccessToken = async (username, password) => {
     con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
@@ -42,9 +44,9 @@ con***REMOVED*** login = async (req, res) => {
         if(!tokens){
             res.***REMOVED***atus(401).json({message: "Invalid username & password"})
         }else{
-            con***REMOVED*** user = {username: req.body.username}
+            con***REMOVED*** user = {id: uuidv4(), username: req.body.username}
             con***REMOVED*** token = createJWT(user)
-        
+            localCache.set(user.id, tokens)
             res.json({token})
         }
     }catch(e){
