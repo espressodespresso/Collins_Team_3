@@ -53,7 +53,7 @@ con***REMOVED*** getMission = async (id) => {
         }
     } else {
         console.log("Getting cached data")
-        return value
+        return value[id]
     }
 }
 
