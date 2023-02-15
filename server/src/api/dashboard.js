@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import {json, Router} from 'express'
 import config from "../config/index.js";
 import fetch, {Headers} from "node-fetch";
 import merge from "lodash";
@@ -22,44 +22,56 @@ router.get('/missions', async (req, res) => {
 })
 router.get('/:mission', async (req, res) => {
     let id = req.params.mission
-    res.send(await getMission(id))
+    //res.send(await getMission(id))
+    console.log(await getMission(id))
     console.log("mission id:" + id)
 })
 
-con***REMOVED*** getMission = async (id) => {
-    memcached.get("Missions", async function (err, data) {
-        console.log(data)
-        if (err) {
-            console.log("API call")
-            try {
-                con***REMOVED*** getMissionURL = 'https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/' + id
-                console.log(getMissionURL)
-                con***REMOVED*** getMissionResponse = await fetch(getMissionURL, {
-                    method: "GET",
-                    headers: new Headers({
-                        "Content-Type": "application/json",
-                        "Authorization": auth,
-                        "Accept": "*/*"
-                    }),
-                })
-
-                if (getMissionResponse.***REMOVED***atus === 200) {
-                    var mission = await getMissionResponse.json()
-                    merge.mergeWith(mission, await getMissionFootprint(id))
-                    let geoJSON = {"type":"Mission","geometry":{"type":mission.type,"coordinates":mission.coordinates}
-                        ,"properties":{"name":mission.name,"aircraftTakeOffTime":mission.aircraftTakeOffTime}}
-                    return geoJSON
-                } else {
-                    console.log(***REMOVED***atusMessage(getMissionResponse.***REMOVED***atus))
-                }
-            } catch (e) {
-                console.error(e)
-            }
-        } else {
-            console.log("Getting cached data")
-            return data
-        }
+async function checkCache() {
+    memcached.get("Missions", await function(err) {
+        if(err) return false
+        return true
     })
+}
+
+con***REMOVED*** getMission = async (id) => {
+    if(await checkCache() === false) {
+        console.log("API call")
+        try {
+            con***REMOVED*** getMissionURL = 'https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/' + id
+            console.log(getMissionURL)
+            con***REMOVED*** getMissionResponse = await fetch(getMissionURL, {
+                method: "GET",
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                    "Authorization": auth,
+                    "Accept": "*/*"
+                }),
+            })
+
+            if (getMissionResponse.***REMOVED***atus === 200) {
+                var mission = await getMissionResponse.json()
+                merge.mergeWith(mission, await getMissionFootprint(id))
+                let geoJSON = {
+                    "type": "Mission", "geometry": {"type": mission.type, "coordinates": mission.coordinates}
+                    , "properties": {"name": mission.name, "aircraftTakeOffTime": mission.aircraftTakeOffTime}
+                }
+                return geoJSON
+            } else {
+                console.log(***REMOVED***atusMessage(getMissionResponse.***REMOVED***atus))
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    } else {
+        console.log("Getting cached data")
+        memcached.get("Missions", await function(err, result) {
+            if(err) return null
+            console.log("result")
+            console.log(result)
+            return result
+        })
+    }
 }
 
 con***REMOVED*** getMissions = async () => {
