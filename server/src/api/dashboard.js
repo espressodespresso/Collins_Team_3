@@ -9,13 +9,14 @@ const auth = "Bearer " + encodeURI(config.accesstoken)
 router.get('/missions', async (req, res) => {
     var missions = await getMissions()
     res.send(missions)
-    memcached.set("Missions", missions, 10000, await function (err) {
-        console.log(err.type)
+    memcached.set("Missions", missions, 10000, await function (err, result) {
+        if(err) console.error(err + "hi")
+        console.log(result + "result")
     })
 
-    memcached.get("Missions", await function(err,data) {
-        console.log("data")
-        console.log(data)
+    memcached.get("Missions", await function(err,result) {
+        if(err) console.error(err)
+        console.log(result + "test")
     })
     //console.log(await getMissions())
 })
