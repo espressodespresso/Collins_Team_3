@@ -16,7 +16,7 @@ export const getMission = async (req, res) => {
                     "Content-Type": "application/json",
                     "Authorization": auth,
                     "Accept": "*/*"
-                }),
+                })
             })
 
             if (getMissionResponse.status === 200) {
@@ -26,7 +26,7 @@ export const getMission = async (req, res) => {
                     "type": "Mission", "geometry": {"type": mission.type, "coordinates": mission.coordinates}
                     , "properties": {"name": mission.name, "aircraftTakeOffTime": mission.aircraftTakeOffTime}
                 }
-                return geoJSON
+                res.json({data:geoJSON})
             } else {
                 console.error(getMissionResponse.status)
             }
@@ -86,7 +86,7 @@ export const getMissions = async (req, res) => {
     }
 }
 
-async function getMissionFootprint(id) {
+export async function getMissionFootprint(id) {
     const getFootprintResponse = await fetch("https://hallam.sci-toolset.com" +
         "/discover/api/v1/missionfeed/missions/" + id + "/footprint", {
         method: "GET",
