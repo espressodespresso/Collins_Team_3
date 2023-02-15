@@ -10,10 +10,11 @@ router.get('/missions', async (req, res) => {
     var missions = await getMissions()
     res.send(missions)
     memcached.set("Missions", missions, 10000, await function (err) {
-        console.log(err)
+        console.log(err.type)
     })
 
     memcached.get("Missions", await function(err,data) {
+        console.log("data")
         console.log(data)
     })
     //console.log(await getMissions())
