@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    ports: 
+      - "3000:3000"
+    volumes:
+      - .:/home/node/server
+      - /home/node/server/node_modules
+    links:
+      - cache
+    
+  cache:
+    image: memcached:1.6-alpine3.17
+    ports: 
+       - "11211:11211"
+    

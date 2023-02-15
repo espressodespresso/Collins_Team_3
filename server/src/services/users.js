@@ -3,13 +3,10 @@ import config from "../config/index.js"
 import { createJWT } from "../modules/auth.js";
 
 const getUserAccessToken = async (username, password) => {
-
-    let responseJSON;
+    const url = 'https://hallam.sci-toolset.com/api/v1/token'
+    const auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
 
     try{
-        const url = 'https://hallam.sci-toolset.com/api/v1/token'
-        const auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
-
         const response = await fetch(url, {
             method: "POST",
             headers: new Headers({
@@ -20,33 +17,39 @@ const getUserAccessToken = async (username, password) => {
             }),
             body: `grant_type=password&username=${username}&password=${password}`,
         })
+    
+        const responseText = await response.text()
+        const responseJSON = responseText === ""? {}: JSON.parse(responseText)
+        
+        if(!responseJSON.hasOwnProperty('access_token') || !responseJSON.hasOwnProperty('refresh_token')){
+            return null
+        }
 
-        responseJSON = await response.json()
-
+        return {
+            access_token: responseJSON.access_token, 
+            refresh_token: responseJSON.refresh_token
+        }
     }catch(e){
         console.error(e)
-    }finally{
-        if(!responseJSON || !responseJSON.access_token){
-            return null;
-        }
-        return responseJSON
+        throw(e)
     }
 }
 
 const login = async (req, res) => {
-    const {access_token, refresh_token} = await getUserAccessToken(req.body.username, req.body.password)
-
-    if(!access_token || !refresh_token){
-        res.status(401).json({message: "Invalid username & password"})
+    const tokens = await getUserAccessToken(req.body.username, req.body.password)
+   
+    try{
+        if(!tokens){
+            res.status(401).json({message: "Invalid username & password"})
+        }else{
+            const user = {username: req.body.username}
+            const token = createJWT(user)
+        
+            res.json({token})
+        }
+    }catch(e){
+        res.status(500).json({message: "Server error"})
     }
-
-    //generate userId for cache, store access_token and refresh_tokek in cache
-    //append userID to user object
-    const user = {username: req.body.username}
-
-    const token = createJWT(user)
-
-    res.json({token})
 };
 
 export {getUserAccessToken, login}
