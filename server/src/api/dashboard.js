@@ -2,40 +2,28 @@ import {json, Router} from 'express'
 import config from "../config/index.js";
 import fetch, {Headers} from "node-fetch";
 import merge from "lodash";
-import memcached from "../db.js";
+import myCache from "../db.js";
 const router = Router()
 const auth = "Bearer " + encodeURI(config.accesstoken)
 
 router.get('/missions', async (req, res) => {
     var missions = await getMissions()
     res.send(missions)
-    memcached.set("Missions", missions, 10000, await function (err, result) {
-        if(err) console.error(err + "hi")
-        console.log(result + "result")
-    })
-
-    memcached.get("Missions", await function(err,result) {
-        if(err) console.error(err)
-        console.log(result + "test")
-    })
-    //console.log(await getMissions())
+    let result = myCache.set("missions", missions, 10000)
+    if(result) {
+        console.log("Cached successfully")
+    } else {
+        console.log("Error while caching")
+    }
 })
 router.get('/:mission', async (req, res) => {
     let id = req.params.mission
-    //res.send(await getMission(id))
-    console.log("mission id:" + id)
-    console.log(await getMission(id))
+    res.send(await getMission(id))
 })
 
-async function checkCache() {
-    memcached.get("Missions", await function(err) {
-        if(err) return false
-        return true
-    })
-}
-
 const getMission = async (id) => {
-    if(await checkCache() === false) {
+    let value = myCache.get("missions")
+    if(value === undefined) {
         console.log("API call")
         try {
             const getMissionURL = 'https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/' + id
@@ -65,12 +53,7 @@ const getMission = async (id) => {
         }
     } else {
         console.log("Getting cached data")
-        memcached.get("Missions", async function(err, result) {
-            if(err) return null
-            console.log("result")
-            //console.log(result)
-            return result
-        })
+        return value[id]
     }
 }
 
