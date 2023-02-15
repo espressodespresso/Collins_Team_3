@@ -23,8 +23,8 @@ router.get('/missions', async (req, res) => {
 router.get('/:mission', async (req, res) => {
     let id = req.params.mission
     //res.send(await getMission(id))
-    console.log(await getMission(id))
     console.log("mission id:" + id)
+    console.log(await getMission(id))
 })
 
 async function checkCache() {
@@ -65,10 +65,10 @@ const getMission = async (id) => {
         }
     } else {
         console.log("Getting cached data")
-        memcached.get("Missions", await function(err, result) {
+        memcached.get("Missions", async function(err, result) {
             if(err) return null
             console.log("result")
-            console.log(result)
+            //console.log(result)
             return result
         })
     }
