@@ -1,4 +1,4 @@
-import NodeCache from "node-cache"
+import NodeCache from ''
 const myCache = new NodeCache()
 
 export default myCache
