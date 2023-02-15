@@ -1,24 +1,84 @@
-import {Router} from 'express'
+import {json, Router} from 'express'
 import config from "../config/index.js";
 import fetch, {Headers} from "node-fetch";
 import merge from "lodash";
+import memcached from "../db.js";
 con***REMOVED*** router = Router()
+con***REMOVED*** auth = "Bearer " + encodeURI(config.acces***REMOVED***oken)
 
-router.get('/mission', async (req, res) => {
-    res.send(await getMissions())
+router.get('/missions', async (req, res) => {
+    var missions = await getMissions()
+    res.send(missions)
+    memcached.set("Missions", missions, 10000, await function (err, result) {
+        if(err) console.error(err + "hi")
+        console.log(result + "result")
+    })
+
+    memcached.get("Missions", await function(err,result) {
+        if(err) console.error(err)
+        console.log(result + "te***REMOVED***")
+    })
     //console.log(await getMissions())
 })
-router.get('/mission/:id', (req, res) => {
-    console.log("mission id:" + req.params.id)
+router.get('/:mission', async (req, res) => {
+    let id = req.params.mission
+    //res.send(await getMission(id))
+    console.log("mission id:" + id)
+    console.log(await getMission(id))
 })
 
+async function checkCache() {
+    memcached.get("Missions", await function(err) {
+        if(err) return false
+        return true
+    })
+}
+
+con***REMOVED*** getMission = async (id) => {
+    if(await checkCache() === false) {
+        console.log("API call")
+        try {
+            con***REMOVED*** getMissionURL = 'https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/' + id
+            console.log(getMissionURL)
+            con***REMOVED*** getMissionResponse = await fetch(getMissionURL, {
+                method: "GET",
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                    "Authorization": auth,
+                    "Accept": "*/*"
+                }),
+            })
+
+            if (getMissionResponse.***REMOVED***atus === 200) {
+                var mission = await getMissionResponse.json()
+                merge.mergeWith(mission, await getMissionFootprint(id))
+                let geoJSON = {
+                    "type": "Mission", "geometry": {"type": mission.type, "coordinates": mission.coordinates}
+                    , "properties": {"name": mission.name, "aircraftTakeOffTime": mission.aircraftTakeOffTime}
+                }
+                return geoJSON
+            } else {
+                console.log(***REMOVED***atusMessage(getMissionResponse.***REMOVED***atus))
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    } else {
+        console.log("Getting cached data")
+        memcached.get("Missions", async function(err, result) {
+            if(err) return null
+            console.log("result")
+            //console.log(result)
+            return result
+        })
+    }
+}
 
 con***REMOVED*** getMissions = async () => {
     let responseJSON;
 
     try{
         con***REMOVED*** getMissionsURL = 'https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions'
-        con***REMOVED*** auth = "Bearer " + encodeURI(config.acces***REMOVED***oken)
 
         con***REMOVED*** getMissionsResponse = await fetch(getMissionsURL, {
             method: "GET",
@@ -34,16 +94,7 @@ con***REMOVED*** getMissions = async () => {
             let missions = responseJSON.missions
             var footprints = {}
             for(let i=0; i < missions.length; i++) {
-                con***REMOVED*** getFootprintResponse = await fetch("https://hallam.***REMOVED***.com" +
-                "/discover/api/v1/missionfeed/missions/" + missions[i].id + "/footprint", {
-                    method: "GET",
-                    headers: new Headers({
-                        "Content-Type": "application/json",
-                        "Authorization": auth,
-                        "Accept": "*/*"
-                    }),
-                })
-                footprints[i] = await getFootprintResponse.json()
+                footprints[i] = await getMissionFootprint(missions[i].id)
             }
             merge.mergeWith(missions, footprints)
 
@@ -55,7 +106,6 @@ con***REMOVED*** getMissions = async () => {
                         , "aircraftTakeOffTime": currentMission.aircraftTakeOffTime,}}
             }
 
-
             return geoJSONFormat
         } else {
             return ***REMOVED***atusMessage(getMissionsResponse.***REMOVED***atus)
@@ -64,8 +114,6 @@ con***REMOVED*** getMissions = async () => {
         console.error(e)
     }
 }
-
-
 
 function ***REMOVED***atusMessage(code) {
     switch (code) {
@@ -80,6 +128,19 @@ function ***REMOVED***atusMessage(code) {
         default:
             return "?"
     }
+}
+
+async function getMissionFootprint(id) {
+    con***REMOVED*** getFootprintResponse = await fetch("https://hallam.***REMOVED***.com" +
+        "/discover/api/v1/missionfeed/missions/" + id + "/footprint", {
+        method: "GET",
+        headers: new Headers({
+            "Content-Type": "application/json",
+            "Authorization": auth,
+            "Accept": "*/*"
+        }),
+    })
+    return await getFootprintResponse.json()
 }
 
 export default router
