@@ -1,23 +1,34 @@
 import { sendGET } from './apiRequest.js'
+import {nodeCache} from '../db.js'
 import config from '../config/index.js'
 
 const getMissions = async (req, res) => {
     const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/`
-    const apiRes = await sendGET(url, config.accesstoken)
-    const userMissions = apiRes.missions
+    const accessToken = nodeCache.get(req.user.username).access_token
+    const apiRes = await sendGET(url, accessToken)
 
-    res.json({data: userMissions})
+    if(apiRes){
+        const userMissions = apiRes.missions
+        res.json({data: userMissions})
+     }else{
+        res.status(500).json({message: "Internal Server Error"})
+    }
+
+    
 }
 
 const getMissionScenes = async (req, res) => {
 
     const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${req.params.id}`
-    const apiRes = await sendGET(url, config.accesstoken)
-    const scenes = apiRes.scenes
+    const accessToken = nodeCache.get(req.user.username).access_token
+    const apiRes = await sendGET(url, accessToken)
 
-    for(let i = scenes.length; --i > -1;){
+    if(apiRes){
+        const scenes = apiRes.scenes
+
+        for(let i = scenes.length; --i > -1;){
             const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
-            const apiRes = await sendGET(url, config.accesstoken)
+            const apiRes = await sendGET(url, accessToken)
             const sceneData = apiRes.product.result
 
             delete scenes[i].bands
@@ -28,16 +39,20 @@ const getMissionScenes = async (req, res) => {
             scenes[i].producturl = sceneData.producturl
         }
         res.json({data: scenes})
+    }else{
+        res.status(500).json({message: "Internal Server Error"})
     }
 
-    const getScenes = async (id) => {
+    }
+
+    const cacheScenes = async (id, accessToken) => {
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${id}`
-        const apiRes = await sendGET(url, config.accesstoken)
+        const apiRes = await sendGET(url, accessToken)
         const scenes = apiRes.scenes
 
         for(let i = scenes.length; --i > -1;){
             const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
-            const apiRes = await sendGET(url, config.accesstoken)
+            const apiRes = await sendGET(url, accessToken)
             const sceneData = apiRes.product.result
 
             delete scenes[i].bands
