@@ -10,40 +10,46 @@ const getMissions = async (req, res) => {
     if(apiRes){
         const userMissions = apiRes.missions
         res.json({data: userMissions})
+
+        for(let i = userMissions.length; --i > -1;){
+            cacheScenes(userMissions[i].id, accessToken)
+        }
      }else{
         res.status(500).json({message: "Internal Server Error"})
     }
 
-    
 }
 
 const getMissionScenes = async (req, res) => {
 
-    const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${req.params.id}`
-    const accessToken = nodeCache.get(req.user.username).access_token
-    const apiRes = await sendGET(url, accessToken)
+    if(nodeCache.get(req.params.id) === undefined){
+        const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${req.params.id}`
+        const accessToken = nodeCache.get(req.user.username).access_token
+        const apiRes = await sendGET(url, accessToken)
 
-    if(apiRes){
-        const scenes = apiRes.scenes
-
-        for(let i = scenes.length; --i > -1;){
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
-            const apiRes = await sendGET(url, accessToken)
-            const sceneData = apiRes.product.result
-
-            delete scenes[i].bands
-
-            scenes[i].countrycode = sceneData.countrycode
-            scenes[i].centre = sceneData.centre
-            scenes[i].footprint = sceneData.footprint
-            scenes[i].producturl = sceneData.producturl
+        if(apiRes){
+            const scenes = apiRes.scenes
+    
+            for(let i = scenes.length; --i > -1;){
+                const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
+                const apiRes = await sendGET(url, accessToken)
+                const sceneData = apiRes.product.result
+    
+                delete scenes[i].bands
+    
+                scenes[i].countrycode = sceneData.countrycode
+                scenes[i].centre = sceneData.centre
+                scenes[i].footprint = sceneData.footprint
+                scenes[i].producturl = sceneData.producturl
+            }
+            res.json({data: scenes})
+        }else{
+            res.status(500).json({message: "Internal Server Error"})
         }
-        res.json({data: scenes})
     }else{
-        res.status(500).json({message: "Internal Server Error"})
+        res.json({data: nodeCache.get(req.params.id)})
     }
-
-    }
+}
 
     const cacheScenes = async (id, accessToken) => {
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${id}`
@@ -61,7 +67,7 @@ const getMissionScenes = async (req, res) => {
             scenes[i].centre = sceneData.centre
             scenes[i].footprint = sceneData.footprint
         }
-        return scenes
+        nodeCache.set(id, scenes)
     }
 
 
