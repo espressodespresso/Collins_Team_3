@@ -24,7 +24,7 @@ map.on('pm:create', function (e) {
 });
 
 
-con***REMOVED*** bigLi***REMOVED*** = async () => {
+con***REMOVED*** getLo***REMOVED*** = async () => {
     con***REMOVED*** response = await fetch('./server/servies/missions.js');
     con***REMOVED*** myJson = await response.json(); //extract JSON from the http response
     // do something with myJson
