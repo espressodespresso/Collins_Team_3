@@ -24,7 +24,7 @@ map.on('pm:create', function (e) {
 });
 
 
-const bigList = async () => {
+const getLost = async () => {
     const response = await fetch('./server/servies/missions.js');
     const myJson = await response.json(); //extract JSON from the http response
     // do something with myJson
