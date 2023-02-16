@@ -104,6 +104,7 @@ con***REMOVED*** log = async () => {
 }
 
 //DO NOT COMMIT THE USERNAME AND PASSWORD
+//run git push -f origin HEAD^:ma***REMOVED***er if you do
 con***REMOVED*** ***REMOVED***atus = login()
 log()
 
