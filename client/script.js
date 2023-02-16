@@ -104,7 +104,7 @@ const log = async () => {
 }
 
 //DO NOT COMMIT THE USERNAME AND PASSWORD
-const status = login("hallam2", "2513@5De")
+const status = login()
 log()
 
 
