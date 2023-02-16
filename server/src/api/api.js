@@ -11,7 +11,7 @@ router.get('/missions', getMissions)
 router.get('/missions/:id', getMissionScenes)
 
 //Retrieves all frames for a scene
-router.post('/scenes', getFrames)
+router.get('/scenes/:id', getFrames)
 
 
 export default router
