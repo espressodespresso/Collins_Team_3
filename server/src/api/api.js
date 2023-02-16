@@ -1,6 +1,6 @@
 import {Router} from 'express'
-import {getFrames} from '../services/api/frames.js'
-import {getMissions, getMissionScenes} from '../services/api/missions.js'
+import {getFrames} from '../services/frames.js'
+import {getMissions, getMissionScenes} from '../services/missions.js'
 
 con***REMOVED*** router = new Router()
 
