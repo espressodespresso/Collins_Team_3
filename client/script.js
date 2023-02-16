@@ -23,6 +23,20 @@ map.on('pm:create', function (e) {
     e.layer;
 });
 
+con***REMOVED*** sceneToGeoJSONCentre = (scene) => {
+    return{
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": scene.centre
+        },
+        "properties": {
+          "name": scene.name
+        }
+    }
+}
+
+
 
 con***REMOVED*** getLo***REMOVED*** = async () => {
     con***REMOVED*** response = await fetch('./server/servies/missions.js');
@@ -31,6 +45,7 @@ con***REMOVED*** getLo***REMOVED*** = async () => {
   }
 
 /*
+
 var object = {
     "type": "Feature",
     "geometry": {
