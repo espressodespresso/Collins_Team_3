@@ -32,10 +32,11 @@ var object = {
       "name": "help"
     }
   };
+  
 
 var workplease = new L.GeoJSON(object, {
     onEachFeature: function (feature, layer) {
-      layer.bindPopup('<h1>'+feature.properties.f1+'</h1><p>name: '+feature.properties.f2+'</p>');
+      layer.bindPopup('<h1>'+feature.properties.id+'</h1><p>name: '+feature.properties.name+'</p>');
     }
   }).addTo(map);
 
