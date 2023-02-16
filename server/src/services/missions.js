@@ -15,7 +15,7 @@ const getMissionScenes = async (req, res) => {
     const apiRes = await sendGET(url, config.accesstoken)
     const scenes = apiRes.scenes
 
-    for(let i = scenes.length-1; --i > -1;){
+    for(let i = scenes.length; --i > -1;){
             const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
             const apiRes = await sendGET(url, config.accesstoken)
             const sceneData = apiRes.product.result
@@ -35,7 +35,7 @@ const getMissionScenes = async (req, res) => {
         const apiRes = await sendGET(url, config.accesstoken)
         const scenes = apiRes.scenes
 
-        for(let i = scenes.length-1; --i > -1;){
+        for(let i = scenes.length; --i > -1;){
             const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
             const apiRes = await sendGET(url, config.accesstoken)
             const sceneData = apiRes.product.result
