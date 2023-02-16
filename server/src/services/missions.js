@@ -1,100 +1,53 @@
-import merge from "lodash";
-import myCache from "../db.js";
-import config from "../config/index.js";
-import fetch, {Headers} from "node-fetch";
-const auth = "Bearer " + encodeURI(config.accesstoken)
+import { sendGET } from './apiRequest.js'
+import config from '../config/index.js'
 
-export const getMission = async (req, res) => {
-    let value = myCache.get("missions")
-    let id = req.params.id
-    if(value === undefined) {
-        try {
-            const getMissionURL = 'https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/' + id
-            const getMissionResponse = await fetch(getMissionURL, {
-                method: "GET",
-                headers: new Headers({
-                    "Content-Type": "application/json",
-                    "Authorization": auth,
-                    "Accept": "*/*"
-                })
-            })
+const getMissions = async (req, res) => {
+    const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/`
+    const apiRes = await sendGET(url, config.accesstoken)
+    const userMissions = apiRes.missions
 
-            if (getMissionResponse.status === 200) {
-                var mission = await getMissionResponse.json()
-                merge.mergeWith(mission, await getMissionFootprint(id))
-                let geoJSON = {
-                    "type": "Mission", "geometry": {"type": mission.type, "coordinates": mission.coordinates}
-                    , "properties": {"name": mission.name, "aircraftTakeOffTime": mission.aircraftTakeOffTime}
-                }
-                res.json({data:geoJSON})
-            } else {
-                console.error(getMissionResponse.status)
-            }
-        } catch (e) {
-            console.error(e)
+    res.json({data: userMissions})
+}
+
+const getMissionScenes = async (req, res) => {
+
+    const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${req.params.id}`
+    const apiRes = await sendGET(url, config.accesstoken)
+    const scenes = apiRes.scenes
+
+    for(let i = scenes.length; --i > -1;){
+            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
+            const apiRes = await sendGET(url, config.accesstoken)
+            const sceneData = apiRes.product.result
+
+            delete scenes[i].bands
+
+            scenes[i].countrycode = sceneData.countrycode
+            scenes[i].centre = sceneData.centre
+            scenes[i].footprint = sceneData.footprint
+            scenes[i].producturl = sceneData.producturl
         }
-    } else {
-        res.json({data:value[id]})
+        res.json({data: scenes})
     }
-}
 
-export const getMissions = async (req, res) => {
-    let responseJSON;
+    const getScenes = async (id) => {
+        const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${id}`
+        const apiRes = await sendGET(url, config.accesstoken)
+        const scenes = apiRes.scenes
 
-    try {
-        const getMissionsURL = 'https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions'
+        for(let i = scenes.length; --i > -1;){
+            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
+            const apiRes = await sendGET(url, config.accesstoken)
+            const sceneData = apiRes.product.result
 
-        const getMissionsResponse = await fetch(getMissionsURL, {
-            method: "GET",
-            headers: new Headers({
-                "Content-Type": "application/json",
-                "Authorization": auth,
-                "Accept": "*/*"
-            }),
-        })
+            delete scenes[i].bands
 
-        if (getMissionsResponse.status === 200) {
-            responseJSON = await getMissionsResponse.json();
-            let missions = responseJSON.missions
-            var footprints = {}
-            for (let i = 0; i < missions.length; i++) {
-                footprints[i] = await getMissionFootprint(missions[i].id)
-            }
-            merge.mergeWith(missions, footprints)
-
-            var geoJSONFormat = {}
-            for (let i = 0; i < missions.length; i++) {
-                var currentMission = missions[i]
-                geoJSONFormat[currentMission.id] = {
-                    "type": "Mission", "geometry": {
-                        "type": currentMission.type
-                        , "coordinates": currentMission.coordinates
-                    }, "properties": {
-                        "name": currentMission.name
-                        , "aircraftTakeOffTime": currentMission.aircraftTakeOffTime,
-                    }
-                }
-            }
-
-            myCache.set("missions", geoJSONFormat, 10000)
-            res.json({data: geoJSONFormat})
-        } else {
-            console.error(getMissionsResponse.status)
+            scenes[i].countrycode = sceneData.countrycode
+            scenes[i].centre = sceneData.centre
+            scenes[i].footprint = sceneData.footprint
         }
-    } catch (e) {
-        console.error(e)
+        return scenes
     }
-}
 
-export async function getMissionFootprint(id) {
-    const getFootprintResponse = await fetch("https://hallam.sci-toolset.com" +
-        "/discover/api/v1/missionfeed/missions/" + id + "/footprint", {
-        method: "GET",
-        headers: new Headers({
-            "Content-Type": "application/json",
-            "Authorization": auth,
-            "Accept": "*/*"
-        }),
-    })
-    return await getFootprintResponse.json()
-}
+
+export {getMissions, getMissionScenes}
