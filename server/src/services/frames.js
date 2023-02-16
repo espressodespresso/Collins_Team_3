@@ -11,7 +11,7 @@ con***REMOVED*** getFrames = async(req, res) => {
         con***REMOVED*** apiRes = await sendGET(url, config.acces***REMOVED***oken)
         con***REMOVED*** frameData = apiRes.product.result
 
-        console.log(frameData)
+        
     }
 }
 
