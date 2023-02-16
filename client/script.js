@@ -104,7 +104,7 @@ con***REMOVED*** log = async () => {
 }
 
 //DO NOT COMMIT THE USERNAME AND PASSWORD
-con***REMOVED*** ***REMOVED***atus = login("***REMOVED***", ***REMOVED***)
+con***REMOVED*** ***REMOVED***atus = login()
 log()
 
 
