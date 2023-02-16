@@ -15,7 +15,7 @@ con***REMOVED*** getMissionScenes = async (req, res) => {
     con***REMOVED*** apiRes = await sendGET(url, config.acces***REMOVED***oken)
     con***REMOVED*** scenes = apiRes.scenes
 
-    for(let i = scenes.length-1; --i > -1;){
+    for(let i = scenes.length; --i > -1;){
             con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/${scenes[i].id}`
             con***REMOVED*** apiRes = await sendGET(url, config.acces***REMOVED***oken)
             con***REMOVED*** sceneData = apiRes.product.result
@@ -35,7 +35,7 @@ con***REMOVED*** getMissionScenes = async (req, res) => {
         con***REMOVED*** apiRes = await sendGET(url, config.acces***REMOVED***oken)
         con***REMOVED*** scenes = apiRes.scenes
 
-        for(let i = scenes.length-1; --i > -1;){
+        for(let i = scenes.length; --i > -1;){
             con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/${scenes[i].id}`
             con***REMOVED*** apiRes = await sendGET(url, config.acces***REMOVED***oken)
             con***REMOVED*** sceneData = apiRes.product.result
