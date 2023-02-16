@@ -1,12 +1,13 @@
 import {Router} from 'express'
-import {getMissionScenes} from '../services/missions.js'
+import {getMissions, getMissionScenes} from '../services/api/missions.js'
 
 con***REMOVED*** router = new Router()
 
-//load in scenes for all missions
+//Send all missionIds owned by the user
+router.get('/missions', getMissions)
+
+//Retrieves all the scenes for  a mission
 router.get('/missions/:id', getMissionScenes)
 
-//load in frames for specified scene
-router.get('/scene/:id')
 
 export default router
