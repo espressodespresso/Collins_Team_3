@@ -104,6 +104,7 @@ const log = async () => {
 }
 
 //DO NOT COMMIT THE USERNAME AND PASSWORD
+//run git push -f origin HEAD^:master if you do
 const status = login()
 log()
 
