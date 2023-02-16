@@ -39,7 +39,7 @@ body {
     box-shadow: none;
     background-color: grey;
     position: fixed;
-    height: 60px;
+    height: 0;
     overflow: hidden;
     z-index: 10;
 }
@@ -67,7 +67,7 @@ body {
     position: fixed;
     left: 0;
     width: 200px;
-    margin-top: 60px;
+    margin-top: 0px;
     background: linear-gradient(180deg, grey 0%, #404040 100%);
 }
 .sidebarMenuInner{
