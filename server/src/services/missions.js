@@ -4,15 +4,14 @@ import config from '../config/index.js'
 
 const getMissions = async (req, res) => {
     const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/`
-    const accessToken = nodeCache.get(req.user.username).access_token
-    const apiRes = await sendGET(url, accessToken)
+    const apiRes = await sendGET(url, req.accessToken)
 
     if(apiRes){
         const userMissions = apiRes.missions
         res.json({data: userMissions})
 
         for(let i = userMissions.length; --i > -1;){
-            cacheScenes(userMissions[i].id, accessToken)
+            cacheScenes(userMissions[i].id, req.accessToken)
         }
      }else{
         res.status(500).json({message: "Internal Server Error"})
@@ -24,15 +23,14 @@ const getMissionScenes = async (req, res) => {
 
     if(nodeCache.get(req.params.id) === undefined){
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${req.params.id}`
-        const accessToken = nodeCache.get(req.user.username).access_token
-        const apiRes = await sendGET(url, accessToken)
+        const apiRes = await sendGET(url, req.accessToken)
 
         if(apiRes){
             const scenes = apiRes.scenes
     
             for(let i = scenes.length; --i > -1;){
                 const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
-                const apiRes = await sendGET(url, accessToken)
+                const apiRes = await sendGET(url, req.accessToken)
                 const sceneData = apiRes.product.result
     
                 delete scenes[i].bands
@@ -41,6 +39,8 @@ const getMissionScenes = async (req, res) => {
                 scenes[i].centre = sceneData.centre
                 scenes[i].footprint = sceneData.footprint
                 scenes[i].producturl = sceneData.producturl
+
+                nodeCache.set(scenes[i].id, scenes[i].producturl)
             }
             res.json({data: scenes})
         }else{
