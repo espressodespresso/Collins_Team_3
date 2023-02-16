@@ -36,6 +36,16 @@ con***REMOVED*** sceneToGeoJSONCentre = (scene) => {
     }
 }
 
+
+
+con***REMOVED*** getLo***REMOVED*** = async () => {
+    con***REMOVED*** response = await fetch('./server/servies/missions.js');
+    con***REMOVED*** myJson = await response.json(); //extract JSON from the http response
+    // do something with myJson
+  }
+
+/*
+
 var object = {
     "type": "Feature",
     "geometry": {
@@ -45,10 +55,11 @@ var object = {
       "name": "help"
     }
   };
+*/
 
 var workplease = new L.GeoJSON(object, {
     onEachFeature: function (feature, layer) {
-      layer.bindPopup('<h1>'+feature.properties.f1+'</h1><p>name: '+feature.properties.f2+'</p>');
+      layer.bindPopup('<h1>'+feature.properties.id+'</h1><p>name: '+feature.properties.name+'</p>');
     }
   }).addTo(map);
 
@@ -63,21 +74,3 @@ function onMapClick(e) {
 }
 
 map.on('click', onMapClick);
-/*
-function selectShape(sShape){
-    switch (sShape){
-        case 1:
-            // Circle
-            console.log("Circle");
-            break;
-        case 2:
-            // Rectangle
-            console.log("Rectangle");
-            break;
-        case 3:
-            // Polygone
-            console.log("Polygone");
-            break;
-    }
-}
-*/
