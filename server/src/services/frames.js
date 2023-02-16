@@ -1,5 +1,5 @@
-import { sendGET } from '../apiRequest.js'
-import config from '../../config/index.js'
+import { sendGET } from './apiRequest.js'
+import config from '../config/index.js'
 
 const getFrames = async(req, res) => {
     const url = req.body.producturl
