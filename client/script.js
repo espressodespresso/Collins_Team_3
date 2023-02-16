@@ -23,6 +23,14 @@ map.on('pm:create', function (e) {
     e.layer;
 });
 
+
+const bigList = async () => {
+    const response = await fetch('http://example.com/movies.json');
+    const myJson = await response.json(); //extract JSON from the http response
+    // do something with myJson
+  }
+
+/*
 var object = {
     "type": "Feature",
     "geometry": {
@@ -32,7 +40,7 @@ var object = {
       "name": "help"
     }
   };
-  
+*/
 
 var workplease = new L.GeoJSON(object, {
     onEachFeature: function (feature, layer) {
@@ -51,21 +59,3 @@ function onMapClick(e) {
 }
 
 map.on('click', onMapClick);
-/*
-function selectShape(sShape){
-    switch (sShape){
-        case 1:
-            // Circle
-            console.log("Circle");
-            break;
-        case 2:
-            // Rectangle
-            console.log("Rectangle");
-            break;
-        case 3:
-            // Polygone
-            console.log("Polygone");
-            break;
-    }
-}
-*/
