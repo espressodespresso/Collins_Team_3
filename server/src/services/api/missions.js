@@ -20,11 +20,14 @@ const getMissionScenes = async (req, res) => {
             const apiRes = await sendGET(url, config.accesstoken)
             const sceneData = apiRes.product.result
 
+            console.log(sceneData)
+
             delete scenes[i].bands
 
             scenes[i].countrycode = sceneData.countrycode
             scenes[i].centre = sceneData.centre
             scenes[i].footprint = sceneData.footprint
+            scenes[i].producturl = sceneData.producturl
         }
         res.json({data: scenes})
     }
