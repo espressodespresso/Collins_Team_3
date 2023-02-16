@@ -37,12 +37,14 @@ const sceneToGeoJSONCentre = (scene) => {
     "name": scene.name,
     "geometry": {
       "type": "Polygon",
-      "coordinates": scene.coordinates
+      "coordinates": scene.footprint.coordinates
     },
     "properties": {
       "producturl": scene.producturl
     }
 } 
+
+console.log(scene.coordinates)
 return newObject;
   
   
