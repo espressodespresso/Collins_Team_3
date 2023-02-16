@@ -23,6 +23,19 @@ map.on('pm:create', function (e) {
     e.layer;
 });
 
+con***REMOVED*** sceneToGeoJSONCentre = (scene) => {
+    return{
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": scene.centre
+        },
+        "properties": {
+          "name": scene.name
+        }
+    }
+}
+
 var object = {
     "type": "Feature",
     "geometry": {
