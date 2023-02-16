@@ -20,8 +20,6 @@ con***REMOVED*** getMissionScenes = async (req, res) => {
             con***REMOVED*** apiRes = await sendGET(url, config.acces***REMOVED***oken)
             con***REMOVED*** sceneData = apiRes.product.result
 
-            console.log(sceneData)
-
             delete scenes[i].bands
 
             scenes[i].countrycode = sceneData.countrycode
