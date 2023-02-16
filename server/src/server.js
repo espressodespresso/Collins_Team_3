@@ -1,11 +1,13 @@
 import express from 'express'
 import { auth } from './modules/auth.js'
 import router from './api/router.js'
+import cors from 'cors'
 
 con***REMOVED*** app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cors())
 
 app.get('/', (req, res) => {
     console.log("Hello")
