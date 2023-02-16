@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import config from '../config/index.js'
 
 export const createJWT = (user) => {
-    const token = jwt.sign({id: user.id, username: user.username}, config.jwt_secret)
+    const token = jwt.sign({username: user.username}, config.jwt_secret)
     return token
 }
 
