@@ -86,11 +86,12 @@ const sceneToGeoJSONObject = (scene) => {
         },
         "properties": {
           "name": scene.name,
+          "countrycode": scene.countrycode
         }
     }
 }
 
-const loadAllMissionScenes = async(id) => {
+const loadAllMissionScenes = async() => {
   const missions = await getMissions()
   for(let i = missions.length; --i > -1;){
     missions[i].scenes = await getMissionScene(missions[i].id)
@@ -98,23 +99,35 @@ const loadAllMissionScenes = async(id) => {
   return missions
 }
 
-const log = async () => {
-  const missions = await loadAllMissionScenes()
-  console.log(missions)
+const missionScenesToGeoJson = (mission) => {
+  const geoJsonScenes = []
+  const scenes = mission.scenes
+  for(let i = scenes.length; --i > -1;){
+    geoJsonScenes.push(sceneToGeoJSONObject(scenes[i]))
+  }
+  return geoJsonScenes
 }
 
-//DO NOT COMMIT THE USERNAME AND PASSWORD
-//run git push -f origin HEAD^:master if you do
-const status = login()
-log()
+const renderAllMissions = async () => {
+  const missions = await loadAllMissionScenes()
+  const geoJsonMissionScenes = []
 
+  for (let i = missions.length; --i > -1;){
+    geoJsonMissionScenes.push(...missionScenesToGeoJson(missions[i]))
+  }
 
-const addGeoLayer = new L.GeoJSON(object, {
+  new L.GeoJSON(geoJsonMissionScenes, {
     onEachFeature: function (feature, layer) {
-      layer.bindPopup('<h1>'+feature.properties.id+'</h1><p>name: '+feature.properties.name+'</p>');
+      layer.bindPopup('<h1>'+feature.properties.name+'</h1><p>country-code: '+feature.properties.countrycode+'</p>');
     }
   }).addTo(map);
 
+}
+
+
+//REMOVE BEFORE COMMIT
+const status = login("usr", "pass")
+renderAllMissions()
 
 var popup = L.popup();
 
