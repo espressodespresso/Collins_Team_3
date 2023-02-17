@@ -34,7 +34,8 @@ con***REMOVED*** getMissionScenes = async (req, res) => {
                 con***REMOVED*** sceneData = apiRes.product.result
     
                 delete scenes[i].bands
-    
+                
+                scenes[i].name = sceneData.name
                 scenes[i].countrycode = sceneData.countrycode
                 scenes[i].centre = sceneData.centre
                 scenes[i].footprint = sceneData.footprint
