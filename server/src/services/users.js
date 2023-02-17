@@ -50,6 +50,7 @@ con***REMOVED*** login = async (req, res) => {
             res.json({token})
         }
     }catch(e){
+        console.log(e)
         res.***REMOVED***atus(500).json({message: "Server error"})
     }
 };
