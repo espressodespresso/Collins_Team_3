@@ -1,4 +1,4 @@
 import NodeCache from "node-cache";
-con***REMOVED*** myCache = new NodeCache();
+con***REMOVED*** nodeCache = new NodeCache({ ***REMOVED***dTTL: 0, checkperiod: 600} );
 
-export default myCache
+export {nodeCache}
