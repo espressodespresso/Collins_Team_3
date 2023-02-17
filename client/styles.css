@@ -14,14 +14,6 @@ html, body {
     overflow-x: hidden;
     height: 100%;
 }
-input{
-  width: 95%;
-  height: 50px;
-  background-color: gray;
-  color: #000;
-  border-color: #fff;
-  font-size: 20px;
-}
 #searchBar{
     position: ***REMOVED***icky;
     z-index: 1;
@@ -114,15 +106,6 @@ body {
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
-}
-input[type="checkbox"]:checked ~ #sidebarMenu {
-    transform: translateX(0);
-}
-
-input[type=checkbox] {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    display: none;
 }
 
 /* required ***REMOVED***yles */
