@@ -11,7 +11,7 @@ const getFrames = async(req, res) => {
         const apiRes = await sendGET(url, config.accesstoken)
         const frameData = apiRes.product.result
 
-        console.log(frameData)
+        
     }
 }
 

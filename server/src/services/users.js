@@ -2,7 +2,7 @@ import fetch, { Headers } from "node-fetch";
 import config from "../config/index.js"
 import { createJWT } from "../modules/auth.js";
 import {v4 as uuidv4} from 'uuid'
-import localCache from '../db.js'
+import {nodeCache} from '../db.js'
 
 const getUserAccessToken = async (username, password) => {
     const url = 'https://hallam.sci-toolset.com/api/v1/token'
@@ -19,9 +19,11 @@ const getUserAccessToken = async (username, password) => {
             }),
             body: `grant_type=password&username=${username}&password=${password}`,
         })
-    
+
         const responseText = await response.text()
         const responseJSON = responseText === ""? {}: JSON.parse(responseText)
+
+        
         
         if(!responseJSON.hasOwnProperty('access_token') || !responseJSON.hasOwnProperty('refresh_token')){
             return null
@@ -44,9 +46,9 @@ const login = async (req, res) => {
         if(!tokens){
             res.status(401).json({message: "Invalid username & password"})
         }else{
-            const user = {id: uuidv4(), username: req.body.username}
+            const user = {username: req.body.username}
             const token = createJWT(user)
-            localCache.set(user.id, tokens)
+            nodeCache.set(user.username, tokens)
             res.json({token})
         }
     }catch(e){

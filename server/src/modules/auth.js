@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken'
 import config from '../config/index.js'
+import { nodeCache } from '../db.js'
 
 export const createJWT = (user) => {
-    const token = jwt.sign({id: user.id, username: user.username}, config.jwt_secret)
+    const token = jwt.sign({username: user.username}, config.jwt_secret)
     return token
 }
 
@@ -26,6 +27,7 @@ export const auth = (req, res, next) => {
     try{
         const user = jwt.verify(token, config.jwt_secret)
         req.user = user
+        req.accessToken = nodeCache.get(user.username).access_token
         next()
     }catch(e){
         console.error(e)

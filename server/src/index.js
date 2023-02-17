@@ -5,7 +5,7 @@ import config from './config/index.js';
 //import {getUserAccessToken} from "./services/users.js";
 
 const sslCas = rootCas.create()
-sslCas.addFile(process.env.CA_CERT_URL)
+sslCas.addFile(config.cert_url)
 https.globalAgent.options.ca = sslCas;
 https.globalAgent.options.rejectUnauthorized = false;
 
