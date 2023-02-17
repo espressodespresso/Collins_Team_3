@@ -7,7 +7,7 @@ import { handleInputErrors } from '../modules/inputValidation.js';
 
 
 const router = Router();
-router.use('/api', apiRoutes)
 router.post('/login', body('username').isString(), body('password').isString(), handleInputErrors, login)
+router.use('/api', auth, apiRoutes)
 
 export default router

@@ -1,4 +1,4 @@
 import NodeCache from "node-cache";
-const myCache = new NodeCache();
+const nodeCache = new NodeCache({ stdTTL: 0, checkperiod: 600} );
 
-export default myCache
+export {nodeCache}
