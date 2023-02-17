@@ -15,6 +15,11 @@ var options = {
     rmovalMode: true,
 };
 
+var searchLayer = L.layerGroup().addTo(map);
+//... adding data in searchLayer ...
+map.addControl( new L.Control.Search({layer: searchLayer,position:'topright'}) );
+//searchLayer is a L.LayerGroup contains searched markers
+
 map.pm.addControls(options);
 map.pm.disableDraw('Poly');
 map.on('pm:create', function (e) {
