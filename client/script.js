@@ -137,8 +137,9 @@ async function LayerMissions() {
         ul.appendChild(li)
         let marks = []
         for(let j=0; j < missionData.length; j++) {
-            marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
-            //addToGeoLayer(sceneToGeoJSONCentre(missionData[j]))
+            //marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
+            // Kinda broken
+            marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
         }
         let marksGroup = L.layerGroup(marks)
         console.log(marks)
@@ -156,13 +157,22 @@ function addMarker(data, missionname, takeofftime) {
         + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
 }
 
-function addToGeoLayer(objectP){
-    var workplease = new L.GeoJSON(objectP, {
+function addToGeoLayer(data, missionname, takeofftime){
+    return new L.GeoJSON(data).bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
+        + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
+}
+
+/*
+function addToGeoLayer(data, missionname, takeofftime){
+    var workplease = new L.GeoJSON(data, {
         onEachFeature: function (feature, layer) {
-            layer.bindPopup('<h1>'+feature.properties.name+'</h1><p>name: '+feature.id+'</p><p>producturl: '+feature.producturl);
+            layer.bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
+                + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
         }
     }).addTo(map);
 }
+ */
+
 con***REMOVED*** sceneToGeoJSONObject = (scene) => {
     return{
         "type": "Feature",
@@ -175,6 +185,26 @@ con***REMOVED*** sceneToGeoJSONObject = (scene) => {
             "countrycode": scene.countrycode
         }
     }
+}
+
+con***REMOVED*** sceneToGeoJSONCentre = (scene) => {
+    let object = {
+        "type": "Feature",
+        "id": scene.id,
+        "name": scene.name,
+        "geometry": {
+            "type": "Point",
+            "coordinates": scene.centre,
+            "type": "Polygon",
+            "coordinates": scene.footprint.coordinates,
+        },
+        "properties": {
+            "name": scene.name,
+            "producturl": scene.producturl,
+        }
+    }
+
+    return object
 }
 
 con***REMOVED*** missionScenesToGeoJson = (mission) => {
@@ -208,7 +238,7 @@ con***REMOVED*** getLi***REMOVED*** = async () => {
 }
 
 //REMOVE BEFORE COMMIT
-con***REMOVED*** ***REMOVED***atus = login("usr", "pass")
+con***REMOVED*** ***REMOVED***atus = login("***REMOVED***", ***REMOVED***)
 /*renderAllMissions()*/
 
 
