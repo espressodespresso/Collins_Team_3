@@ -4,7 +4,7 @@ import * as https from "https";
 import config from './config/index.js';
 
 con***REMOVED*** sslCas = rootCas.create()
-sslCas.addFile(process.env.CA_CERT_URL)
+sslCas.addFile(config.cert_url)
 https.globalAgent.options.ca = sslCas;
 https.globalAgent.options.rejectUnauthorized = false;
 
