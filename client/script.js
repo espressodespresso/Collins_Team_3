@@ -137,9 +137,8 @@ async function LayerMissions() {
         ul.appendChild(li)
         let marks = []
         for(let j=0; j < missionData.length; j++) {
-            //marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
-            // Kinda broken
-            marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
+            marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
+            //marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
         }
         let marksGroup = L.layerGroup(marks)
         console.log(marks)
@@ -158,9 +157,19 @@ function addMarker(data, missionname, takeofftime) {
 }
 
 function addToGeoLayer(data, missionname, takeofftime){
-    return new L.GeoJSON(data).bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
+    return new L.GeoJSON(data, {
+        draggable:false
+    }).bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
         + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
 }
+
+function onZoomed() {
+    console.log(map.getZoom())
+}
+
+map.on('zoomend', function() {
+    onZoomed();
+});
 
 /*
 function addToGeoLayer(data, missionname, takeofftime){
@@ -252,3 +261,4 @@ function onMapClick(e) {
 }
 
 map.on('click', onMapClick);
+
