@@ -35,7 +35,7 @@ const getMissionScenes = async (req, res) => {
     
                 delete scenes[i].bands
                 
-                scenes[i].name = sceneData.name
+                scenes[i].name = sceneData.title
                 scenes[i].countrycode = sceneData.countrycode
                 scenes[i].centre = sceneData.centre
                 scenes[i].footprint = sceneData.footprint
