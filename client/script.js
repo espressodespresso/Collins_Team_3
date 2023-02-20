@@ -238,7 +238,7 @@ const getList = async () => {
 }
 
 //REMOVE BEFORE COMMIT
-const status = login("hallam2", "2513@5De")
+const status = login("", "")
 /*renderAllMissions()*/
 
 
