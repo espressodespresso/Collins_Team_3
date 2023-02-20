@@ -238,7 +238,7 @@ con***REMOVED*** getLi***REMOVED*** = async () => {
 }
 
 //REMOVE BEFORE COMMIT
-con***REMOVED*** ***REMOVED***atus = login("***REMOVED***", ***REMOVED***)
+con***REMOVED*** ***REMOVED***atus = login("", "")
 /*renderAllMissions()*/
 
 
