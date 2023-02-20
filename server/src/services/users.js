@@ -1,61 +1,44 @@
-import fetch, { Headers } from "node-fetch";
 import config from "../config/index.js"
 import { createJWT } from "../modules/auth.js";
-import {v4 as uuidv4} from 'uuid'
 import {nodeCache} from '../db.js'
-
-con***REMOVED*** getUserAccessToken = async (username, password) => {
-    con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
-    con***REMOVED*** auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
-
-    try{
-        con***REMOVED*** response = await fetch(url, {
-            method: "POST",
-            headers: new Headers({
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Accept": "*/*",
-                "Ho***REMOVED***": "hallam.***REMOVED***",
-                "Authorization": auth
-            }),
-            body: `grant_type=password&username=${username}&password=${password}`,
-        })
-
-        con***REMOVED*** responseText = await response.text()
-        con***REMOVED*** responseJSON = responseText === ""? {}: JSON.parse(responseText)
-
-        
-        
-        if(!responseJSON.hasOwnProperty('access_token') || !responseJSON.hasOwnProperty('refresh_token')){
-            return null
-        }
-
-        return {
-            access_token: responseJSON.access_token, 
-            refresh_token: responseJSON.refresh_token
-        }
-    }catch(e){
-        console.error(e)
-        throw(e)
-    }
-}
+import network from '../utils/network.js'
 
 con***REMOVED*** login = async (req, res) => {
-    con***REMOVED*** tokens = await getUserAccessToken(req.body.username, req.body.password)
-   
-    try{
-        if(!tokens){
-            res.***REMOVED***atus(401).json({message: "Invalid username & password"})
-        }else{
-            con***REMOVED*** user = {username: req.body.username}
-            con***REMOVED*** token = createJWT(user)
-            nodeCache.set(user.username, tokens)
-            res.json({token})
-        }
-    }catch(e){
-        console.log(e)
-        res.***REMOVED***atus(500).json({message: "Server error"})
-    }
-};
 
-export {getUserAccessToken, login}
+    con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
+    con***REMOVED*** auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
+    con***REMOVED*** headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "*/*",
+        "Ho***REMOVED***": "hallam.***REMOVED***",
+        "Authorization": auth
+    }
+    con***REMOVED*** body = `grant_type=password&username=${req.body.username}&password=${req.body.password}`
+
+    try{
+        con***REMOVED*** apiRes = await network.po***REMOVED***(url, headers, body)
+
+        if(apiRes.***REMOVED***atus === 200){
+            con***REMOVED*** tokens = {
+                access_token: apiRes.data.access_token,
+                refresh_token: apiRes.data.refresh_token
+            }
+            nodeCache.set(req.body.username, tokens)
+            con***REMOVED*** jwt = createJWT({username: req.body.username})
+            res.json({token: jwt})
+        }else if(apiRes.***REMOVED***atus === 500){
+            res.***REMOVED***atus(500).json({message: "Internal server error"})
+        }
+        else{
+            res.***REMOVED***atus(401).json({message: "Invalid username and password"})
+        }
+
+    }catch(e){
+        console.error(e)
+        res.***REMOVED***atus(500).json({message: "Internal server error"})
+    }
+
+}
+
+export {login}
 
