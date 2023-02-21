@@ -19,7 +19,7 @@ const getMissions = async (req, res) => {
             res.json({data: userMissions})
     
             for(let i = userMissions.length; --i > -1;){
-                cacheScenes(userMissions[i].id, req.accessToken)
+                await cacheScenes(userMissions[i].id, req.accessToken)
             }
          }else{
             res.status(500).json({message: "Internal Server Error"})
@@ -107,24 +107,38 @@ const getMissionScenes = async (req, res) => {
             if(apiRes.status === 200){
                 const scenes = apiRes.data.scenes
 
-                for(let i = scenes.length; --i > -1;){
-                    const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`
-                    const auth = `Bearer ${encodeURI(accessToken)}`
-                    const headers = {
-                        "Content-Type": "application/json",
-                        "Authorization": auth,
-                        "Accept": "*/*"
-                    }
-                    const apiRes = await network.get(url, headers)
-                    const sceneData = apiRes.data.product.result
-        
-                    delete scenes[i].bands
-        
-                    scenes[i].countrycode = sceneData.countrycode
-                    scenes[i].centre = sceneData.centre
-                    scenes[i].footprint = sceneData.footprint
+                const urls = []
+                const auth = `Bearer ${encodeURI(accessToken)}`
+                const headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": auth,
+                    "Accept": "*/*"
                 }
-                nodeCache.set(id, scenes)
+
+                for(let i = scenes.length; --i > -1;){
+                    urls.push(`https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`)
+                }
+
+
+                const apiResponses = await Promise.all(urls.map(url => {
+                    return network.get(url, headers)
+                }))
+
+                const sceneData = apiResponses.map(apiRes => {
+                    return apiRes.data.product.result
+                })
+
+                for(let i = scenes.length; --i > -1;){
+                    delete scenes[i].bands
+                    scenes[i].name = sceneData[i].title
+                    scenes[i].countrycode = sceneData[i].countrycode
+                    scenes[i].centre = sceneData[i].centre
+                    scenes[i].footprint = sceneData[i].footprint
+                    scenes[i].producturl = sceneData[i].producturl
+
+                    nodeCache.set(id, scenes)
+                }
+
             }else{
                 return null
             }
