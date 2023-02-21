@@ -19,7 +19,7 @@ con***REMOVED*** getMissions = async (req, res) => {
             res.json({data: userMissions})
     
             for(let i = userMissions.length; --i > -1;){
-                cacheScenes(userMissions[i].id, req.accessToken)
+                await cacheScenes(userMissions[i].id, req.accessToken)
             }
          }else{
             res.***REMOVED***atus(500).json({message: "Internal Server Error"})
@@ -107,24 +107,38 @@ con***REMOVED*** getMissionScenes = async (req, res) => {
             if(apiRes.***REMOVED***atus === 200){
                 con***REMOVED*** scenes = apiRes.data.scenes
 
-                for(let i = scenes.length; --i > -1;){
-                    con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/${scenes[i].id}`
-                    con***REMOVED*** auth = `Bearer ${encodeURI(accessToken)}`
-                    con***REMOVED*** headers = {
-                        "Content-Type": "application/json",
-                        "Authorization": auth,
-                        "Accept": "*/*"
-                    }
-                    con***REMOVED*** apiRes = await network.get(url, headers)
-                    con***REMOVED*** sceneData = apiRes.data.product.result
-        
-                    delete scenes[i].bands
-        
-                    scenes[i].countrycode = sceneData.countrycode
-                    scenes[i].centre = sceneData.centre
-                    scenes[i].footprint = sceneData.footprint
+                con***REMOVED*** urls = []
+                con***REMOVED*** auth = `Bearer ${encodeURI(accessToken)}`
+                con***REMOVED*** headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": auth,
+                    "Accept": "*/*"
                 }
-                nodeCache.set(id, scenes)
+
+                for(let i = scenes.length; --i > -1;){
+                    urls.push(`https://hallam.***REMOVED***.com/discover/api/v1/products/${scenes[i].id}`)
+                }
+
+
+                con***REMOVED*** apiResponses = await Promise.all(urls.map(url => {
+                    return network.get(url, headers)
+                }))
+
+                con***REMOVED*** sceneData = apiResponses.map(apiRes => {
+                    return apiRes.data.product.result
+                })
+
+                for(let i = scenes.length; --i > -1;){
+                    delete scenes[i].bands
+                    scenes[i].name = sceneData[i].title
+                    scenes[i].countrycode = sceneData[i].countrycode
+                    scenes[i].centre = sceneData[i].centre
+                    scenes[i].footprint = sceneData[i].footprint
+                    scenes[i].producturl = sceneData[i].producturl
+
+                    nodeCache.set(id, scenes)
+                }
+
             }else{
                 return null
             }
