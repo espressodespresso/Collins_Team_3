@@ -7,7 +7,6 @@ con***REMOVED*** get = async (url, headers = {}) => {
             method: "GET",
             headers: new Headers(headers),
          })
-
         con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
         con***REMOVED*** resText = await res.text()
         con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
