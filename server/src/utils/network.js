@@ -7,7 +7,6 @@ const get = async (url, headers = {}) => {
             method: "GET",
             headers: new Headers(headers),
          })
-
         const statusCode = res.status
         const resText = await res.text()
         const resJSON = resText === ""? {}: JSON.parse(resText)
