@@ -76,7 +76,7 @@ const getMissionsRequest = async () => {
     const resText = await res.text()
     const resJSON = resText === ""? {}: JSON.parse(resText)
     //const missions = resJSON.data
-
+  
     return resJSON
 }
 
@@ -105,33 +105,29 @@ const getMissionRequest = async(id) => {
 }
 
 async function getMissions() {
-    let value = await getMissionsRequest();
-    let missions = [{}]
-    try {
+    const res = await getMissionsRequest();
+    const missions = res.data
 
-        for (let i = 0; i < value.data.length; i++) {
-            let valueData = value.data[i]
-            let id = valueData.id;
-            let mission = await getMissionRequest(id)
-            mission["missionname"] = valueData.name
-            mission["aircraftTakeOffTime"] = valueData.aircraftTakeOffTime
-            //localStorage.setItem(valueData.name, id)
-            missions.push(mission);
-        }
-    } catch (e) {
-        console.error(e)
+    const missionIds = missions.map(mission => {return mission.id })
+    
+    const missionData = await Promise.all(missionIds.map(missionId => {
+        return getMissionRequest(missionId)
+    }))
+
+    for(let i = missionData.length; --i > -1;){
+        missionData[i]["missionname"] =  missions[i].name
+        missionData[i]["aircraftTakeOffTime"] = missions[i].aircraftTakeOffTime
     }
 
-    return missions
+    return missionData
 }
 
 async function LayerMissions() {
     const missions = await getMissions()
     for(let i=1; i < missions.length; i++) {
-        let [mission] = await Promise.all([missions[i]]);
-        console.log(mission)
-        let missionData = mission.data;
-        var ul = document.getElementById("sidebar")
+        const mission = missions[i]
+        const missionData = mission.data;
+        let ul = document.getElementById("sidebar")
         let li = document.createElement("li")
         li.appendChild(document.createTextNode(mission.missionname))
         ul.appendChild(li)
@@ -142,12 +138,9 @@ async function LayerMissions() {
             marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
         }
         let marksGroup = L.layerGroup(marks)
-        console.log(marks)
         layerControl.addOverlay(marksGroup, mission.missionname)
     }
 }
-
-LayerMissions()
 
 function addMarker(data, missionname, takeofftime) {
     let centre = data.centre.split(",")
@@ -237,10 +230,6 @@ const getList = async () => {
     const myJson = await response.json();
 }
 
-//REMOVE BEFORE COMMIT
-const status = login("", "")
-/*renderAllMissions()*/
-
 
 var popup = L.popup();
 
@@ -252,3 +241,12 @@ function onMapClick(e) {
 }
 
 map.on('click', onMapClick);
+
+const run = async () => {
+    //REMOVE BEFORE COMMIT
+    const status = await login("", "")
+    /*renderAllMissions()*/
+    LayerMissions()
+}
+
+run()
