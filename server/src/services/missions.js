@@ -15,7 +15,22 @@ con***REMOVED*** getMissions = async (req, res) => {
         con***REMOVED*** apiRes = await network.get(url, headers)
 
         if(apiRes.***REMOVED***atus === 200){
+
             con***REMOVED*** userMissions = apiRes.data.missions
+
+            con***REMOVED*** urls = []
+            for(let i = userMissions.length; --i > -1;){
+                urls.push(`https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/${userMissions[i].id}/footprint`)
+            }
+
+            con***REMOVED*** footprints = await Promise.all(urls.map(url => {
+                return network.get(url, headers)
+            }))
+
+            for(let i = 0; i < userMissions.length; i++){
+                userMissions[i].footprint = footprints[i]
+            }
+
             res.json({data: userMissions})
 
          }else{
