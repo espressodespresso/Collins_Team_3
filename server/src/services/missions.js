@@ -28,7 +28,7 @@ con***REMOVED*** getMissions = async (req, res) => {
             }))
 
             for(let i = 0; i < userMissions.length; i++){
-                userMissions[i].footprint = footprints[i]
+                userMissions[i].footprint = footprints[i].data
             }
 
             res.json({data: userMissions})
