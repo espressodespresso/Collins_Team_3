@@ -76,7 +76,7 @@ con***REMOVED*** getMissionsReque***REMOVED*** = async () => {
     con***REMOVED*** resText = await res.text()
     con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
     //con***REMOVED*** missions = resJSON.data
-
+  
     return resJSON
 }
 
@@ -105,48 +105,42 @@ con***REMOVED*** getMissionReque***REMOVED*** = async(id) => {
 }
 
 async function getMissions() {
-    let value = await getMissionsReque***REMOVED***();
-    let missions = [{}]
-    try {
+    con***REMOVED*** res = await getMissionsReque***REMOVED***();
+    con***REMOVED*** missions = res.data
 
-        for (let i = 0; i < value.data.length; i++) {
-            let valueData = value.data[i]
-            let id = valueData.id;
-            let mission = await getMissionReque***REMOVED***(id)
-            mission["missionname"] = valueData.name
-            mission["aircraftTakeOffTime"] = valueData.aircraftTakeOffTime
-            //localStorage.setItem(valueData.name, id)
-            missions.push(mission);
-        }
-    } catch (e) {
-        console.error(e)
+    con***REMOVED*** missionIds = missions.map(mission => {return mission.id })
+    
+    con***REMOVED*** missionData = await Promise.all(missionIds.map(missionId => {
+        return getMissionReque***REMOVED***(missionId)
+    }))
+
+    for(let i = missionData.length; --i > -1;){
+        missionData[i]["missionname"] =  missions[i].name
+        missionData[i]["aircraftTakeOffTime"] = missions[i].aircraftTakeOffTime
     }
 
-    return missions
+    return missionData
 }
 
 async function LayerMissions() {
     con***REMOVED*** missions = await getMissions()
     for(let i=1; i < missions.length; i++) {
-        let [mission] = await Promise.all([missions[i]]);
-        console.log(mission)
-        let missionData = mission.data;
-        var ul = document.getElementById("sidebar")
+        con***REMOVED*** mission = missions[i]
+        con***REMOVED*** missionData = mission.data;
+        let ul = document.getElementById("sidebar")
         let li = document.createElement("li")
         li.appendChild(document.createTextNode(mission.missionname))
         ul.appendChild(li)
         let marks = []
         for(let j=0; j < missionData.length; j++) {
-            marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
-            //marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
+            //marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
+            // Kinda broken
+            marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
         }
         let marksGroup = L.layerGroup(marks)
-        console.log(marks)
         layerControl.addOverlay(marksGroup, mission.missionname)
     }
 }
-
-LayerMissions()
 
 function addMarker(data, missionname, takeofftime) {
     let centre = data.centre.split(",")
@@ -157,19 +151,9 @@ function addMarker(data, missionname, takeofftime) {
 }
 
 function addToGeoLayer(data, missionname, takeofftime){
-    return new L.GeoJSON(data, {
-        draggable:false
-    }).bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
+    return new L.GeoJSON(data).bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
         + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
 }
-
-function onZoomed() {
-    console.log(map.getZoom())
-}
-
-map.on('zoomend', function() {
-    onZoomed();
-});
 
 /*
 function addToGeoLayer(data, missionname, takeofftime){
@@ -246,10 +230,6 @@ con***REMOVED*** getLi***REMOVED*** = async () => {
     con***REMOVED*** myJson = await response.json();
 }
 
-//REMOVE BEFORE COMMIT
-con***REMOVED*** ***REMOVED***atus = login("***REMOVED***", ***REMOVED***)
-/*renderAllMissions()*/
-
 
 var popup = L.popup();
 
@@ -262,3 +242,11 @@ function onMapClick(e) {
 
 map.on('click', onMapClick);
 
+con***REMOVED*** run = async () => {
+    //REMOVE BEFORE COMMIT
+    con***REMOVED*** ***REMOVED***atus = await login("", "")
+    /*renderAllMissions()*/
+    LayerMissions()
+}
+
+run()
