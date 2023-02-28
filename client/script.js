@@ -1,11 +1,5 @@
 var map = L.map('map', {zoomControl: false}).setView([54.247468, -4.438477], 6);
 var layerControl = L.control.layers().addTo(map);
-/*var geolayer = new L.GeoJSON(object, {
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup('<h1>'+feature.properties.id+'</h1><p>name: '+feature.properties.name+'</p><p>producturl: '+feature.producturl);
-    }
-}).addTo(map);*/
-
 
 L.tileLayer('https://tile.open***REMOVED***reetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.open***REMOVED***reetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -57,14 +51,6 @@ con***REMOVED*** login = async (username, password) => {
     return ***REMOVED***atus
 }
 
-/*async function getMissionsReque***REMOVED***() {
-    con***REMOVED*** getMissionsURL = 'http://localho***REMOVED***:3000/api/missions';
-    con***REMOVED*** getMissionsResponse = await fetch(getMissionsURL, {
-        method: "GET"
-    });
-    return await getMissionsResponse.json()
-}*/
-
 con***REMOVED*** getMissionsReque***REMOVED*** = async () => {
     con***REMOVED*** getMissionsURL = 'http://localho***REMOVED***:3000/api/missions'
     con***REMOVED*** jwt = localStorage.jwt
@@ -75,19 +61,9 @@ con***REMOVED*** getMissionsReque***REMOVED*** = async () => {
     })
     con***REMOVED*** resText = await res.text()
     con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
-    //con***REMOVED*** missions = resJSON.data
   
     return resJSON
 }
-
-
-/*async function getMissionReque***REMOVED***(id) {
-    con***REMOVED*** getMissionURL = 'http://localho***REMOVED***:3000/api/missions/' + id;
-    con***REMOVED*** getMissionResponse = await fetch(getMissionURL, {
-        method: "GET"
-    })
-    return await getMissionResponse.json()
-}*/
 
 con***REMOVED*** getMissionReque***REMOVED*** = async(id) => {
     con***REMOVED*** getMissionSceneURL = `http://localho***REMOVED***:3000/api/missions/${id}`
@@ -154,17 +130,6 @@ function addToGeoLayer(data, missionname, takeofftime){
     return new L.GeoJSON(data).bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
         + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
 }
-
-/*
-function addToGeoLayer(data, missionname, takeofftime){
-    var workplease = new L.GeoJSON(data, {
-        onEachFeature: function (feature, layer) {
-            layer.bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
-                + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
-        }
-    }).addTo(map);
-}
- */
 
 con***REMOVED*** sceneToGeoJSONObject = (scene) => {
     return{
