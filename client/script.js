@@ -244,7 +244,7 @@ map.on('click', onMapClick);
 
 con***REMOVED*** run = async () => {
     //REMOVE BEFORE COMMIT
-    con***REMOVED*** ***REMOVED***atus = await login("Hallam2", "***REMOVED***")
+    con***REMOVED*** ***REMOVED***atus = await login("", "")
     /*renderAllMissions()*/
     LayerMissions()
 }
