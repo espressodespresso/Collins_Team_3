@@ -244,7 +244,7 @@ map.on('click', onMapClick);
 
 const run = async () => {
     //REMOVE BEFORE COMMIT
-    const status = await login("Hallam2", "2513@5De")
+    const status = await login("", "")
     /*renderAllMissions()*/
     LayerMissions()
 }
