@@ -1,11 +1,5 @@
 var map = L.map('map', {zoomControl: false}).setView([54.247468, -4.438477], 6);
 var layerControl = L.control.layers().addTo(map);
-/*var geolayer = new L.GeoJSON(object, {
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup('<h1>'+feature.properties.id+'</h1><p>name: '+feature.properties.name+'</p><p>producturl: '+feature.producturl);
-    }
-}).addTo(map);*/
-
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -57,14 +51,6 @@ const login = async (username, password) => {
     return status
 }
 
-/*async function getMissionsRequest() {
-    const getMissionsURL = 'http://localhost:3000/api/missions';
-    const getMissionsResponse = await fetch(getMissionsURL, {
-        method: "GET"
-    });
-    return await getMissionsResponse.json()
-}*/
-
 const getMissionsRequest = async () => {
     const getMissionsURL = 'http://localhost:3000/api/missions'
     const jwt = localStorage.jwt
@@ -75,19 +61,9 @@ const getMissionsRequest = async () => {
     })
     const resText = await res.text()
     const resJSON = resText === ""? {}: JSON.parse(resText)
-    //const missions = resJSON.data
   
     return resJSON
 }
-
-
-/*async function getMissionRequest(id) {
-    const getMissionURL = 'http://localhost:3000/api/missions/' + id;
-    const getMissionResponse = await fetch(getMissionURL, {
-        method: "GET"
-    })
-    return await getMissionResponse.json()
-}*/
 
 const getMissionRequest = async(id) => {
     const getMissionSceneURL = `http://localhost:3000/api/missions/${id}`
@@ -154,17 +130,6 @@ function addToGeoLayer(data, missionname, takeofftime){
     return new L.GeoJSON(data).bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
         + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
 }
-
-/*
-function addToGeoLayer(data, missionname, takeofftime){
-    var workplease = new L.GeoJSON(data, {
-        onEachFeature: function (feature, layer) {
-            layer.bindPopup('<h1>'+ missionname + ' ' + data.name + '</h1><p>Location: ' + data.countrycode + ' '
-                + data.centre + '</p><p>Aircraft Takeoff Time: ' + takeofftime + '</p><p>ID: ' + data.id + '</p>');
-        }
-    }).addTo(map);
-}
- */
 
 const sceneToGeoJSONObject = (scene) => {
     return{
