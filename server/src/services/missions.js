@@ -61,20 +61,17 @@ con***REMOVED*** getMissionScenes = async (req, res) => {
             con***REMOVED*** apiRes = await network.get(url, headers)
     
             if(apiRes.***REMOVED***atus === 200){
+
                 con***REMOVED*** scenes = apiRes.data.scenes
-                
-                con***REMOVED*** urls = []
 
-                for(let i = scenes.length; --i > -1;){
-                    urls.push(`https://hallam.***REMOVED***.com/discover/api/v1/products/${scenes[i].id}`)
-                }
+                con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
 
-                con***REMOVED*** apiResponses = await Promise.all(urls.map(url => {
-                    return network.get(url, headers)
-                }))
+                con***REMOVED*** body = JSON.***REMOVED***ringify(scenes.map(scene => {return scene.id}))
 
-                con***REMOVED*** sceneData = apiResponses.map(apiRes => {
-                    return apiRes.data.product.result
+                con***REMOVED*** sceneProducts = await network.po***REMOVED***(url, headers, body)
+
+                con***REMOVED*** sceneData = sceneProducts.data.map(sceneProduct => {
+                    return sceneProduct.product.result
                 })
 
                 for(let i = scenes.length; --i > -1;){
@@ -85,8 +82,8 @@ con***REMOVED*** getMissionScenes = async (req, res) => {
                     scenes[i].footprint = sceneData[i].footprint
                     scenes[i].producturl = sceneData[i].producturl
 
-                    nodeCache.set(req.params.id, scenes[i])
-                    nodeCache.set(scenes[i].id, scenes[i].producturl)
+                    //nodeCache.set(req.params.id, scenes[i])
+                    //nodeCache.set(scenes[i].id, scenes[i].producturl)
                 }
                 res.json({data: scenes})
             
