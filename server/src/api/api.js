@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import {getFrames} from '../services/frames.js'
+import {getSceneFrames} from '../services/scenes.js'
 import {getMissions, getMissionScenes} from '../services/missions.js'
 
 con***REMOVED*** router = new Router()
@@ -10,8 +10,11 @@ router.get('/missions', getMissions)
 //Retrieves all the scenes for  a mission
 router.get('/missions/:id', getMissionScenes)
 
+//Gets all scenes for every mission
+router.get('/scenes')
+
 //Retrieves all frames for a scene
-router.get('/scenes/:id', getFrames)
+router.get('/scenes/:id', getSceneFrames)
 
 
 export default router

@@ -1,7 +1,7 @@
 import {nodeCache} from '../db.js'
 import network from '../utils/network.js'
 
-con***REMOVED*** getFrames = async(req, res) => {
+con***REMOVED*** getSceneFrames = async(req, res) => {
     let producturl = nodeCache.get(req.params.id) 
 
     if(producturl === undefined){
@@ -33,17 +33,14 @@ con***REMOVED*** getFrames = async(req, res) => {
         if(apiRes.***REMOVED***atus === 200){
             con***REMOVED*** frameRes = apiRes.data.scenes[0].bands[0].frames
     
-            con***REMOVED*** frameurls = []
-            for(let i = frameRes.length-1; --i > -1;){
-                frameurls.push(`https://hallam.***REMOVED***.com/discover/api/v1/products/${frameRes[i].productId}`)
-            }
+            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
 
-            con***REMOVED*** frameData = await Promise.all(frameurls.map(url => {
-                return network.get(url, headers)
-            }))
+            con***REMOVED*** body = JSON.***REMOVED***ringify(frameRes.map(frame => {return frame.productId}))
 
-            con***REMOVED*** frames = frameData.map(frameData => {
-                return frameData.data.product.result
+            con***REMOVED*** frameProducts = await network.po***REMOVED***(url, headers, body)
+            
+            con***REMOVED*** frames = frameProducts.data.map(frameProduct => {
+                return frameProduct.product.result
             })
 
             res.json({data: frames})
@@ -56,4 +53,4 @@ con***REMOVED*** getFrames = async(req, res) => {
     }
 }
 
-export{getFrames}
+export{getSceneFrames}
