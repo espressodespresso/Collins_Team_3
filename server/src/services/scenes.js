@@ -1,7 +1,7 @@
 import {nodeCache} from '../db.js'
 import network from '../utils/network.js'
 
-con***REMOVED*** getFrames = async(req, res) => {
+con***REMOVED*** getSceneFrames = async(req, res) => {
     let producturl = nodeCache.get(req.params.id) 
 
     if(producturl === undefined){
@@ -53,4 +53,4 @@ con***REMOVED*** getFrames = async(req, res) => {
     }
 }
 
-export{getFrames}
+export{getSceneFrames}
