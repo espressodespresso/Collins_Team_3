@@ -1,7 +1,7 @@
 import {nodeCache} from '../db.js'
 import network from '../utils/network.js'
 
-const getFrames = async(req, res) => {
+const getSceneFrames = async(req, res) => {
     let producturl = nodeCache.get(req.params.id) 
 
     if(producturl === undefined){
@@ -33,17 +33,14 @@ const getFrames = async(req, res) => {
         if(apiRes.status === 200){
             const frameRes = apiRes.data.scenes[0].bands[0].frames
     
-            const frameurls = []
-            for(let i = frameRes.length-1; --i > -1;){
-                frameurls.push(`https://hallam.sci-toolset.com/discover/api/v1/products/${frameRes[i].productId}`)
-            }
+            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts`
 
-            const frameData = await Promise.all(frameurls.map(url => {
-                return network.get(url, headers)
-            }))
+            const body = JSON.stringify(frameRes.map(frame => {return frame.productId}))
 
-            const frames = frameData.map(frameData => {
-                return frameData.data.product.result
+            const frameProducts = await network.post(url, headers, body)
+            
+            const frames = frameProducts.data.map(frameProduct => {
+                return frameProduct.product.result
             })
 
             res.json({data: frames})
@@ -56,4 +53,4 @@ const getFrames = async(req, res) => {
     }
 }
 
-export{getFrames}
+export{getSceneFrames}
