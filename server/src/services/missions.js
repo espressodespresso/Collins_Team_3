@@ -61,20 +61,17 @@ const getMissionScenes = async (req, res) => {
             const apiRes = await network.get(url, headers)
     
             if(apiRes.status === 200){
+
                 const scenes = apiRes.data.scenes
-                
-                const urls = []
 
-                for(let i = scenes.length; --i > -1;){
-                    urls.push(`https://hallam.sci-toolset.com/discover/api/v1/products/${scenes[i].id}`)
-                }
+                const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts`
 
-                const apiResponses = await Promise.all(urls.map(url => {
-                    return network.get(url, headers)
-                }))
+                const body = JSON.stringify(scenes.map(scene => {return scene.id}))
 
-                const sceneData = apiResponses.map(apiRes => {
-                    return apiRes.data.product.result
+                const sceneProducts = await network.post(url, headers, body)
+
+                const sceneData = sceneProducts.data.map(sceneProduct => {
+                    return sceneProduct.product.result
                 })
 
                 for(let i = scenes.length; --i > -1;){
@@ -85,8 +82,8 @@ const getMissionScenes = async (req, res) => {
                     scenes[i].footprint = sceneData[i].footprint
                     scenes[i].producturl = sceneData[i].producturl
 
-                    nodeCache.set(req.params.id, scenes[i])
-                    nodeCache.set(scenes[i].id, scenes[i].producturl)
+                    //nodeCache.set(req.params.id, scenes[i])
+                    //nodeCache.set(scenes[i].id, scenes[i].producturl)
                 }
                 res.json({data: scenes})
             
