@@ -18,19 +18,6 @@ con***REMOVED*** getMissions = async (req, res) => {
 
             con***REMOVED*** userMissions = apiRes.data.missions
 
-            con***REMOVED*** urls = []
-            for(let i = userMissions.length; --i > -1;){
-                urls.push(`https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/${userMissions[i].id}/footprint`)
-            }
-
-            con***REMOVED*** footprints = await Promise.all(urls.map(url => {
-                return network.get(url, headers)
-            }))
-
-            for(let i = 0; i < userMissions.length; i++){
-                userMissions[i].footprint = footprints[i].data
-            }
-
             res.json({data: userMissions})
 
          }else{
