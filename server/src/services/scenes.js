@@ -1,6 +1,54 @@
 import {nodeCache} from '../db.js'
 import network from '../utils/network.js'
 
+con***REMOVED*** getScenes = async(req, res) => {
+    con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/`
+    con***REMOVED*** auth = `Bearer ${encodeURI(req.accessToken)}`
+    con***REMOVED*** headers = {
+        "Content-Type": "application/json",
+        "Authorization": auth,
+        "Accept": "*/*"
+    }
+    
+    try{
+        con***REMOVED*** apiRes = await network.get(url, headers)
+
+        if(apiRes.***REMOVED***atus === 200){
+
+            con***REMOVED*** missions = apiRes.data.missions
+            
+            con***REMOVED*** missionsData = await Promise.all(missions.map(mission => {
+                return network.get(`https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/${mission.id}`, headers)
+            }))
+
+            con***REMOVED*** scenes = missionsData.reduce((arr, missionData) => {
+                arr.push(...missionData.data.scenes.map(scene => {
+                    return scene.id
+                })) 
+                return arr
+            }, [])
+
+            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
+
+            con***REMOVED*** sceneProducts = await network.po***REMOVED***(url, headers, JSON.***REMOVED***ringify(scenes))
+
+            con***REMOVED*** sceneData = sceneProducts.data.map(sceneProduct => {
+                return sceneProduct.product.result
+            })
+
+            res.json({data: sceneData})
+
+            res.json()
+
+         }else{
+            res.***REMOVED***atus(500).json({message: "Internal Server Error"})
+        }
+    }catch(e){
+        console.error(e)
+        res.***REMOVED***atus(500).json({message: "Internal Server Error"})
+    }
+}
+
 con***REMOVED*** getSceneFrames = async(req, res) => {
     let producturl = nodeCache.get(req.params.id) 
 
@@ -53,4 +101,4 @@ con***REMOVED*** getSceneFrames = async(req, res) => {
     }
 }
 
-export{getSceneFrames}
+export{getScenes, getSceneFrames}
