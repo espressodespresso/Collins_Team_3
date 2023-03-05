@@ -18,19 +18,6 @@ const getMissions = async (req, res) => {
 
             const userMissions = apiRes.data.missions
 
-            const urls = []
-            for(let i = userMissions.length; --i > -1;){
-                urls.push(`https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${userMissions[i].id}/footprint`)
-            }
-
-            const footprints = await Promise.all(urls.map(url => {
-                return network.get(url, headers)
-            }))
-
-            for(let i = 0; i < userMissions.length; i++){
-                userMissions[i].footprint = footprints[i].data
-            }
-
             res.json({data: userMissions})
 
          }else{
