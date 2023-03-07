@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "te***REMOVED***": "echo \"Error: no te***REMOVED*** specified\" && exit 1",
+    "te***REMOVED***": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js",
     "dev": "node src/index.js"
   },
   "repository": {
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/espressodespresso/Collins_Team_3#readme",
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.21.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "dotenv-vault": "^1.18.0",
@@ -33,5 +34,12 @@
     "redis": "^4.6.5",
     "ssl-root-cas": "^1.3.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "je***REMOVED***": "^29.5.0",
+    "superagent": "^8.0.9",
+    "superte***REMOVED***": "^6.3.3"
   }
 }
