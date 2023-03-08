@@ -34,7 +34,7 @@ const post = async (url, headers = {}, body = {}) => {
         const statusCode = res.status
         const resText = await res.text()
         const resJSON = resText === ""? {}: JSON.parse(resText)
-    
+        
         return {
             status: statusCode,
             data: resJSON
