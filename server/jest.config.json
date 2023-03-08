@@ -1,0 +1,6 @@
+{
+  "te***REMOVED***Environment": "node",
+  "roots": ["te***REMOVED***s"],
+  "moduleDirectories": ["node_modules", "src"],
+  "transform": {}
+}
