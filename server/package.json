@@ -39,6 +39,7 @@
     "@babel/cli": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "je***REMOVED***": "^29.5.0",
+    "nock": "^13.3.0",
     "superagent": "^8.0.9",
     "superte***REMOVED***": "^6.3.3"
   }
