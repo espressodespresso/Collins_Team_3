@@ -5,7 +5,7 @@ import {getMissions, getMissionScenes} from '../services/discover.js'
 con***REMOVED*** getMissionsHandler = async (req, res) => {
     try{
         con***REMOVED*** missions = await getMissions(req.user)
-        res.***REMOVED***atus(200).json({data: missions})
+        res.***REMOVED***atus(200).json({data: missions.data})
     }catch(e){
         console.error(e)
         res.***REMOVED***atus(500).json({message: "Internal Server Error"})
