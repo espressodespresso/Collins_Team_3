@@ -38,8 +38,6 @@ con***REMOVED*** getScenes = async(req, res) => {
 
             res.json({data: sceneData})
 
-            res.json()
-
          }else{
             res.***REMOVED***atus(500).json({message: "Internal Server Error"})
         }
