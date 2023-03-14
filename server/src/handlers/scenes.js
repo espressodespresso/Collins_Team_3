@@ -38,8 +38,6 @@ const getScenes = async(req, res) => {
 
             res.json({data: sceneData})
 
-            res.json()
-
          }else{
             res.status(500).json({message: "Internal Server Error"})
         }
