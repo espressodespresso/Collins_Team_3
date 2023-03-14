@@ -174,4 +174,46 @@ con***REMOVED*** getMissionScenes = async (user, missionId) => {
     }
 }
 
+con***REMOVED*** getScenes = async (user) => {
+    con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/`
+    con***REMOVED*** auth = `Bearer ${encodeURI(req.accessToken)}`
+    con***REMOVED*** headers = {
+        "Content-Type": "application/json",
+        "Authorization": auth,
+        "Accept": "*/*"
+    }
+    
+    try{
+        con***REMOVED*** missions = await network.get(url, headers)
+
+        if(apiRes.***REMOVED***atus === 200){
+
+            con***REMOVED*** missions = apiRes.data.missions
+            
+            con***REMOVED*** missionsData = await Promise.all(missions.map(mission => {
+                return network.get(`https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/${mission.id}`, headers)
+            }))
+
+            con***REMOVED*** scenes = missionsData.reduce((arr, missionData) => {
+                arr.push(...missionData.data.scenes.map(scene => {
+                    return scene.id
+                })) 
+                return arr
+            }, [])
+
+            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
+
+            con***REMOVED*** sceneProducts = await network.po***REMOVED***(url, headers, JSON.***REMOVED***ringify(scenes))
+
+            con***REMOVED*** sceneData = sceneProducts.data.map(sceneProduct => {
+                return sceneProduct.product.result
+            })
+
+            res.json({data: sceneData})
+        }
+    }catch(e){
+        
+    }
+}
+
 export{getMissions, getMission, getMissionScenes}
