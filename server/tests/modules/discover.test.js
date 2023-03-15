@@ -1,8 +1,14 @@
-import { nodeCache } from '../../src/db.js'
-import { login, getMissions } from '../../src/modules/discover.js'
+import { getMissionTestData } from './discoverTestData.js'
+import { login, getMissions, getMission} from '../../src/modules/discover.js'
+import * as dotenv from 'dotenv'
+
+beforeAll(() => {
+    dotenv.config()
+})
 
 describe("login()", () => {
     test("Successful login", async () => {
+        console.log(process.env.USER_NAME)
         const result = await login(process.env.USER_NAME, process.env.PASSWORD)
         expect(result).toHaveProperty('status', 200)
         expect(result).toHaveProperty('data.access_token')
@@ -43,4 +49,36 @@ describe("Sci-Discover API Interaction Tests", () => {
         })
     })
 
+    describe("getMission()", () => {
+        test("Successful API interaction returns mission", async () => {
+            const testMission = getMissionTestData.mission
+            const missionResponse = await getMission(userTokens, testMission.id)
+            expect(missionResponse).toHaveProperty('status', 200)
+            expect(missionResponse.data).toMatchObject(testMission.data)
+        })
+
+        test("Invalid mission id returns a 400 status and error message", async() => {
+            const missionResponse = await getMission(userTokens, "invalidmissionid000")
+            expect(missionResponse).toHaveProperty('status', 400)
+            expect(missionResponse).toHaveProperty('data.message', 'Bad Request')
+        })
+    })
+
+    describe("getMissionScenes()", () => {
+        test("Successful API interaction returns mission scenes", async () => {
+            
+        })
+    })
+
+    describe("getScenes()", () => {
+        test("Successful API interaction returns all scenes for all missions", async () => {
+            
+        })
+    })
+
+    describe("getSceneFrames()", () => {
+        test("Successful API interaction returns the frames in a scene", async () => {
+            
+        })
+    })
 })
