@@ -1,6 +1,8 @@
 import app from './server.js'
-import config from './config/index.js'
+import * as dotenv from 'dotenv'
 
-app.li***REMOVED***en(config.port, () => {
-    console.log(`Server ***REMOVED***arted on http://localho***REMOVED***:${config.port}`)
+dotenv.config()
+
+app.li***REMOVED***en(process.env.PORT, () => {
+    console.log(`Server ***REMOVED***arted on http://localho***REMOVED***:${process.env.PORT}`)
 })
