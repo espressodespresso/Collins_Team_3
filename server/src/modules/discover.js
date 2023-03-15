@@ -117,7 +117,7 @@ const getMissionScenes = async (userTokens, missionId) => {
             const sceneProductsResponse = await network.post(url, headers, body)
 
             json.status = sceneProductsResponse.status
-            
+
             if(sceneProductsResponse.status == 200){
                 const sceneData = sceneProductsResponse.data.map(sceneProduct => {
                     return sceneProduct.product.result
@@ -192,7 +192,7 @@ const getScenes = async (userTokens) => {
 }
 
 const getSceneFrames = async (userTokens, sceneId) => {
-    let json = undefined
+    let json = {}
     try{
         const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${sceneId}`
         const auth = `Bearer ${encodeURI(userTokens.access_token)}`
