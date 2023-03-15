@@ -1,7 +1,6 @@
 import network from '../utils/network.js'
 import https from 'https'
 import { resolveStatusCode } from './httpStatus.js'
-import config from '../config/index.js'
 
 con***REMOVED*** discoverAPIGet = async(url, userTokens) => {
     con***REMOVED*** options = {
@@ -32,7 +31,7 @@ con***REMOVED*** login = async (username, password) => {
     let json = {}
     try{
         con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
-        con***REMOVED*** auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
+        con***REMOVED*** auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
         con***REMOVED*** headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "*/*",
