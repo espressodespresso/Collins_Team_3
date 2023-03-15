@@ -1,5 +1,10 @@
 import server from '../src/server'
 import reque***REMOVED*** from 'superte***REMOVED***'
+import * as dotenv from 'dotenv'
+
+beforeAll(() => {
+    dotenv.config()
+})
 
 describe("/GET /", () => {
     te***REMOVED***("root endpoint returns a 200 response code", async () => {
