@@ -1,6 +1,32 @@
 import network from '../utils/network.js'
+import https from 'https'
 import { resolveStatusCode } from './httpStatus.js'
 import config from '../config/index.js'
+
+con***REMOVED*** discoverAPIGet = async(url, userTokens) => {
+    con***REMOVED*** options = {
+        rejectUnauthorized: false,
+        ca: process.env.SCI_DISCOVER_CA
+    }
+    con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
+    con***REMOVED*** headers = {
+        "Content-Type": "application/json",
+        "Authorization": auth,
+        "Accept": "*/*"
+    }
+
+    con***REMOVED*** agent = new https.Agent(options)
+    return await network.get(url, headers, agent)
+}
+
+con***REMOVED*** discoverAPIPo***REMOVED*** = async(url, headers, body) => {
+    con***REMOVED*** options = {
+        rejectUnauthorized: false,
+        ca: process.env.SCI_DISCOVER_CA
+    }
+    con***REMOVED*** agent = new https.Agent(options)
+    return network.po***REMOVED***(url, headers, body, agent)
+}
 
 con***REMOVED*** login = async (username, password) => {
     let json = {}
@@ -15,7 +41,7 @@ con***REMOVED*** login = async (username, password) => {
         }
         con***REMOVED*** body = `grant_type=password&username=${username}&password=${password}`
 
-        con***REMOVED*** response = await network.po***REMOVED***(url, headers, body)
+        con***REMOVED*** response = await discoverAPIPo***REMOVED***(url, headers, body)
 
         if(response.***REMOVED***atus == 200){
             con***REMOVED*** tokens = {
@@ -42,20 +68,16 @@ con***REMOVED*** getMissions = async (userTokens) => {
     let json = {}
     try{
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/`
-        con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
-        con***REMOVED*** headers = {
-            "Content-Type": "application/json",
-            "Authorization": auth,
-            "Accept": "*/*"
-        }
+        con***REMOVED*** response = await discoverAPIGet(url, userTokens)
 
-        con***REMOVED*** response = await network.get(url, headers)
         json.***REMOVED***atus = response.***REMOVED***atus
+
         if(response.***REMOVED***atus == 200){
             json.data = response.data.missions
         }else{
             json = resolveStatusCode(response.***REMOVED***atus)
         }
+
         return json
     }
     catch(e){
@@ -72,14 +94,8 @@ con***REMOVED*** getMission = async (userTokens, missionId) => {
 
     try{
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/${missionId}`
-        con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
-        con***REMOVED*** headers = {
-            "Content-Type": "application/json",
-            "Authorization": auth,
-            "Accept": "*/*"
-        }
 
-        con***REMOVED*** missionResponse = await network.get(url, headers)
+        con***REMOVED*** missionResponse = await discoverAPIGet(url, userTokens)
         json.***REMOVED***atus = missionResponse.***REMOVED***atus
         
         if(missionResponse.***REMOVED***atus == 200){
@@ -114,7 +130,7 @@ con***REMOVED*** getMissionScenes = async (userTokens, missionId) => {
 
             con***REMOVED*** body = JSON.***REMOVED***ringify(scenes.map(scene => {return scene.id}))
 
-            con***REMOVED*** sceneProductsResponse = await network.po***REMOVED***(url, headers, body)
+            con***REMOVED*** sceneProductsResponse = await discoverAPIPo***REMOVED***(url, headers, body)
 
             json.***REMOVED***atus = sceneProductsResponse.***REMOVED***atus
 
@@ -173,7 +189,7 @@ con***REMOVED*** getScenes = async (userTokens) => {
             }, [])
 
             con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
-            con***REMOVED*** sceneProductsResponse = await network.po***REMOVED***(url, headers, JSON.***REMOVED***ringify(scenes))
+            con***REMOVED*** sceneProductsResponse = await discoverAPIPo***REMOVED***(url, headers, JSON.***REMOVED***ringify(scenes))
             if(sceneProductsResponse.***REMOVED***atus == 200){
                 json = {***REMOVED***atus: sceneProductsResponse.***REMOVED***atus, data: sceneProductsResponse.data}
             }
@@ -195,25 +211,26 @@ con***REMOVED*** getSceneFrames = async (userTokens, sceneId) => {
     let json = {}
     try{
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/${sceneId}`
-        con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
-        con***REMOVED*** headers = {
-            "Content-Type": "application/json",
-            "Authorization": auth,
-            "Accept": "*/*"
-        }
-        con***REMOVED*** sceneProductResponse = await network.get(url, headers)
+ 
+        con***REMOVED*** sceneProductResponse = await discoverAPIGet(url, userTokens)
         con***REMOVED*** sceneUrl = sceneProductResponse.data.product.result.producturl
 
-        con***REMOVED*** sceneResponse = await network.get(sceneUrl, headers)
+        con***REMOVED*** sceneResponse = await discoverAPIGet(sceneUrl, userTokens)
         if(sceneResponse.***REMOVED***atus === 200){
         
             con***REMOVED*** frameData = sceneResponse.data.scenes[0].bands[0].frames
     
             con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
+            con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
+            con***REMOVED*** headers = {
+                "Content-Type": "application/json",
+                "Authorization": auth,
+                "Accept": "*/*"
+            }
 
             con***REMOVED*** body = JSON.***REMOVED***ringify(frameData.map(frame => {return frame.productId}))
 
-            con***REMOVED*** frameProducts = await network.po***REMOVED***(url, headers, body)
+            con***REMOVED*** frameProducts = await discoverAPIPo***REMOVED***(url, headers, body)
             
             con***REMOVED*** frames = frameProducts.data.map(frameProduct => {
                 return frameProduct.product.result
