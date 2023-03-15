@@ -1,6 +1,32 @@
 import network from '../utils/network.js'
+import https from 'https'
 import { resolveStatusCode } from './httpStatus.js'
 import config from '../config/index.js'
+
+const discoverAPIGet = async(url, userTokens) => {
+    const options = {
+        rejectUnauthorized: false,
+        ca: process.env.SCI_DISCOVER_CA
+    }
+    const auth = `Bearer ${encodeURI(userTokens.access_token)}`
+    const headers = {
+        "Content-Type": "application/json",
+        "Authorization": auth,
+        "Accept": "*/*"
+    }
+
+    const agent = new https.Agent(options)
+    return await network.get(url, headers, agent)
+}
+
+const discoverAPIPost = async(url, headers, body) => {
+    const options = {
+        rejectUnauthorized: false,
+        ca: process.env.SCI_DISCOVER_CA
+    }
+    const agent = new https.Agent(options)
+    return network.post(url, headers, body, agent)
+}
 
 const login = async (username, password) => {
     let json = {}
@@ -15,7 +41,7 @@ const login = async (username, password) => {
         }
         const body = `grant_type=password&username=${username}&password=${password}`
 
-        const response = await network.post(url, headers, body)
+        const response = await discoverAPIPost(url, headers, body)
 
         if(response.status == 200){
             const tokens = {
@@ -42,20 +68,16 @@ const getMissions = async (userTokens) => {
     let json = {}
     try{
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/`
-        const auth = `Bearer ${encodeURI(userTokens.access_token)}`
-        const headers = {
-            "Content-Type": "application/json",
-            "Authorization": auth,
-            "Accept": "*/*"
-        }
+        const response = await discoverAPIGet(url, userTokens)
 
-        const response = await network.get(url, headers)
         json.status = response.status
+
         if(response.status == 200){
             json.data = response.data.missions
         }else{
             json = resolveStatusCode(response.status)
         }
+
         return json
     }
     catch(e){
@@ -72,14 +94,8 @@ const getMission = async (userTokens, missionId) => {
 
     try{
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${missionId}`
-        const auth = `Bearer ${encodeURI(userTokens.access_token)}`
-        const headers = {
-            "Content-Type": "application/json",
-            "Authorization": auth,
-            "Accept": "*/*"
-        }
 
-        const missionResponse = await network.get(url, headers)
+        const missionResponse = await discoverAPIGet(url, userTokens)
         json.status = missionResponse.status
         
         if(missionResponse.status == 200){
@@ -114,7 +130,7 @@ const getMissionScenes = async (userTokens, missionId) => {
 
             const body = JSON.stringify(scenes.map(scene => {return scene.id}))
 
-            const sceneProductsResponse = await network.post(url, headers, body)
+            const sceneProductsResponse = await discoverAPIPost(url, headers, body)
 
             json.status = sceneProductsResponse.status
 
@@ -173,7 +189,7 @@ const getScenes = async (userTokens) => {
             }, [])
 
             const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts`
-            const sceneProductsResponse = await network.post(url, headers, JSON.stringify(scenes))
+            const sceneProductsResponse = await discoverAPIPost(url, headers, JSON.stringify(scenes))
             if(sceneProductsResponse.status == 200){
                 json = {status: sceneProductsResponse.status, data: sceneProductsResponse.data}
             }
@@ -195,25 +211,26 @@ const getSceneFrames = async (userTokens, sceneId) => {
     let json = {}
     try{
         const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${sceneId}`
-        const auth = `Bearer ${encodeURI(userTokens.access_token)}`
-        const headers = {
-            "Content-Type": "application/json",
-            "Authorization": auth,
-            "Accept": "*/*"
-        }
-        const sceneProductResponse = await network.get(url, headers)
+ 
+        const sceneProductResponse = await discoverAPIGet(url, userTokens)
         const sceneUrl = sceneProductResponse.data.product.result.producturl
 
-        const sceneResponse = await network.get(sceneUrl, headers)
+        const sceneResponse = await discoverAPIGet(sceneUrl, userTokens)
         if(sceneResponse.status === 200){
         
             const frameData = sceneResponse.data.scenes[0].bands[0].frames
     
             const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts`
+            const auth = `Bearer ${encodeURI(userTokens.access_token)}`
+            const headers = {
+                "Content-Type": "application/json",
+                "Authorization": auth,
+                "Accept": "*/*"
+            }
 
             const body = JSON.stringify(frameData.map(frame => {return frame.productId}))
 
-            const frameProducts = await network.post(url, headers, body)
+            const frameProducts = await discoverAPIPost(url, headers, body)
             
             const frames = frameProducts.data.map(frameProduct => {
                 return frameProduct.product.result
