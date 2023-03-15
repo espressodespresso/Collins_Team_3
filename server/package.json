@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "te***REMOVED***": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js",
+    "te***REMOVED***": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose",
     "dev": "node src/index.js"
   },
   "repository": {

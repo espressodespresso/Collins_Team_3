@@ -117,7 +117,7 @@ con***REMOVED*** getMissionScenes = async (userTokens, missionId) => {
             con***REMOVED*** sceneProductsResponse = await network.po***REMOVED***(url, headers, body)
 
             json.***REMOVED***atus = sceneProductsResponse.***REMOVED***atus
-            
+
             if(sceneProductsResponse.***REMOVED***atus == 200){
                 con***REMOVED*** sceneData = sceneProductsResponse.data.map(sceneProduct => {
                     return sceneProduct.product.result
@@ -192,7 +192,7 @@ con***REMOVED*** getScenes = async (userTokens) => {
 }
 
 con***REMOVED*** getSceneFrames = async (userTokens, sceneId) => {
-    let json = undefined
+    let json = {}
     try{
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/${sceneId}`
         con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
