@@ -1,4 +1,11 @@
 import fetch, {Headers} from 'node-fetch'
+import https from 'https'
+
+con***REMOVED*** options = {
+    rejectUnauthorized: false,
+}
+
+con***REMOVED*** sslAgent = new https.Agent(options)
 
 //sends get reque***REMOVED*** to specified url with optional headers and returns the reponse as JSON.
 con***REMOVED*** get = async (url, headers = {}) => {
@@ -6,6 +13,7 @@ con***REMOVED*** get = async (url, headers = {}) => {
         con***REMOVED*** res = await fetch(url, {
             method: "GET",
             headers: new Headers(headers),
+            agent: sslAgent
          })
         con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
         con***REMOVED*** resText = await res.text()
@@ -28,7 +36,8 @@ con***REMOVED*** po***REMOVED*** = async (url, headers = {}, body = {}) => {
         con***REMOVED*** res = await fetch(url, {
             method: "POST",
             headers: new Headers(headers),
-            body: body
+            body: body,
+            agent: sslAgent
          })
 
         con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
