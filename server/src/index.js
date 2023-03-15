@@ -1,6 +1,8 @@
 import app from './server.js'
-import config from './config/index.js'
+import * as dotenv from 'dotenv'
 
-app.listen(config.port, () => {
-    console.log(`Server started on http://localhost:${config.port}`)
+dotenv.config()
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server started on http://localhost:${process.env.PORT}`)
 })

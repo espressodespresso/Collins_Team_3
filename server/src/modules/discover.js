@@ -1,7 +1,6 @@
 import network from '../utils/network.js'
 import https from 'https'
 import { resolveStatusCode } from './httpStatus.js'
-import config from '../config/index.js'
 
 const discoverAPIGet = async(url, userTokens) => {
     const options = {
@@ -32,7 +31,7 @@ const login = async (username, password) => {
     let json = {}
     try{
         const url = 'https://hallam.sci-toolset.com/api/v1/token'
-        const auth = "Basic " + Buffer.from(config.client_id + ":" + config.client_secret).toString('base64')
+        const auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
         const headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "*/*",
