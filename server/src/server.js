@@ -9,7 +9,6 @@ import config from './config/index.js';
 const sslCas = rootCas.create()
 sslCas.addFile(config.cert_url)
 https.globalAgent.options.ca = sslCas;
-https.globalAgent.options.rejectUnauthorized = false;
 
 const app = express()
 
