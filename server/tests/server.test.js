@@ -1,5 +1,10 @@
 import server from '../src/server'
 import request from 'supertest'
+import * as dotenv from 'dotenv'
+
+beforeAll(() => {
+    dotenv.config()
+})
 
 describe("/GET /", () => {
     test("root endpoint returns a 200 response code", async () => {
