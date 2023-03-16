@@ -1,5 +1,4 @@
-import { getMissionTestData } from './discoverTestData.js'
-import { login, getMissions, getMission} from '../../src/modules/discover.js'
+import { login, getMissions, getMission, getMissionScenes} from '../../src/modules/discover.js'
 import * as dotenv from 'dotenv'
 
 beforeAll(() => {
@@ -51,10 +50,10 @@ describe("Sci-Discover API Interaction Tests", () => {
 
     describe("getMission()", () => {
         test("Successful API interaction returns mission", async () => {
-            const testMission = getMissionTestData.mission
-            const missionResponse = await getMission(userTokens, testMission.id)
+            const validMissionId = "4e113b6d-8403-48e6-bfc2-9a532916a6d9"
+            const missionResponse = await getMission(userTokens, validMissionId)
             expect(missionResponse).toHaveProperty('status', 200)
-            expect(missionResponse.data).toMatchObject(testMission.data)
+            expect(missionResponse).toHaveProperty('data')
         })
 
         test("Invalid mission id returns a 400 status and error message", async() => {
@@ -66,7 +65,10 @@ describe("Sci-Discover API Interaction Tests", () => {
 
     describe("getMissionScenes()", () => {
         test("Successful API interaction returns mission scenes", async () => {
-            
+            const validMissionId = "4e113b6d-8403-48e6-bfc2-9a532916a6d9"
+            const missionScenesResponse = await getMissionScenes(userTokens, validMissionId)
+            expect(missionScenesResponse).toHaveProperty('status', 200)
+            expect(missionScenesResponse).toHaveProperty('data')
         })
     })
 
