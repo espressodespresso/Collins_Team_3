@@ -1,4 +1,5 @@
 import fetch, {Headers} from 'node-fetch'
+import { resolveStatusCode } from './httpStatus.js'
 
 //sends get reque***REMOVED*** to specified url with optional headers and returns the reponse as JSON.
 con***REMOVED*** get = async (url, headers = {}, agent = undefined) => {
@@ -12,9 +13,14 @@ con***REMOVED*** get = async (url, headers = {}, agent = undefined) => {
         con***REMOVED*** resText = await res.text()
         con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
         
-        return {
-            ***REMOVED***atus: ***REMOVED***atusCode,
-            data: resJSON
+        if(***REMOVED***atusCode == 200){
+            return{
+                ***REMOVED***atus: 200,
+                data: resJSON
+            }
+        }
+        else{
+            return resolveStatusCode(***REMOVED***atusCode)
         }
 
     }catch(e){
@@ -37,9 +43,14 @@ con***REMOVED*** po***REMOVED*** = async (url, headers = {}, body = {}, agent = 
         con***REMOVED*** resText = await res.text()
         con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
         
-        return {
-            ***REMOVED***atus: ***REMOVED***atusCode,
-            data: resJSON
+        if(***REMOVED***atusCode == 200){
+            return{
+                ***REMOVED***atus: 200,
+                data: resJSON
+            }
+        }
+        else{
+            return resolveStatusCode(***REMOVED***atusCode)
         }
 
     }catch(e){
