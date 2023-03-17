@@ -1,6 +1,6 @@
 import { createJWT } from "../modules/auth.js";
 import {nodeCache} from '../db.js'
-import { login } from '../modules/discover.js'
+import { login } from '../modules/discoverClient.js'
 
 con***REMOVED*** loginHandler = async (req, res) => {
 
