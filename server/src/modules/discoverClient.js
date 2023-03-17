@@ -1,6 +1,6 @@
 import network from '../utils/network.js'
 import https from 'https'
-import { resolveStatusCode } from './httpStatus.js'
+import { resolveStatusCode } from '../utils/httpStatus.js'
 
 con***REMOVED*** discoverAPIGet = async(url, userTokens) => {
     con***REMOVED*** options = {
@@ -42,17 +42,7 @@ con***REMOVED*** login = async (username, password) => {
 
         con***REMOVED*** response = await discoverAPIPo***REMOVED***(url, headers, body)
 
-        if(response.***REMOVED***atus == 200){
-            con***REMOVED*** tokens = {
-                access_token: response.data.access_token, 
-                refresh_token: response.data.refresh_token
-            }
-            json.***REMOVED***atus = 200
-            json.data = tokens
-        }else{
-            json = resolveStatusCode(response.***REMOVED***atus)
-        }
-        return json
+        return response 
 
     }catch(e){
         console.error(e)
@@ -64,50 +54,38 @@ con***REMOVED*** login = async (username, password) => {
 }
 
 con***REMOVED*** getMissions = async (userTokens) => {
-    let json = {}
     try{
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/`
         con***REMOVED*** response = await discoverAPIGet(url, userTokens)
-
-        json.***REMOVED***atus = response.***REMOVED***atus
-
-        if(response.***REMOVED***atus == 200){
-            json.data = response.data.missions
-        }else{
-            json = resolveStatusCode(response.***REMOVED***atus)
+        
+        return{
+            ***REMOVED***atus: response.***REMOVED***atus,
+            data: response.data.missions
         }
-
-        return json
     }
     catch(e){
         console.error(e)
-        json.***REMOVED***atus = 500
-        json.data = {message: "Internal server error"}
-        return json
+        return {
+            ***REMOVED***atus: 500,
+            message: "Internal Server Error"
+        }
     }
 }
 
 con***REMOVED*** getMission = async (userTokens, missionId) => {
-
-    let json = {}
-
     try{
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/${missionId}`
 
         con***REMOVED*** missionResponse = await discoverAPIGet(url, userTokens)
-        json.***REMOVED***atus = missionResponse.***REMOVED***atus
         
-        if(missionResponse.***REMOVED***atus == 200){
-            json.data = missionResponse.data
-        }else{
-            json = resolveStatusCode(missionResponse.***REMOVED***atus)
-        }
-        return json
+        return missionResponse
+
     }catch(e){
         console.error(e)
-        json.***REMOVED***atus = 500
-        json.data = {message: "Internal server error"}
-        return json
+        return {
+            ***REMOVED***atus: 500,
+            message: "Internal Server Error"
+        }
     }
 }
 
@@ -115,6 +93,9 @@ con***REMOVED*** getMissionScenes = async (userTokens, missionId) => {
     let json = {}
     try{
         con***REMOVED*** missionResponse = await getMission(userTokens, missionId)
+
+        json = missionResponse
+
         if(missionResponse.***REMOVED***atus == 200){
             con***REMOVED*** mission = missionResponse.data
             con***REMOVED*** scenes = mission.scenes
@@ -131,7 +112,7 @@ con***REMOVED*** getMissionScenes = async (userTokens, missionId) => {
 
             con***REMOVED*** sceneProductsResponse = await discoverAPIPo***REMOVED***(url, headers, body)
 
-            json.***REMOVED***atus = sceneProductsResponse.***REMOVED***atus
+            json = sceneProductsResponse
 
             if(sceneProductsResponse.***REMOVED***atus == 200){
                 con***REMOVED*** sceneData = sceneProductsResponse.data.map(sceneProduct => {
@@ -148,11 +129,7 @@ con***REMOVED*** getMissionScenes = async (userTokens, missionId) => {
                 }
 
                 json.data = scenes
-            }else{
-                json = resolveStatusCode(sceneProductsResponse.***REMOVED***atus)
             }
-        }else{
-            json = resolveStatusCode(missionResponse.***REMOVED***atus)
         }
         return json
     }catch(e){
@@ -173,6 +150,9 @@ con***REMOVED*** getScenes = async (userTokens) => {
         }
 
         con***REMOVED*** missionsResponse = await getMissions(userTokens)
+
+        json = missionsResponse
+
         if(missionsResponse.***REMOVED***atus === 200){
 
             con***REMOVED*** missions = missionsResponse.data
@@ -192,11 +172,6 @@ con***REMOVED*** getScenes = async (userTokens) => {
             if(sceneProductsResponse.***REMOVED***atus == 200){
                 json = {***REMOVED***atus: sceneProductsResponse.***REMOVED***atus, data: sceneProductsResponse.data}
             }
-            else{
-                json = resolveStatusCode(sceneProductsResponse.***REMOVED***atus)
-            }
-        }else{
-            json = resolveStatusCode(missionsResponse.***REMOVED***atus)
         }
         return json
     }catch(e){
@@ -212,33 +187,40 @@ con***REMOVED*** getSceneFrames = async (userTokens, sceneId) => {
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/${sceneId}`
  
         con***REMOVED*** sceneProductResponse = await discoverAPIGet(url, userTokens)
-        con***REMOVED*** sceneUrl = sceneProductResponse.data.product.result.producturl
 
-        con***REMOVED*** sceneResponse = await discoverAPIGet(sceneUrl, userTokens)
-        if(sceneResponse.***REMOVED***atus === 200){
-        
-            con***REMOVED*** frameData = sceneResponse.data.scenes[0].bands[0].frames
-    
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
-            con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
-            con***REMOVED*** headers = {
-                "Content-Type": "application/json",
-                "Authorization": auth,
-                "Accept": "*/*"
-            }
+        json = sceneProductResponse
 
-            con***REMOVED*** body = JSON.***REMOVED***ringify(frameData.map(frame => {return frame.productId}))
-
-            con***REMOVED*** frameProducts = await discoverAPIPo***REMOVED***(url, headers, body)
+        if(sceneProductResponse.***REMOVED***atus == 200){
             
-            con***REMOVED*** frames = frameProducts.data.map(frameProduct => {
-                return frameProduct.product.result
-            })
+            con***REMOVED*** sceneUrl = sceneProductResponse.data.product.result.producturl
+            con***REMOVED*** sceneResponse = await discoverAPIGet(sceneUrl, userTokens)
 
-            json = {***REMOVED***atus: 200, data: frames}
-        }else{
-            json = resolveStatusCode(sceneResponse.***REMOVED***atus)
+            json = sceneResponse
+
+            if(sceneResponse.***REMOVED***atus === 200){
+        
+                con***REMOVED*** frameData = sceneResponse.data.scenes[0].bands[0].frames
+        
+                con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
+                con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
+                con***REMOVED*** headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": auth,
+                    "Accept": "*/*"
+                }
+    
+                con***REMOVED*** body = JSON.***REMOVED***ringify(frameData.map(frame => {return frame.productId}))
+    
+                con***REMOVED*** frameProducts = await discoverAPIPo***REMOVED***(url, headers, body)
+                
+                con***REMOVED*** frames = frameProducts.data.map(frameProduct => {
+                    return frameProduct.product.result
+                })
+    
+                json = {***REMOVED***atus: 200, data: frames}
+            }
         }
+       
         return json
     }catch(e){
         console.error(e)

@@ -1,5 +1,5 @@
 import {nodeCache} from '../db.js'
-import {getScenes, getSceneFrames} from '../modules/discover.js'
+import {getScenes, getSceneFrames} from '../modules/discoverClient.js'
 
 con***REMOVED*** getScenesHandler = async(req, res) => {
     try{

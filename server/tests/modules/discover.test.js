@@ -1,4 +1,4 @@
-import { login, getMissions, getMission, getMissionScenes} from '../../src/modules/discover.js'
+import { login, getMissions, getMission, getMissionScenes} from '../../src/modules/discoverClient.js'
 import * as dotenv from 'dotenv'
 
 beforeAll(() => {
