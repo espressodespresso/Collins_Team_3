@@ -1,4 +1,5 @@
 import fetch, {Headers} from 'node-fetch'
+import { resolveStatusCode } from './httpStatus.js'
 
 //sends get request to specified url with optional headers and returns the reponse as JSON.
 const get = async (url, headers = {}, agent = undefined) => {
@@ -12,9 +13,14 @@ const get = async (url, headers = {}, agent = undefined) => {
         const resText = await res.text()
         const resJSON = resText === ""? {}: JSON.parse(resText)
         
-        return {
-            status: statusCode,
-            data: resJSON
+        if(statusCode == 200){
+            return{
+                status: 200,
+                data: resJSON
+            }
+        }
+        else{
+            return resolveStatusCode(statusCode)
         }
 
     }catch(e){
@@ -37,9 +43,14 @@ const post = async (url, headers = {}, body = {}, agent = undefined) => {
         const resText = await res.text()
         const resJSON = resText === ""? {}: JSON.parse(resText)
         
-        return {
-            status: statusCode,
-            data: resJSON
+        if(statusCode == 200){
+            return{
+                status: 200,
+                data: resJSON
+            }
+        }
+        else{
+            return resolveStatusCode(statusCode)
         }
 
     }catch(e){

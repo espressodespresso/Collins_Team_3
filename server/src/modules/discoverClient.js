@@ -1,6 +1,6 @@
 import network from '../utils/network.js'
 import https from 'https'
-import { resolveStatusCode } from './httpStatus.js'
+import { resolveStatusCode } from '../utils/httpStatus.js'
 
 const discoverAPIGet = async(url, userTokens) => {
     const options = {
@@ -42,17 +42,7 @@ const login = async (username, password) => {
 
         const response = await discoverAPIPost(url, headers, body)
 
-        if(response.status == 200){
-            const tokens = {
-                access_token: response.data.access_token, 
-                refresh_token: response.data.refresh_token
-            }
-            json.status = 200
-            json.data = tokens
-        }else{
-            json = resolveStatusCode(response.status)
-        }
-        return json
+        return response 
 
     }catch(e){
         console.error(e)
@@ -64,50 +54,38 @@ const login = async (username, password) => {
 }
 
 const getMissions = async (userTokens) => {
-    let json = {}
     try{
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/`
         const response = await discoverAPIGet(url, userTokens)
-
-        json.status = response.status
-
-        if(response.status == 200){
-            json.data = response.data.missions
-        }else{
-            json = resolveStatusCode(response.status)
+        
+        return{
+            status: response.status,
+            data: response.data.missions
         }
-
-        return json
     }
     catch(e){
         console.error(e)
-        json.status = 500
-        json.data = {message: "Internal server error"}
-        return json
+        return {
+            status: 500,
+            message: "Internal Server Error"
+        }
     }
 }
 
 const getMission = async (userTokens, missionId) => {
-
-    let json = {}
-
     try{
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${missionId}`
 
         const missionResponse = await discoverAPIGet(url, userTokens)
-        json.status = missionResponse.status
         
-        if(missionResponse.status == 200){
-            json.data = missionResponse.data
-        }else{
-            json = resolveStatusCode(missionResponse.status)
-        }
-        return json
+        return missionResponse
+
     }catch(e){
         console.error(e)
-        json.status = 500
-        json.data = {message: "Internal server error"}
-        return json
+        return {
+            status: 500,
+            message: "Internal Server Error"
+        }
     }
 }
 
@@ -115,6 +93,9 @@ const getMissionScenes = async (userTokens, missionId) => {
     let json = {}
     try{
         const missionResponse = await getMission(userTokens, missionId)
+
+        json = missionResponse
+
         if(missionResponse.status == 200){
             const mission = missionResponse.data
             const scenes = mission.scenes
@@ -131,7 +112,7 @@ const getMissionScenes = async (userTokens, missionId) => {
 
             const sceneProductsResponse = await discoverAPIPost(url, headers, body)
 
-            json.status = sceneProductsResponse.status
+            json = sceneProductsResponse
 
             if(sceneProductsResponse.status == 200){
                 const sceneData = sceneProductsResponse.data.map(sceneProduct => {
@@ -148,11 +129,7 @@ const getMissionScenes = async (userTokens, missionId) => {
                 }
 
                 json.data = scenes
-            }else{
-                json = resolveStatusCode(sceneProductsResponse.status)
             }
-        }else{
-            json = resolveStatusCode(missionResponse.status)
         }
         return json
     }catch(e){
@@ -173,6 +150,9 @@ const getScenes = async (userTokens) => {
         }
 
         const missionsResponse = await getMissions(userTokens)
+
+        json = missionsResponse
+
         if(missionsResponse.status === 200){
 
             const missions = missionsResponse.data
@@ -192,11 +172,6 @@ const getScenes = async (userTokens) => {
             if(sceneProductsResponse.status == 200){
                 json = {status: sceneProductsResponse.status, data: sceneProductsResponse.data}
             }
-            else{
-                json = resolveStatusCode(sceneProductsResponse.status)
-            }
-        }else{
-            json = resolveStatusCode(missionsResponse.status)
         }
         return json
     }catch(e){
@@ -212,33 +187,40 @@ const getSceneFrames = async (userTokens, sceneId) => {
         const url = `https://hallam.sci-toolset.com/discover/api/v1/products/${sceneId}`
  
         const sceneProductResponse = await discoverAPIGet(url, userTokens)
-        const sceneUrl = sceneProductResponse.data.product.result.producturl
 
-        const sceneResponse = await discoverAPIGet(sceneUrl, userTokens)
-        if(sceneResponse.status === 200){
-        
-            const frameData = sceneResponse.data.scenes[0].bands[0].frames
-    
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts`
-            const auth = `Bearer ${encodeURI(userTokens.access_token)}`
-            const headers = {
-                "Content-Type": "application/json",
-                "Authorization": auth,
-                "Accept": "*/*"
-            }
+        json = sceneProductResponse
 
-            const body = JSON.stringify(frameData.map(frame => {return frame.productId}))
-
-            const frameProducts = await discoverAPIPost(url, headers, body)
+        if(sceneProductResponse.status == 200){
             
-            const frames = frameProducts.data.map(frameProduct => {
-                return frameProduct.product.result
-            })
+            const sceneUrl = sceneProductResponse.data.product.result.producturl
+            const sceneResponse = await discoverAPIGet(sceneUrl, userTokens)
 
-            json = {status: 200, data: frames}
-        }else{
-            json = resolveStatusCode(sceneResponse.status)
+            json = sceneResponse
+
+            if(sceneResponse.status === 200){
+        
+                const frameData = sceneResponse.data.scenes[0].bands[0].frames
+        
+                const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts`
+                const auth = `Bearer ${encodeURI(userTokens.access_token)}`
+                const headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": auth,
+                    "Accept": "*/*"
+                }
+    
+                const body = JSON.stringify(frameData.map(frame => {return frame.productId}))
+    
+                const frameProducts = await discoverAPIPost(url, headers, body)
+                
+                const frames = frameProducts.data.map(frameProduct => {
+                    return frameProduct.product.result
+                })
+    
+                json = {status: 200, data: frames}
+            }
         }
+       
         return json
     }catch(e){
         console.error(e)
