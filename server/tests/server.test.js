@@ -113,6 +113,17 @@ describe("/api Tests", () => {
             expect(response.statusCode).toBe(200)
             expect(response._body.data).toMatchObject(testData.getSceneFrames)
         })
+
+        test("/GET api/scenes/:id 400 response sent if no scene matches :id", async () => {
+            const response = await request(server)
+                .get(`/api/scenes/Invlaidid94934893`)
+                .set('Authorization', `Bearer ${jwt}`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+            
+            expect(response.statusCode).toBe(400)
+            expect(response._body.data.message).toMatch("Bad Request")
+        })
     })
 
 })

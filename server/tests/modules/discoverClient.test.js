@@ -68,6 +68,12 @@ describe("Sci-Discover API Interaction Tests", () => {
             expect(missionScenesResponse).toHaveProperty('status', 200)
             expect(missionScenesResponse).toHaveProperty('data', testData.getMissionScenes)
         })
+
+        test("Mission Id does not exist", async () => {
+            const missionScenesResponse = await getMissionScenes(userTokens, '48447389InvalidId988383')
+            expect(missionScenesResponse).toHaveProperty('status', 400)
+            expect(missionScenesResponse).toHaveProperty('data.message', 'Bad Request')
+        })
     })
 
     describe("getScenes()", () => {
@@ -93,6 +99,12 @@ describe("Sci-Discover API Interaction Tests", () => {
                 }
             })
             expect(frames).toMatchObject(testData.getSceneFrames)
+        })
+
+        test("Scene id does not exist", async () => {
+            const sceneFramesResponse = await getSceneFrames(userTokens, "3873483invalidID2928383")
+            expect(sceneFramesResponse).toHaveProperty('status', 400)
+            expect(sceneFramesResponse).toHaveProperty('data.message', 'Bad Request')
         })
     })
 })
