@@ -1,4 +1,5 @@
-import { login, getMissions, getMission, getMissionScenes} from '../../src/modules/discoverClient.js'
+import { login, getMissions, getMission, getMissionScenes, getScenes, getSceneFrames} from '../../src/modules/discoverClient.js'
+import testData from '../data/discoverClientData.js'
 import * as dotenv from 'dotenv'
 
 beforeAll(() => {
@@ -7,7 +8,6 @@ beforeAll(() => {
 
 describe("login()", () => {
     test("Successful login", async () => {
-        console.log(process.env.USER_NAME)
         const result = await login(process.env.USER_NAME, process.env.PASSWORD)
         expect(result).toHaveProperty('status', 200)
         expect(result).toHaveProperty('data.access_token')
@@ -50,10 +50,9 @@ describe("Sci-Discover API Interaction Tests", () => {
 
     describe("getMission()", () => {
         test("Successful API interaction returns mission", async () => {
-            const validMissionId = "4e113b6d-8403-48e6-bfc2-9a532916a6d9"
-            const missionResponse = await getMission(userTokens, validMissionId)
+            const missionResponse = await getMission(userTokens, testData.missionId)
             expect(missionResponse).toHaveProperty('status', 200)
-            expect(missionResponse).toHaveProperty('data')
+            expect(missionResponse).toHaveProperty('data', testData.getMission)
         })
 
         test("Invalid mission id returns a 400 status and error message", async() => {
@@ -65,22 +64,47 @@ describe("Sci-Discover API Interaction Tests", () => {
 
     describe("getMissionScenes()", () => {
         test("Successful API interaction returns mission scenes", async () => {
-            const validMissionId = "4e113b6d-8403-48e6-bfc2-9a532916a6d9"
-            const missionScenesResponse = await getMissionScenes(userTokens, validMissionId)
+            const missionScenesResponse = await getMissionScenes(userTokens, testData.missionId)
             expect(missionScenesResponse).toHaveProperty('status', 200)
-            expect(missionScenesResponse).toHaveProperty('data')
+            expect(missionScenesResponse).toHaveProperty('data', testData.getMissionScenes)
+        })
+
+        test("Mission Id does not exist", async () => {
+            const missionScenesResponse = await getMissionScenes(userTokens, '48447389InvalidId988383')
+            expect(missionScenesResponse).toHaveProperty('status', 400)
+            expect(missionScenesResponse).toHaveProperty('data.message', 'Bad Request')
         })
     })
 
     describe("getScenes()", () => {
         test("Successful API interaction returns all scenes for all missions", async () => {
-            
+            const scenesResponse = await getScenes(userTokens)
+            expect(scenesResponse).toHaveProperty("status", 200)
+            expect(scenesResponse).toHaveProperty("data")
         })
     })
 
     describe("getSceneFrames()", () => {
         test("Successful API interaction returns the frames in a scene", async () => {
-            
+            const sceneFramesResponse = await getSceneFrames(userTokens, testData.sceneId)
+            expect(sceneFramesResponse).toHaveProperty('status', 200)
+            const frames = sceneFramesResponse.data
+            frames.sort((a,b) => {
+                if(a.imagery.framenumber > b.imagery.framenumber){
+                    return 1
+                }
+
+                if(a.imagery.framenumber < b.imagery.framenumber){
+                    return -1
+                }
+            })
+            expect(frames).toMatchObject(testData.getSceneFrames)
+        })
+
+        test("Scene id does not exist", async () => {
+            const sceneFramesResponse = await getSceneFrames(userTokens, "3873483invalidID2928383")
+            expect(sceneFramesResponse).toHaveProperty('status', 400)
+            expect(sceneFramesResponse).toHaveProperty('data.message', 'Bad Request')
         })
     })
 })
