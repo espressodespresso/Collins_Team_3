@@ -1,6 +1,5 @@
 import network from '../utils/network.js'
 import https from 'https'
-import { resolveStatusCode } from '../utils/httpStatus.js'
 
 con***REMOVED*** discoverAPIGet = async(url, userTokens) => {
     con***REMOVED*** options = {
@@ -77,7 +76,6 @@ con***REMOVED*** getMission = async (userTokens, missionId) => {
         con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/${missionId}`
 
         con***REMOVED*** missionResponse = await discoverAPIGet(url, userTokens)
-        
         return missionResponse
 
     }catch(e){
