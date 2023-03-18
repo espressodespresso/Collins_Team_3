@@ -1,6 +1,5 @@
 import network from '../utils/network.js'
 import https from 'https'
-import { resolveStatusCode } from '../utils/httpStatus.js'
 
 const discoverAPIGet = async(url, userTokens) => {
     const options = {
@@ -77,7 +76,6 @@ const getMission = async (userTokens, missionId) => {
         const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/${missionId}`
 
         const missionResponse = await discoverAPIGet(url, userTokens)
-        
         return missionResponse
 
     }catch(e){
