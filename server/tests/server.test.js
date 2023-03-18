@@ -113,6 +113,17 @@ describe("/api Te***REMOVED***s", () => {
             expect(response.***REMOVED***atusCode).toBe(200)
             expect(response._body.data).toMatchObject(te***REMOVED***Data.getSceneFrames)
         })
+
+        te***REMOVED***("/GET api/scenes/:id 400 response sent if no scene matches :id", async () => {
+            con***REMOVED*** response = await reque***REMOVED***(server)
+                .get(`/api/scenes/Invlaidid94934893`)
+                .set('Authorization', `Bearer ${jwt}`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+            
+            expect(response.***REMOVED***atusCode).toBe(400)
+            expect(response._body.data.message).toMatch("Bad Reque***REMOVED***")
+        })
     })
 
 })
