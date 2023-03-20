@@ -137,8 +137,9 @@ con***REMOVED*** getMissionScenes = async (userTokens, missionId) => {
     }
 }
 
-con***REMOVED*** getScenes = async (userTokens) => {
+con***REMOVED*** getScenes = async (userTokens, missionIds) => {
     let json = {}
+    
     try{
         con***REMOVED*** auth = `Bearer ${encodeURI(userTokens.access_token)}`
         con***REMOVED*** headers = {
@@ -147,31 +148,18 @@ con***REMOVED*** getScenes = async (userTokens) => {
             "Accept": "*/*"
         }
 
-        con***REMOVED*** missionsResponse = await getMissions(userTokens)
+        con***REMOVED*** scenes = await Promise.all(missionIds.map(missionId => {
+                return getMissionScenes(userTokens, missionId)
+        }))
 
-        json = missionsResponse
+        con***REMOVED*** data = scenes.map(scene => {
+            return scene.data
+        })
 
-        if(missionsResponse.***REMOVED***atus === 200){
-
-            con***REMOVED*** missions = missionsResponse.data
-            con***REMOVED*** missionsData = await Promise.all(missions.map(mission => {
-                return getMission(userTokens, mission.id)
-            }))
-
-            con***REMOVED*** scenes = missionsData.reduce((arr, missionData) => {
-                arr.push(...missionData.data.scenes.map(scene => {
-                    return scene.id
-                })) 
-                return arr
-            }, [])
-
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts`
-            con***REMOVED*** sceneProductsResponse = await discoverAPIPo***REMOVED***(url, headers, JSON.***REMOVED***ringify(scenes))
-            if(sceneProductsResponse.***REMOVED***atus == 200){
-                json = {***REMOVED***atus: sceneProductsResponse.***REMOVED***atus, data: sceneProductsResponse.data}
-            }
-        }
+        json = {***REMOVED***atus: 200, data}
+    
         return json
+
     }catch(e){
         console.error(e)
         json.***REMOVED***atus = 500
