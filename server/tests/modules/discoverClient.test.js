@@ -77,8 +77,8 @@ describe("Sci-Discover API Interaction Te***REMOVED***s", () => {
     })
 
     describe("getScenes()", () => {
-        te***REMOVED***("Successful API interaction returns all scenes for all missions", async () => {
-            con***REMOVED*** scenesResponse = await getScenes(userTokens)
+        te***REMOVED***("Successful API interaction returns scenes for the li***REMOVED*** of missions given", async () => {
+            con***REMOVED*** scenesResponse = await getScenes(userTokens, JSON.parse(te***REMOVED***Data.missions))
             expect(scenesResponse).toHaveProperty("***REMOVED***atus", 200)
             expect(scenesResponse).toHaveProperty("data")
         })
