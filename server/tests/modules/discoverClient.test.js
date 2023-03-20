@@ -77,8 +77,8 @@ describe("Sci-Discover API Interaction Tests", () => {
     })
 
     describe("getScenes()", () => {
-        test("Successful API interaction returns all scenes for all missions", async () => {
-            const scenesResponse = await getScenes(userTokens)
+        test("Successful API interaction returns scenes for the list of missions given", async () => {
+            const scenesResponse = await getScenes(userTokens, JSON.parse(testData.missions))
             expect(scenesResponse).toHaveProperty("status", 200)
             expect(scenesResponse).toHaveProperty("data")
         })

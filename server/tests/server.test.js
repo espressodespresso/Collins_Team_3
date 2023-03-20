@@ -82,10 +82,12 @@ describe("/api Tests", () => {
         })
     })
 
-    describe("/GET api/scenes", () => {
-        test("/GET api/scenes 200 response sends an array of all scenes", async () => {
+    describe("/POST api/scenes", () => {
+        test("/POST api/scenes 200 response sends an array of all scenes", async () => {
+            const payload = {missions: testData.missions}
             const response = await request(server)
-                .get(`/api/scenes`)
+                .post(`/api/scenes`)
+                .send(payload)
                 .set('Authorization', `Bearer ${jwt}`)
                 .set('Content-Type', 'application/json')
                 .set('Accept', 'application/json')
