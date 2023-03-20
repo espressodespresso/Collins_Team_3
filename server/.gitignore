@@ -7,3 +7,5 @@ node_modules
 !.env.project
 !.env.vault
 /coverage
+*.key
+*.cert
