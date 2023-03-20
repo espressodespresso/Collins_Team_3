@@ -82,10 +82,12 @@ describe("/api Te***REMOVED***s", () => {
         })
     })
 
-    describe("/GET api/scenes", () => {
-        te***REMOVED***("/GET api/scenes 200 response sends an array of all scenes", async () => {
+    describe("/POST api/scenes", () => {
+        te***REMOVED***("/POST api/scenes 200 response sends an array of all scenes", async () => {
+            con***REMOVED*** payload = {missions: te***REMOVED***Data.missions}
             con***REMOVED*** response = await reque***REMOVED***(server)
-                .get(`/api/scenes`)
+                .po***REMOVED***(`/api/scenes`)
+                .send(payload)
                 .set('Authorization', `Bearer ${jwt}`)
                 .set('Content-Type', 'application/json')
                 .set('Accept', 'application/json')

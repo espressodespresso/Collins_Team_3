@@ -4,7 +4,7 @@ import {getScenes, getSceneFrames} from '../modules/discoverClient.js'
 con***REMOVED*** getScenesHandler = async(req, res) => {
     try{
         con***REMOVED*** userTokens = nodeCache.get(req.user.username)
-        con***REMOVED*** scenes = await getScenes(userTokens)
+        con***REMOVED*** scenes = await getScenes(userTokens, JSON.parse(req.body.missions))
         res.***REMOVED***atus(scenes.***REMOVED***atus).json({data: scenes.data})
     }catch(e){
         console.error(e)
