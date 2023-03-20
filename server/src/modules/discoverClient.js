@@ -137,8 +137,9 @@ const getMissionScenes = async (userTokens, missionId) => {
     }
 }
 
-const getScenes = async (userTokens) => {
+const getScenes = async (userTokens, missionIds) => {
     let json = {}
+    
     try{
         const auth = `Bearer ${encodeURI(userTokens.access_token)}`
         const headers = {
@@ -147,31 +148,18 @@ const getScenes = async (userTokens) => {
             "Accept": "*/*"
         }
 
-        const missionsResponse = await getMissions(userTokens)
+        const scenes = await Promise.all(missionIds.map(missionId => {
+                return getMissionScenes(userTokens, missionId)
+        }))
 
-        json = missionsResponse
+        const data = scenes.map(scene => {
+            return scene.data
+        })
 
-        if(missionsResponse.status === 200){
-
-            const missions = missionsResponse.data
-            const missionsData = await Promise.all(missions.map(mission => {
-                return getMission(userTokens, mission.id)
-            }))
-
-            const scenes = missionsData.reduce((arr, missionData) => {
-                arr.push(...missionData.data.scenes.map(scene => {
-                    return scene.id
-                })) 
-                return arr
-            }, [])
-
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts`
-            const sceneProductsResponse = await discoverAPIPost(url, headers, JSON.stringify(scenes))
-            if(sceneProductsResponse.status == 200){
-                json = {status: sceneProductsResponse.status, data: sceneProductsResponse.data}
-            }
-        }
+        json = {status: 200, data}
+    
         return json
+
     }catch(e){
         console.error(e)
         json.status = 500

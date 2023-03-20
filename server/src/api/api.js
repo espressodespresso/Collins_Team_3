@@ -11,7 +11,7 @@ router.get('/missions', getMissionsHandler)
 router.get('/missions/:id', getMissionScenesHandler)
 
 //Gets all scenes for every mission
-router.get('/scenes', getScenesHandler)
+router.post('/scenes', getScenesHandler)
 
 //Retrieves all frames for a scene
 router.get('/scenes/:id', getSceneFramesHandler)
