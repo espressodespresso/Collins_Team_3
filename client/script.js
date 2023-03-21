@@ -1,5 +1,6 @@
 var map = L.map('map', {zoomControl: false}).setView([54.247468, -4.438477], 6);
-var layerControl = L.control.layers().addTo(map);
+//var layerControl = L.control.layers().addTo(map);
+var mapLayers = {}
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -52,32 +53,44 @@ const login = async (username, password) => {
 }
 
 const getMissionsRequest = async () => {
-    const getMissionsURL = 'http://localhost:3000/api/missions'
-    const jwt = localStorage.jwt
-    const res = await fetch(getMissionsURL, {
-        headers: {
-            Authorization: `Bearer ${jwt}`
-        }
-    })
-    const resText = await res.text()
-    const resJSON = resText === ""? {}: JSON.parse(resText)
-  
-    return resJSON
+    let item = localStorage.getItem("Missions")
+    if(item === null) {
+        const getMissionsURL = 'http://localhost:3000/api/missions'
+        const jwt = localStorage.jwt
+        const res = await fetch(getMissionsURL, {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        })
+        const resText = await res.text()
+        const resJSON = resText === ""? {}: JSON.parse(resText)
+
+        localStorage.setItem("Missions", resJSON)
+        return resJSON
+    } else {
+        return item
+    }
 }
 
 const getMissionRequest = async(id) => {
-    const getMissionSceneURL = `http://localhost:3000/api/missions/${id}`
-    const jwt = localStorage.jwt
-    const res = await fetch(getMissionSceneURL, {
-        headers: {
-            Authorization: `Bearer ${jwt}`
-        }
-    })
-    const resText = await res.text()
-    const resJSON = resText === ""? {}: JSON.parse(resText)
-    //const scenes = resJSON.data
+    let item = localStorage.getItem(id)
+    if(item === null) {
+        const getMissionSceneURL = `http://localhost:3000/api/missions/${id}`
+        const jwt = localStorage.jwt
+        const res = await fetch(getMissionSceneURL, {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        })
+        const resText = await res.text()
+        const resJSON = resText === ""? {}: JSON.parse(resText)
+        //const scenes = resJSON.data
 
-    return resJSON;
+        localStorage.setItem(id, resJSON)
+        return resJSON;
+    } else {
+        return item
+    }
 }
 
 async function getMissions() {
@@ -85,7 +98,7 @@ async function getMissions() {
     const missions = res.data
 
     const missionIds = missions.map(mission => {return mission.id })
-    
+
     const missionData = await Promise.all(missionIds.map(missionId => {
         return getMissionRequest(missionId)
     }))
@@ -98,23 +111,29 @@ async function getMissions() {
     return missionData
 }
 
-async function LayerMissions() {
+async function LayerMissions(zoom) {
     const missions = await getMissions()
-    for(let i=1; i < missions.length; i++) {
+    for(let i=0; i < missions.length; i++) {
         const mission = missions[i]
         const missionData = mission.data;
         let ul = document.getElementById("sidebar")
-        let li = document.createElement("li")
-        li.appendChild(document.createTextNode(mission.missionname))
-        ul.appendChild(li)
+        if(ul.getElementsByTagName("li").length < i) {
+            let li = document.createElement("li")
+            li.appendChild(document.createTextNode(mission.missionname))
+            ul.appendChild(li)
+        }
         let marks = []
         for(let j=0; j < missionData.length; j++) {
-            //marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
-            // Kinda broken
-            marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
+            if(zoom <= 7) {
+                marks.push(addMarker(missionData[j], mission.missionname, mission.aircraftTakeOffTime))
+            } else {
+                marks.push(addToGeoLayer(sceneToGeoJSONCentre(missionData[j]), mission.missionname, mission.aircraftTakeOffTime))
+            }
         }
-        let marksGroup = L.layerGroup(marks)
-        layerControl.addOverlay(marksGroup, mission.missionname)
+        var layerGroup = L.layerGroup(marks)
+        mapLayers[mission.missionname] = layerGroup
+        layerGroup.addTo(map)
+        //layerControl.addOverlay(marksGroup, mission.missionname)
     }
 }
 
@@ -207,11 +226,24 @@ function onMapClick(e) {
 
 map.on('click', onMapClick);
 
+map.on('zoomend', function(e) {
+    let keys = Object.keys(mapLayers)
+    for(let i=0; i < keys.length; i++) {
+        console.log(mapLayers[keys[i]])
+        mapLayers[keys[i]].clearLayers()
+    }
+    /*for (let i=0; i < mapLayer.length; i++) {
+        console.log(mapLayer[i])
+        map.removeLayer(mapLayer[i])
+    }*/
+    LayerMissions(map.getZoom())
+})
+
 const run = async () => {
     //REMOVE BEFORE COMMIT
-    const status = await login("", "")
+    const status = await login("hallam2", "2513@5De")
     /*renderAllMissions()*/
-    LayerMissions()
+    LayerMissions(map.getZoom())
 }
 
 run()
