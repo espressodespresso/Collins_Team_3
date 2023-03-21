@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "te***REMOVED***": "echo \"Error: no te***REMOVED*** specified\" && exit 1",
-    "dev": "node src/index.js"
+    "te***REMOVED***": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose --coverage",
+    "dev": "node src/index.js",
+    "generate-cert": "sh ./scripts/generate-cert.sh"
   },
   "repository": {
     "type": "git",
@@ -19,19 +20,30 @@
   },
   "homepage": "https://github.com/espressodespresso/Collins_Team_3#readme",
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.21.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "dotenv-vault": "^1.18.0",
     "express": "^4.18.2",
     "express-validator": "^6.14.3",
+    "http-***REMOVED***atus-codes": "^2.2.0",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "lodash.merge": "^4.6.2",
     "lodash.mergewith": "^4.6.2",
     "node-cache": "^5.1.2",
     "node-fetch": "^3.3.0",
-    "redis": "^4.6.4",
+    "redis": "^4.6.5",
+    "spdy": "^4.0.2",
     "ssl-root-cas": "^1.3.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "je***REMOVED***": "^29.5.0",
+    "nock": "^13.3.0",
+    "superagent": "^8.0.9",
+    "superte***REMOVED***": "^6.3.3"
   }
 }
