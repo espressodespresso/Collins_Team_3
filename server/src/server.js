@@ -1,5 +1,4 @@
 import express from 'express'
-import { auth } from './modules/auth.js'
 import router from './api/router.js'
 import cors from 'cors'
 
