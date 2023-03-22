@@ -43,15 +43,18 @@ class DiscoverClient{
         this.connected = true
         this.headers = this.generateHeaders()
         this.httpsAgent = this.generateHttpsAgent()
+        this.baseUrl = `https://hallam.sci-toolset.com`
     }
 
-    async get(url){
+    async get(endpoint){
+        const url = this.baseUrl + endpoint
         const response = await network.get(url, this.headers, this.httpsAgent)
         return await this.handleResponse(response, this.get, arguments)
     }
 
 
-    async post(url, body){
+    async post(endpoint, body){
+        const url = this.baseUrl + endpoint
         const response = await network.post(url, this.headers, body, this.httpsAgent)
         return await this.handleResponse(response, this.post, arguments)
     }

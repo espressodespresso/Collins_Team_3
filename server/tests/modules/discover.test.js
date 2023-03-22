@@ -27,53 +27,54 @@ describe("Class DiscoverClient", () => {
 
     describe("DiscoverClient get()", () => {
         test("DiscoverClient get(url) to a valid url returns a 200 response", async () => {
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/`
-            const response = await discoverClient.get(url)
+            const endpoint = `/discover/api/v1/missionfeed/missions/`
+            const response = await discoverClient.get(endpoint)
             expect(response.status).toBe(200)
         })
 
         test("DiscoverClient get(url) returns a 404 response from an invalid url", async () => {
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/nothing`
-            const response = await discoverClient.get(url)
+            const endpoint = `/discover/api/v1/nothing`
+            const response = await discoverClient.get(endpoint)
             expect(response.status).toBe(404)
         })
 
         test("DiscoverClient get(url) refreshes userTokens after receiving a 401 response and retries the request", async () => {
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/missionfeed/missions/`
+            const endpoint = `/discover/api/v1/missionfeed/missions/`
             discoverClient.userTokens.accessToken = 'expired'
             discoverClient.headers = discoverClient.generateHeaders()
-            const response = await discoverClient.get(url)
+            const response = await discoverClient.get(endpoint)
             expect(response.status).toBe(200)
         })
     })
 
     describe("DiscoverClient post(url)", () => {
         test("DiscoverClient post(url) to a valid url returns a 200 response", async () => {
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts/`
+            const endpoint = `/discover/api/v1/products/getProducts/`
             const body = JSON.stringify(['3685c36e-954e-4fa1-a4ef-31455b0611ec'])
-            const response = await discoverClient.post(url, body)
+            const response = await discoverClient.post(endpoint, body)
             expect(response.status).toBe(200)
         })
 
         test("DiscoverClient post(url) returns a 400 response for an invalid body", async () => {
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts/`
+            const endpoint = `/discover/api/v1/products/getProducts/`
             const body = ['3685c36e-954e-4fa1-a4ef-31455b0611ec']
-            const response = await discoverClient.post(url, body)
+            const response = await discoverClient.post(endpoint, body)
             expect(response.status).toBe(400)
         })
 
         test("DiscoverClient post(url) returns a 404 response from an invalid url", async () => {
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/nothing`
-            const response = await discoverClient.post(url)
+            const endpoint = `/discover/api/v1/nothing`
+            const body = JSON.stringify(['3685c36e-954e-4fa1-a4ef-31455b0611ec'])
+            const response = await discoverClient.post(endpoint, body)
             expect(response.status).toBe(404)
         })
 
         test("DiscoverClient post(url) refreshes userTokens after receiving a 401 response and retries the request", async () => {
-            const url = `https://hallam.sci-toolset.com/discover/api/v1/products/getProducts/`
+            const endpoint = `/discover/api/v1/products/getProducts/`
             const body = JSON.stringify(['3685c36e-954e-4fa1-a4ef-31455b0611ec'])
             discoverClient.userTokens.accessToken = 'expired'
             discoverClient.headers = discoverClient.generateHeaders()
-            const response = await discoverClient.post(url, body)
+            const response = await discoverClient.post(endpoint, body)
             expect(response.status).toBe(200)
         })
     })
