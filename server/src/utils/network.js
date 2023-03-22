@@ -10,10 +10,11 @@ const get = async (url, headers = {}, agent = undefined) => {
             agent
          })
         const statusCode = res.status
-        const resText = await res.text()
-        const resJSON = resText === ""? {}: JSON.parse(resText)
         
         if(statusCode == 200){
+            const resText = await res.text()
+            const resJSON = resText === ""? {}: JSON.parse(resText)
+            
             return{
                 status: 200,
                 data: resJSON
@@ -40,10 +41,11 @@ const post = async (url, headers = {}, body = {}, agent = undefined) => {
          })
 
         const statusCode = res.status
-        const resText = await res.text()
-        const resJSON = resText === ""? {}: JSON.parse(resText)
         
         if(statusCode == 200){
+            const resText = await res.text()
+            const resJSON = resText === ""? {}: JSON.parse(resText)
+
             return{
                 status: 200,
                 data: resJSON

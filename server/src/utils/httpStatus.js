@@ -1,4 +1,4 @@
-import {StatusCodes, getReasonPhrase} from 'http-status-codes';
+import {getReasonPhrase} from 'http-status-codes';
 
 const resolveStatusCode = (status) => {
     return {status, data: {message: getReasonPhrase(status)}}
