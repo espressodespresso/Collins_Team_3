@@ -27,53 +27,54 @@ describe("Class DiscoverClient", () => {
 
     describe("DiscoverClient get()", () => {
         te***REMOVED***("DiscoverClient get(url) to a valid url returns a 200 response", async () => {
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/`
-            con***REMOVED*** response = await discoverClient.get(url)
+            con***REMOVED*** endpoint = `/discover/api/v1/missionfeed/missions/`
+            con***REMOVED*** response = await discoverClient.get(endpoint)
             expect(response.***REMOVED***atus).toBe(200)
         })
 
         te***REMOVED***("DiscoverClient get(url) returns a 404 response from an invalid url", async () => {
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/nothing`
-            con***REMOVED*** response = await discoverClient.get(url)
+            con***REMOVED*** endpoint = `/discover/api/v1/nothing`
+            con***REMOVED*** response = await discoverClient.get(endpoint)
             expect(response.***REMOVED***atus).toBe(404)
         })
 
         te***REMOVED***("DiscoverClient get(url) refreshes userTokens after receiving a 401 response and retries the reque***REMOVED***", async () => {
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/missionfeed/missions/`
+            con***REMOVED*** endpoint = `/discover/api/v1/missionfeed/missions/`
             discoverClient.userTokens.accessToken = 'expired'
             discoverClient.headers = discoverClient.generateHeaders()
-            con***REMOVED*** response = await discoverClient.get(url)
+            con***REMOVED*** response = await discoverClient.get(endpoint)
             expect(response.***REMOVED***atus).toBe(200)
         })
     })
 
     describe("DiscoverClient po***REMOVED***(url)", () => {
         te***REMOVED***("DiscoverClient po***REMOVED***(url) to a valid url returns a 200 response", async () => {
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts/`
+            con***REMOVED*** endpoint = `/discover/api/v1/products/getProducts/`
             con***REMOVED*** body = JSON.***REMOVED***ringify(['3685c36e-954e-4fa1-a4ef-31455b0611ec'])
-            con***REMOVED*** response = await discoverClient.po***REMOVED***(url, body)
+            con***REMOVED*** response = await discoverClient.po***REMOVED***(endpoint, body)
             expect(response.***REMOVED***atus).toBe(200)
         })
 
         te***REMOVED***("DiscoverClient po***REMOVED***(url) returns a 400 response for an invalid body", async () => {
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts/`
+            con***REMOVED*** endpoint = `/discover/api/v1/products/getProducts/`
             con***REMOVED*** body = ['3685c36e-954e-4fa1-a4ef-31455b0611ec']
-            con***REMOVED*** response = await discoverClient.po***REMOVED***(url, body)
+            con***REMOVED*** response = await discoverClient.po***REMOVED***(endpoint, body)
             expect(response.***REMOVED***atus).toBe(400)
         })
 
         te***REMOVED***("DiscoverClient po***REMOVED***(url) returns a 404 response from an invalid url", async () => {
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/nothing`
-            con***REMOVED*** response = await discoverClient.po***REMOVED***(url)
+            con***REMOVED*** endpoint = `/discover/api/v1/nothing`
+            con***REMOVED*** body = JSON.***REMOVED***ringify(['3685c36e-954e-4fa1-a4ef-31455b0611ec'])
+            con***REMOVED*** response = await discoverClient.po***REMOVED***(endpoint, body)
             expect(response.***REMOVED***atus).toBe(404)
         })
 
         te***REMOVED***("DiscoverClient po***REMOVED***(url) refreshes userTokens after receiving a 401 response and retries the reque***REMOVED***", async () => {
-            con***REMOVED*** url = `https://hallam.***REMOVED***.com/discover/api/v1/products/getProducts/`
+            con***REMOVED*** endpoint = `/discover/api/v1/products/getProducts/`
             con***REMOVED*** body = JSON.***REMOVED***ringify(['3685c36e-954e-4fa1-a4ef-31455b0611ec'])
             discoverClient.userTokens.accessToken = 'expired'
             discoverClient.headers = discoverClient.generateHeaders()
-            con***REMOVED*** response = await discoverClient.po***REMOVED***(url, body)
+            con***REMOVED*** response = await discoverClient.po***REMOVED***(endpoint, body)
             expect(response.***REMOVED***atus).toBe(200)
         })
     })
