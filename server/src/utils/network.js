@@ -10,10 +10,11 @@ con***REMOVED*** get = async (url, headers = {}, agent = undefined) => {
             agent
          })
         con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
-        con***REMOVED*** resText = await res.text()
-        con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
         
         if(***REMOVED***atusCode == 200){
+            con***REMOVED*** resText = await res.text()
+            con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
+            
             return{
                 ***REMOVED***atus: 200,
                 data: resJSON
@@ -40,10 +41,11 @@ con***REMOVED*** po***REMOVED*** = async (url, headers = {}, body = {}, agent = 
          })
 
         con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
-        con***REMOVED*** resText = await res.text()
-        con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
         
         if(***REMOVED***atusCode == 200){
+            con***REMOVED*** resText = await res.text()
+            con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
+
             return{
                 ***REMOVED***atus: 200,
                 data: resJSON
