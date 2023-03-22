@@ -1,6 +1,5 @@
 import app from './server.js'
 import spdy from 'spdy'
-import * as dotenv from 'dotenv'
 import fs from 'fs'
 
 dotenv.config()
