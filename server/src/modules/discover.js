@@ -43,15 +43,18 @@ class DiscoverClient{
         this.connected = true
         this.headers = this.generateHeaders()
         this.httpsAgent = this.generateHttpsAgent()
+        this.baseUrl = `https://hallam.***REMOVED***.com`
     }
 
-    async get(url){
+    async get(endpoint){
+        con***REMOVED*** url = this.baseUrl + endpoint
         con***REMOVED*** response = await network.get(url, this.headers, this.httpsAgent)
         return await this.handleResponse(response, this.get, arguments)
     }
 
 
-    async po***REMOVED***(url, body){
+    async po***REMOVED***(endpoint, body){
+        con***REMOVED*** url = this.baseUrl + endpoint
         con***REMOVED*** response = await network.po***REMOVED***(url, this.headers, body, this.httpsAgent)
         return await this.handleResponse(response, this.po***REMOVED***, arguments)
     }
