@@ -1,4 +1,4 @@
-export default class Product{
+export default class ProductModel{
     con***REMOVED***ructor(discoverClient){
         this.discoverClient = discoverClient
         this.searchHi***REMOVED***ory = []
@@ -8,7 +8,7 @@ export default class Product{
         con***REMOVED*** endpoint = `/discover/api/v1/products/getProducts`
         con***REMOVED*** body = JSON.***REMOVED***ringify(li***REMOVED***OfProductIds)
         con***REMOVED*** response = await this.discoverClient.po***REMOVED***(endpoint, body)
-        return response.data
+        return response
     }
 
     async search(productSearch){
