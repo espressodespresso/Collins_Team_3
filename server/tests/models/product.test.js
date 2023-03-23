@@ -1,12 +1,15 @@
 import Product from '../../src/models/Product.js'
+import { Network } from '../../src/utils/network.js'
 import { config } from '../../src/config/index.js'
 import { createClient } from '../../src/modules/discover.js'
 import ProductSearchBuilder from '../../src/builders/ProductSearchBuilder.js'
 
 
 let productModel = null
+let httpClient = null
 beforeAll(async () => {
-    con***REMOVED*** discoverClient = await createClient(config.username, config.password)
+    httpClient = new Network()
+    con***REMOVED*** discoverClient = await createClient(config.username, config.password, httpClient)
     productModel = new Product(discoverClient)
 })
 
