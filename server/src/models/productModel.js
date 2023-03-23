@@ -1,4 +1,4 @@
-export default class Product{
+export default class ProductModel{
     constructor(discoverClient){
         this.discoverClient = discoverClient
         this.searchHistory = []
@@ -8,7 +8,7 @@ export default class Product{
         const endpoint = `/discover/api/v1/products/getProducts`
         const body = JSON.stringify(listOfProductIds)
         const response = await this.discoverClient.post(endpoint, body)
-        return response.data
+        return response
     }
 
     async search(productSearch){
