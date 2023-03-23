@@ -15,7 +15,7 @@ export default class Product{
         const endpoint = `/discover/api/v1/products/search`
         const body = JSON.stringify(productSearch)
         const response = await this.discoverClient.post(endpoint, body)
-        this.searchHistory.push(response.data.result.queryId)
+        this.searchHistory.push(response.data.queryId)
         return response
     }
 

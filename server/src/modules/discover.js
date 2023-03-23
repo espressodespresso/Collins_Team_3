@@ -8,7 +8,7 @@ const getTokens = (tokenResponse) => {
     }
 }
 
-const createClient = async(username, password) => {
+const createClient = async(username, password, httpClient) => {
     const url = 'https://hallam.sci-toolset.com/api/v1/token'
     const auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
     const headers = {
@@ -25,11 +25,11 @@ const createClient = async(username, password) => {
 
     const agent = new https.Agent(options)
 
-    const response = await network.post(url, headers, body, agent)
+    const response = await httpClient.post(url, headers, body, agent)
 
     if(response.status === 200){
         const userTokens = getTokens(response)
-        return new DiscoverClient(userTokens)
+        return new DiscoverClient(userTokens, httpClient)
     }else if(response.status == 400 || response.status == 401){
         return undefined
     }else{
@@ -38,24 +38,25 @@ const createClient = async(username, password) => {
 }
 
 class DiscoverClient{
-    constructor(userTokens){
+    constructor(userTokens, httpClient){
         this.userTokens = userTokens
         this.connected = true
         this.headers = this.generateHeaders()
         this.httpsAgent = this.generateHttpsAgent()
         this.baseUrl = `https://hallam.sci-toolset.com`
+        this.httpClient = httpClient
     }
 
     async get(endpoint){
         const url = this.baseUrl + endpoint
-        const response = await network.get(url, this.headers, this.httpsAgent)
+        const response = await this.httpClient.get(url, this.headers, this.httpsAgent)
         return await this.handleResponse(response, this.get, arguments)
     }
 
 
     async post(endpoint, body){
         const url = this.baseUrl + endpoint
-        const response = await network.post(url, this.headers, body, this.httpsAgent)
+        const response = await this.httpClient.post(url, this.headers, body, this.httpsAgent)
         return await this.handleResponse(response, this.post, arguments)
     }
 
@@ -109,7 +110,7 @@ class DiscoverClient{
 
         const body = `grant_type=refresh_token&refresh_token=${this.userTokens.refreshToken}`
 
-        const response = await network.post(url, headers, body, this.httpsAgent)
+        const response = await this.httpClient.post(url, headers, body, this.httpsAgent)
 
         if(response.status == 200){
             this.userTokens = getTokens(response)

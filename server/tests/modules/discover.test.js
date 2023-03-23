@@ -1,15 +1,21 @@
+import { Network } from '../../src/utils/network.js'
 import { createClient } from "../../src/modules/discover.js";
 import { config } from "../../src/config/index.js"
 
+let httpClient = null
+beforeAll(() => {
+    httpClient = new Network()
+})
+
 describe("CreateClient(username, password)", () => {
     test("CreateClient(username, password) returns a discoverClient object if username and password are correct", async () => {
-        const discoverClient = await createClient(config.username, config.password)
+        const discoverClient = await createClient(config.username, config.password, httpClient)
         expect(discoverClient.isConnected()).toBe(true)
     })
 
     test("CreateClient(username, password) returns undefined if the username or password are incorrect", async () => {
-        const wrongUsernameResponse = await createClient("Wrongusername12345678", config.password)
-        const wrongPasswordResponse = await createClient(config.username, "WrongPassword83883")
+        const wrongUsernameResponse = await createClient("Wrongusername12345678", config.password, httpClient)
+        const wrongPasswordResponse = await createClient(config.username, "WrongPassword83883", httpClient)
         expect(wrongUsernameResponse).toBe(undefined)
         expect(wrongPasswordResponse).toBe(undefined)
     })
@@ -18,7 +24,7 @@ describe("CreateClient(username, password)", () => {
 describe("Class DiscoverClient", () => {
     let discoverClient = {}
     beforeAll(async () => {
-        discoverClient = await createClient(config.username, config.password)
+        discoverClient = await createClient(config.username, config.password, httpClient)
     })
 
     test("discoverClient is created", () => {
