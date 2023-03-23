@@ -61,4 +61,68 @@ con***REMOVED*** po***REMOVED*** = async (url, headers = {}, body = {}, agent = 
     }
 }
 
+export class Network{
+    con***REMOVED***ructor(){
+
+    }
+
+    async get(url, headers = {}, agent = undefined){
+        try{
+            con***REMOVED*** res = await fetch(url, {
+                method: "GET",
+                headers: new Headers(headers),
+                agent
+             })
+            con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
+            
+            if(***REMOVED***atusCode == 200){
+                con***REMOVED*** resText = await res.text()
+                con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
+                
+                return{
+                    ***REMOVED***atus: 200,
+                    data: resJSON
+                }
+            }
+            else{
+                return resolveStatusCode(***REMOVED***atusCode)
+            }
+    
+        }catch(e){
+            console.error(e)
+            return null
+        }
+    }
+
+    async po***REMOVED***(url, headers = {}, body = {}, agent = undefined){
+        try{
+            con***REMOVED*** res = await fetch(url, {
+                method: "POST",
+                headers: new Headers(headers),
+                body: body,
+                agent
+             })
+    
+            con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
+            
+            if(***REMOVED***atusCode == 200){
+                con***REMOVED*** resText = await res.text()
+                con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
+    
+                return{
+                    ***REMOVED***atus: 200,
+                    data: resJSON
+                }
+            }
+            else{
+                return resolveStatusCode(***REMOVED***atusCode)
+            }
+    
+        }catch(e){
+            console.error(e)
+            return null
+        }
+    }
+}
+
 export default {get, po***REMOVED***}

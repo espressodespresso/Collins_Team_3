@@ -8,7 +8,7 @@ con***REMOVED*** getTokens = (tokenResponse) => {
     }
 }
 
-con***REMOVED*** createClient = async(username, password) => {
+con***REMOVED*** createClient = async(username, password, httpClient) => {
     con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
     con***REMOVED*** auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
     con***REMOVED*** headers = {
@@ -25,11 +25,11 @@ con***REMOVED*** createClient = async(username, password) => {
 
     con***REMOVED*** agent = new https.Agent(options)
 
-    con***REMOVED*** response = await network.po***REMOVED***(url, headers, body, agent)
+    con***REMOVED*** response = await httpClient.po***REMOVED***(url, headers, body, agent)
 
     if(response.***REMOVED***atus === 200){
         con***REMOVED*** userTokens = getTokens(response)
-        return new DiscoverClient(userTokens)
+        return new DiscoverClient(userTokens, httpClient)
     }else if(response.***REMOVED***atus == 400 || response.***REMOVED***atus == 401){
         return undefined
     }else{
@@ -38,24 +38,25 @@ con***REMOVED*** createClient = async(username, password) => {
 }
 
 class DiscoverClient{
-    con***REMOVED***ructor(userTokens){
+    con***REMOVED***ructor(userTokens, httpClient){
         this.userTokens = userTokens
         this.connected = true
         this.headers = this.generateHeaders()
         this.httpsAgent = this.generateHttpsAgent()
         this.baseUrl = `https://hallam.***REMOVED***.com`
+        this.httpClient = httpClient
     }
 
     async get(endpoint){
         con***REMOVED*** url = this.baseUrl + endpoint
-        con***REMOVED*** response = await network.get(url, this.headers, this.httpsAgent)
+        con***REMOVED*** response = await this.httpClient.get(url, this.headers, this.httpsAgent)
         return await this.handleResponse(response, this.get, arguments)
     }
 
 
     async po***REMOVED***(endpoint, body){
         con***REMOVED*** url = this.baseUrl + endpoint
-        con***REMOVED*** response = await network.po***REMOVED***(url, this.headers, body, this.httpsAgent)
+        con***REMOVED*** response = await this.httpClient.po***REMOVED***(url, this.headers, body, this.httpsAgent)
         return await this.handleResponse(response, this.po***REMOVED***, arguments)
     }
 
@@ -109,7 +110,7 @@ class DiscoverClient{
 
         con***REMOVED*** body = `grant_type=refresh_token&refresh_token=${this.userTokens.refreshToken}`
 
-        con***REMOVED*** response = await network.po***REMOVED***(url, headers, body, this.httpsAgent)
+        con***REMOVED*** response = await this.httpClient.po***REMOVED***(url, headers, body, this.httpsAgent)
 
         if(response.***REMOVED***atus == 200){
             this.userTokens = getTokens(response)

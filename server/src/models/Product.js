@@ -15,7 +15,7 @@ export default class Product{
         con***REMOVED*** endpoint = `/discover/api/v1/products/search`
         con***REMOVED*** body = JSON.***REMOVED***ringify(productSearch)
         con***REMOVED*** response = await this.discoverClient.po***REMOVED***(endpoint, body)
-        this.searchHi***REMOVED***ory.push(response.data.result.queryId)
+        this.searchHi***REMOVED***ory.push(response.data.queryId)
         return response
     }
 
