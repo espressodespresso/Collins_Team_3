@@ -1,5 +1,9 @@
 import fetch, {Headers} from 'node-fetch'
-import { resolveStatusCode } from './httpStatus.js'
+import {getReasonPhrase} from 'http-***REMOVED***atus-codes';
+
+con***REMOVED*** resolveStatusCode = (***REMOVED***atus) => {
+    return {***REMOVED***atus, data: {message: getReasonPhrase(***REMOVED***atus)}}
+}
 
 //sends get reque***REMOVED*** to specified url with optional headers and returns the reponse as JSON.
 con***REMOVED*** get = async (url, headers = {}, agent = undefined) => {
@@ -61,17 +65,17 @@ con***REMOVED*** po***REMOVED*** = async (url, headers = {}, body = {}, agent = 
     }
 }
 
-export class Network{
-    con***REMOVED***ructor(){
-
+export class HttpClient{
+    con***REMOVED***ructor(httpsAgent){
+        this.agent = httpsAgent
     }
 
-    async get(url, headers = {}, agent = undefined){
+    async get(url, headers = {}){
         try{
             con***REMOVED*** res = await fetch(url, {
                 method: "GET",
                 headers: new Headers(headers),
-                agent
+                agent: this.agent
              })
             con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
             
@@ -94,13 +98,13 @@ export class Network{
         }
     }
 
-    async po***REMOVED***(url, headers = {}, body = {}, agent = undefined){
+    async po***REMOVED***(url, headers = {}, body = {}){
         try{
             con***REMOVED*** res = await fetch(url, {
                 method: "POST",
                 headers: new Headers(headers),
                 body: body,
-                agent
+                agent: this.agent
              })
     
             con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
