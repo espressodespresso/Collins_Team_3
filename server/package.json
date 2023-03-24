@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "te***REMOVED***": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose --coverage",
+    "***REMOVED***art": "NODE_ENV=production node src/index.js",
     "dev": "node src/index.js",
     "generate-cert": "sh ./scripts/generate-cert.sh"
   },
