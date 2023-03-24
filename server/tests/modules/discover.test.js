@@ -1,10 +1,11 @@
-import { Network } from '../../src/utils/network.js'
+import { HttpClient } from '../../src/modules/httpClient.js'
 import { createClient } from "../../src/modules/discover.js";
 import { config } from "../../src/config/index.js"
+import { generateHttpsAgent } from '../../src/utils/discoverUtils.js';
 
 let httpClient = null
 beforeAll(() => {
-    httpClient = new Network()
+    httpClient = new HttpClient(generateHttpsAgent())
 })
 
 describe("CreateClient(username, password)", () => {

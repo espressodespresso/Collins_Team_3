@@ -1,13 +1,14 @@
 import { config } from '../../src/config/index.js'
-import { Network } from '../../src/utils/network.js'
+import { HttpClient } from '../../src/modules/httpClient.js'
 import ProductModel from '../../src/models/productModel.js'
 import { createClient } from "../../src/modules/discover.js";
 import ProductService from "../../src/services/productService.js";
 import ProductSearchBuilder from '../../src/builders/ProductSearchBuilder.js'
+import { generateHttpsAgent } from '../../src/utils/discoverUtils.js';
 
 let productService = undefined
 beforeAll(async () => {
-    con***REMOVED*** httpClient = new Network()
+    con***REMOVED*** httpClient = new HttpClient(generateHttpsAgent())
     con***REMOVED*** discoverClient = await createClient(config.username, config.password, httpClient)
     con***REMOVED*** productSearchBuilder = new ProductSearchBuilder()
     con***REMOVED*** productModel = new ProductModel(discoverClient)

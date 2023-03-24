@@ -16,5 +16,7 @@ router.po***REMOVED***('/scenes', getScenesHandler)
 //Retrieves all frames for a scene
 router.get('/scenes/:id', getSceneFramesHandler)
 
+router.get('/products/scenes', )
+
 
 export default router
