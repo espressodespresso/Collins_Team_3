@@ -1,7 +1,7 @@
 import ProductModel from '../../src/models/productModel.js'
 import ProductSearchBuilder from '../../src/builders/ProductSearchBuilder.js'
 import { HttpClient } from '../../src/modules/httpClient.js'
-import { config } from '../../src/config/index.js'
+import config from '../../src/config/index.js'
 import { createClient } from '../../src/modules/discover.js'
 import { generateHttpsAgent } from '../../src/utils/discoverUtils.js';
 

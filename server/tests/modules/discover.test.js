@@ -1,6 +1,6 @@
 import { HttpClient } from '../../src/modules/httpClient.js'
 import { createClient } from "../../src/modules/discover.js";
-import { config } from "../../src/config/index.js"
+import config from "../../src/config/index.js"
 import { generateHttpsAgent } from '../../src/utils/discoverUtils.js';
 
 let httpClient = null

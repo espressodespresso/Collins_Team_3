@@ -1,11 +1,10 @@
 import app from './server.js'
 import spdy from 'spdy'
 import fs from 'fs'
-
-dotenv.config()
+import config from './config/index.js'
 
 const CERT_DIR = new URL('../cert', import.meta.url).pathname
-const HTTP2_ENABLED = process.env.HTTP2_ENABLED
+const HTTP2_ENABLED = config.http2Enabled
 
 const options =   {
   key: fs.readFileSync(`${CERT_DIR}/server.key`),

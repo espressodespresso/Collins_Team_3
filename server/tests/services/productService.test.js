@@ -1,4 +1,4 @@
-import { config } from '../../src/config/index.js'
+import config from '../../src/config/index.js'
 import { HttpClient } from '../../src/modules/httpClient.js'
 import ProductModel from '../../src/models/productModel.js'
 import { createClient } from "../../src/modules/discover.js";

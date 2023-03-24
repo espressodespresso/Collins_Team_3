@@ -1,4 +1,4 @@
-import ProductSearch from "../models/ProductSearch"
+import ProductSearch from "../models/ProductSearch.js"
 
 export default class ProductSearchBuilder{
     constructor(){
