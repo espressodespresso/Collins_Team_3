@@ -1,4 +1,4 @@
-import network from '../utils/network.js'
+import network from './httpClient.js'
 import https from 'https'
 
 const discoverAPIGet = async(url, userTokens) => {
