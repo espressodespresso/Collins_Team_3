@@ -1,5 +1,3 @@
-import { json } from "express"
-
 export default class RedisClient{
     con***REMOVED***ructor(client){
         this.client = client

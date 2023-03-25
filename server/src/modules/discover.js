@@ -5,7 +5,41 @@ con***REMOVED*** getTokens = (tokenResponse) => {
     }
 }
 
-con***REMOVED*** createClient = async(username, password, httpClient) => {
+export class discoverClientFactory{
+
+    con***REMOVED***ructor(container){
+        this.httpClient = container.get('discover.HttpClient')
+    }
+
+    async signIn(username, password){
+        con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
+        con***REMOVED*** auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
+        con***REMOVED*** headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "*/*",
+            "Ho***REMOVED***": "hallam.***REMOVED***",
+            "Authorization": auth
+        }
+        con***REMOVED*** body = `grant_type=password&username=${username}&password=${password}`
+    
+        con***REMOVED*** response = await this.httpClient.po***REMOVED***(url, headers, body)
+        
+        if(response.***REMOVED***atus === 200){
+            con***REMOVED*** userTokens = getTokens(response)
+            return userTokens
+        }else if(response.***REMOVED***atus == 400 || response.***REMOVED***atus == 401){
+            return undefined
+        }else{
+            throw new Error("Server Failed")
+        }
+    }
+
+    async createClient(userTokens){
+        return new DiscoverClient(userTokens)
+    }
+}
+
+export con***REMOVED*** signIn = async(username, password, httpClient) => {
     con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
     con***REMOVED*** auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
     con***REMOVED*** headers = {
@@ -20,7 +54,7 @@ con***REMOVED*** createClient = async(username, password, httpClient) => {
 
     if(response.***REMOVED***atus === 200){
         con***REMOVED*** userTokens = getTokens(response)
-        return new DiscoverClient(userTokens, httpClient)
+        return userTokens
     }else if(response.***REMOVED***atus == 400 || response.***REMOVED***atus == 401){
         return undefined
     }else{
@@ -29,12 +63,12 @@ con***REMOVED*** createClient = async(username, password, httpClient) => {
 }
 
 class DiscoverClient{
-    con***REMOVED***ructor(userTokens, httpClient){
+    con***REMOVED***ructor(userTokens, container){
         this.userTokens = userTokens
         this.connected = true
         this.headers = this.generateHeaders()
         this.baseUrl = `https://hallam.***REMOVED***.com`
-        this.httpClient = httpClient
+        this.httpClient = container.get('discover.HttpClient')
     }
 
     async get(endpoint){
@@ -105,5 +139,3 @@ class DiscoverClient{
         return this.connected
     }
 }
-
-export { createClient }
