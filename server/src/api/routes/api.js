@@ -1,6 +1,6 @@
 import {Router} from 'express'
-import {getSceneFramesHandler, getScenesHandler} from '../services/scenes.js'
-import {getMissionsHandler, getMissionScenesHandler} from '../services/missions.js'
+import {getSceneFramesHandler, getScenesHandler} from '../../services/scenes.js'
+import {getMissionsHandler, getMissionScenesHandler} from '../../services/missions.js'
 
 const router = new Router()
 

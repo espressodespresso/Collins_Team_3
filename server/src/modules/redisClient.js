@@ -1,5 +1,3 @@
-import { json } from "express"
-
 export default class RedisClient{
     constructor(client){
         this.client = client

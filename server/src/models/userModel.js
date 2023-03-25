@@ -1,14 +1,24 @@
 export default class UserModel{
-    constructor(cache){
-        this.cache = cache
+    constructor(container){
+        this.cache = container.get('RedisClient')
+        this.discoverClientFactory = container.get('discover.ClientFactory')
     }
 
-    async cacheUserTokens(userId, userTokens){
-        return this.cache.setJSON(userId, userTokens)
+    async signIn(username, password){
+        let status = false
+        const userTokens = await this.discoverClientFactory.signIn(username, password)
+        if(userTokens !== undefined){
+            await this.cache.setJSON(username, userTokens)
+            status = true
+        }else{
+            status = false
+        }
+        return status
     }
 
-    async getUserTokens(userId){
-        return this.cache.getJSON(userId)
+    async userDiscoverClient(username){
+        const userTokens = await this.cache.getJSON(username)
+        return await this.discoverClientFactory.createClient(userTokens)
     }
 
 }

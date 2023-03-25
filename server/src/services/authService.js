@@ -1,13 +1,18 @@
-class AuthService{
-    constructor(userModel, discoverClientFactory ,httpClient){
-        this.discoverClientFactory = discoverClientFactory
-        this.userModel = userModel
-        this.httpClient = httpClient
+import { createJWT } from "../modules/auth.js"
+
+export default class AuthService{
+    constructor(container){
+        this.userModel = container.get('models.User')
+        
     }
 
-    async login(username, password, userId){
-       const userTokens =  this.discoverClientFactory.authenticateDiscoverUser(username, password)
-       this.userModel.cacheUserTokens(userTokens)
+    async login(username, password){
+       const status = await this.userModel.signIn(username, password)
+       const result = {jwt: undefined}
+       if(status === true){
+            result.jwt = createJWT({username})
+       }
+       return result
     }
 
 }
