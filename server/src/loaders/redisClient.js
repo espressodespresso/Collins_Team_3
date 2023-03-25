@@ -6,5 +6,6 @@ export default async () => {
     client.on('error', err => console.log('Redis Client Error', err))
     await client.connect()
     const redisClient = new RedisClient(client)
+
     return redisClient
 }

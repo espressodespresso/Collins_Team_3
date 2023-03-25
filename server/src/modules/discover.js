@@ -8,6 +8,7 @@ const getTokens = (tokenResponse) => {
 export class discoverClientFactory{
 
     constructor(container){
+        this.container = container
         this.httpClient = container.get('discover.HttpClient')
     }
 
@@ -35,40 +36,17 @@ export class discoverClientFactory{
     }
 
     async createClient(userTokens){
-        return new DiscoverClient(userTokens)
-    }
-}
-
-export const signIn = async(username, password, httpClient) => {
-    const url = 'https://hallam.sci-toolset.com/api/v1/token'
-    const auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
-    const headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "*/*",
-        "Host": "hallam.sci-toolset",
-        "Authorization": auth
-    }
-    const body = `grant_type=password&username=${username}&password=${password}`
-
-    const response = await httpClient.post(url, headers, body)
-
-    if(response.status === 200){
-        const userTokens = getTokens(response)
-        return userTokens
-    }else if(response.status == 400 || response.status == 401){
-        return undefined
-    }else{
-        throw new Error("Server Failed")
+        return new DiscoverClient(userTokens, this.httpClient)
     }
 }
 
 class DiscoverClient{
-    constructor(userTokens, container){
+    constructor(userTokens, httpClient){
         this.userTokens = userTokens
         this.connected = true
         this.headers = this.generateHeaders()
         this.baseUrl = `https://hallam.sci-toolset.com`
-        this.httpClient = container.get('discover.HttpClient')
+        this.httpClient = httpClient
     }
 
     async get(endpoint){

@@ -1,6 +1,7 @@
 import {Router} from 'express'
 import {getSceneFramesHandler, getScenesHandler} from '../../services/scenes.js'
 import {getMissionsHandler, getMissionScenesHandler} from '../../services/missions.js'
+import { getScenes } from '../controllers/products.js'
 
 const router = new Router()
 
@@ -16,7 +17,7 @@ router.post('/scenes', getScenesHandler)
 //Retrieves all frames for a scene
 router.get('/scenes/:id', getSceneFramesHandler)
 
-router.get('/products/scenes', )
+router.get('/products/scenes', getScenes)
 
 
 export default router

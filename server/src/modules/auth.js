@@ -26,7 +26,6 @@ export const auth = (req, res, next) => {
     try{
         const user = jwt.verify(token, process.env.JWT_SECRET)
         req.user = user
-        req.accessToken = nodeCache.get(user.username).access_token
         next()
     }catch(e){
         console.error(e)
