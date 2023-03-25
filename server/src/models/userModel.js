@@ -1,4 +1,4 @@
-class UserModel{
+export default class UserModel{
     con***REMOVED***ructor(cache){
         this.cache = cache
     }
