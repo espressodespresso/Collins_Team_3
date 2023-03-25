@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { nodeCache } from '../db.js'
+import { nodeCache } from '../tempCache.js'
 
 export const createJWT = (user) => {
     const token = jwt.sign({username: user.username}, process.env.JWT_SECRET)

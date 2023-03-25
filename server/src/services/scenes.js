@@ -1,4 +1,4 @@
-import {nodeCache} from '../db.js'
+import {nodeCache} from '../tempCache.js'
 import {getScenes, getSceneFrames} from '../modules/discoverClient.js'
 
 const getScenesHandler = async(req, res) => {
