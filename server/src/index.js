@@ -8,10 +8,10 @@ dotenv.config()
 con***REMOVED*** CERT_DIR = new URL('../cert', import.meta.url).pathname
 con***REMOVED*** HTTP2_ENABLED = process.env.HTTP2_ENABLED
 
-con***REMOVED*** options =   {
+/*con***REMOVED*** options =   {
   key: fs.readFileSync(`${CERT_DIR}/server.key`),
   cert: fs.readFileSync(`${CERT_DIR}/server.cert`),
-}
+}*/
 
 con***REMOVED*** createServer = () => {
   if(HTTP2_ENABLED == 'false') {
