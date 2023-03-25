@@ -1,4 +1,4 @@
-import {nodeCache} from '../db.js'
+import {nodeCache} from '../tempCache.js'
 import {getMissions, getMissionScenes} from '../modules/discoverClient.js'
 
 con***REMOVED*** getMissionsHandler = async (req, res) => {

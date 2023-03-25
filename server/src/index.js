@@ -1,7 +1,7 @@
-import app from './server.js'
 import spdy from 'spdy'
 import fs from 'fs'
 import config from './config/index.js'
+import { createApp } from './loaders/index.js'
 
 con***REMOVED*** CERT_DIR = new URL('../cert', import.meta.url).pathname
 con***REMOVED*** HTTP2_ENABLED = config.http2Enabled
@@ -10,6 +10,8 @@ con***REMOVED*** options =   {
   key: fs.readFileSync(`${CERT_DIR}/server.key`),
   cert: fs.readFileSync(`${CERT_DIR}/server.cert`),
 }
+
+con***REMOVED*** app = await createApp()
 
 con***REMOVED*** createServer = () => {
   if(HTTP2_ENABLED == 'false') {
