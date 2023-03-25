@@ -4,7 +4,7 @@ import {loginHandler} from '../../services/users.js'
 import {body} from 'express-validator'
 import {auth} from "../../modules/auth.js";
 import { handleInputErrors } from '../../modules/inputValidation.js'; 
-import { login } from '../controllers/login.js'
+import { login } from '../controllers/users.js'
 
 
 con***REMOVED*** router = Router();

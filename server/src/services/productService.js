@@ -1,8 +1,20 @@
-export default class ProductService{
-    con***REMOVED***ructor(userModel, discoverClientFactory, productModelFactory, productSearchBuilder){
-        this.userModel = userModel.
-        this.discoverClient = discoverClientFactory.createDiscoverClient()
-        this.productModelFactory = productModelFactory.createProductModel(this.discoverClient)
+export default class ProductServiceFactory{
+    con***REMOVED***ructor(container){
+        this.userModel = container.get('models.User')
+        this.productModelFactory = container.get('models.ProductModelFactory')
+        this.productSearchBuilder = container.get('models.ProductSearchBuilder')
+    }
+
+    async createProductService(username){
+        con***REMOVED*** discoverClient = await this.userModel.userDiscoverClient(username)
+        con***REMOVED*** productModel = this.productModelFactory.createProductModel(discoverClient)
+        return new ProductService(productModel, this.productSearchBuilder)
+    }
+}
+
+class ProductService{
+    con***REMOVED***ructor(productModel, productSearchBuilder){
+        this.productModel = productModel
         this.productSearchBuilder = productSearchBuilder
     }
 
@@ -18,6 +30,7 @@ export default class ProductService{
     }
 
     async getScenes(){
+
         this.productSearchBuilder.setKeywords("")
         this.productSearchBuilder.setSize(100)
         this.productSearchBuilder.setPercolate(true)

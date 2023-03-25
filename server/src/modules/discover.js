@@ -8,6 +8,7 @@ con***REMOVED*** getTokens = (tokenResponse) => {
 export class discoverClientFactory{
 
     con***REMOVED***ructor(container){
+        this.container = container
         this.httpClient = container.get('discover.HttpClient')
     }
 
@@ -35,40 +36,17 @@ export class discoverClientFactory{
     }
 
     async createClient(userTokens){
-        return new DiscoverClient(userTokens)
-    }
-}
-
-export con***REMOVED*** signIn = async(username, password, httpClient) => {
-    con***REMOVED*** url = 'https://hallam.***REMOVED***.com/api/v1/token'
-    con***REMOVED*** auth = "Basic " + Buffer.from(process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET).toString('base64')
-    con***REMOVED*** headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "*/*",
-        "Ho***REMOVED***": "hallam.***REMOVED***",
-        "Authorization": auth
-    }
-    con***REMOVED*** body = `grant_type=password&username=${username}&password=${password}`
-
-    con***REMOVED*** response = await httpClient.po***REMOVED***(url, headers, body)
-
-    if(response.***REMOVED***atus === 200){
-        con***REMOVED*** userTokens = getTokens(response)
-        return userTokens
-    }else if(response.***REMOVED***atus == 400 || response.***REMOVED***atus == 401){
-        return undefined
-    }else{
-        throw new Error("Server Failed")
+        return new DiscoverClient(userTokens, this.httpClient)
     }
 }
 
 class DiscoverClient{
-    con***REMOVED***ructor(userTokens, container){
+    con***REMOVED***ructor(userTokens, httpClient){
         this.userTokens = userTokens
         this.connected = true
         this.headers = this.generateHeaders()
         this.baseUrl = `https://hallam.***REMOVED***.com`
-        this.httpClient = container.get('discover.HttpClient')
+        this.httpClient = httpClient
     }
 
     async get(endpoint){
