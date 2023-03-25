@@ -1,7 +1,8 @@
 export default class ProductService{
-    con***REMOVED***ructor(discoverClient, productModel, productSearchBuilder){
-        this.discoverClient = discoverClient
-        this.productModel = productModel
+    con***REMOVED***ructor(userModel, discoverClientFactory, productModelFactory, productSearchBuilder){
+        this.userModel = userModel.
+        this.discoverClient = discoverClientFactory.createDiscoverClient()
+        this.productModelFactory = productModelFactory.createProductModel(this.discoverClient)
         this.productSearchBuilder = productSearchBuilder
     }
 
