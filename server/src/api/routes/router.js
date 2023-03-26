@@ -1,6 +1,5 @@
 import {Router} from 'express'
 import apiRoutes from './api.js'
-import {loginHandler} from '../../services/users.js'
 import {body} from 'express-validator'
 import {auth} from "../../modules/auth.js";
 import { handleInputErrors } from '../../modules/inputValidation.js'; 
