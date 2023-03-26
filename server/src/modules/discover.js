@@ -5,7 +5,7 @@ const getTokens = (tokenResponse) => {
     }
 }
 
-export class discoverClientFactory{
+export class DiscoverClientFactory{
 
     constructor(container){
         this.container = container
