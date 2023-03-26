@@ -84,11 +84,13 @@ export class SceneLayer {
     private readonly _id: string;
     private readonly _parentid: string;
     private readonly _layer: Layer;
+    private _status: boolean;
 
     constructor(id: string, parentid: string, layer: Layer) {
         this._id = id;
         this._parentid = parentid;
         this._layer = layer;
+        this._status = true;
     }
 
     get id(): string {
@@ -101,6 +103,14 @@ export class SceneLayer {
 
     get layer(): Layer {
         return this._layer;
+    }
+
+    get status(): boolean {
+        return this._status;
+    }
+
+    set status(value: boolean) {
+        this._status = value;
     }
 }
 

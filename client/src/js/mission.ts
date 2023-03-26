@@ -47,7 +47,6 @@ export class Mission {
             scenes.push(new Scene(center, data.countrycode, data.firstFrameTime, coord
                 , data.id, data.name.split(" ")[1]));
         }
-        console.log(scenes)
         return scenes;
     }
 }
@@ -56,11 +55,13 @@ export class MissionLayerGroup {
     private readonly _id: string;
     private readonly _layerGroup: LayerGroup;
     private readonly _sceneLayers: SceneLayer[];
+    private _status: boolean;
 
     constructor(id: string, layerGroup: LayerGroup, sceneLayers: SceneLayer[]) {
         this._id = id;
         this._layerGroup = layerGroup;
         this._sceneLayers = sceneLayers;
+        this._status = true;
     }
 
     get id(): string {
@@ -75,7 +76,13 @@ export class MissionLayerGroup {
         return this._sceneLayers;
     }
 
+    get status(): boolean {
+        return this._status;
+    }
 
+    set status(value: boolean) {
+        this._status = value;
+    }
 }
 
 export async function getMissions(): Promise<Mission[]> {
