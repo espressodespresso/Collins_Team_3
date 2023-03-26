@@ -1,4 +1,14 @@
-export default class ProductModel{
+export default class ProductModelFactory{
+    con***REMOVED***ructor(){
+
+    }
+
+    createProductModel(discoverClient){
+        return new ProductModel(discoverClient)
+    }
+}
+
+class ProductModel{
     con***REMOVED***ructor(discoverClient){
         this.discoverClient = discoverClient
         this.searchHi***REMOVED***ory = []
