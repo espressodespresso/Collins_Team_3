@@ -1,12 +1,12 @@
 import {verifyCred} from "./services/auth";
 import {getMissions, Mission, MissionLayerGroup} from "./mission";
-import {getMissionSceneHandler} from "./services/reque***REMOVED***";
 import {FormatSidebar} from "./sidebar";
-import {SceneLayer} from "./scene";
-import {initLayers} from "./map";
+import {generateLayers, initLayers, Levels} from "./map";
+import {LayerGroup} from "leaflet";
 
 let missions: Mission[] = [];
 export let layers: MissionLayerGroup[] = [];
+let level: Levels;
 
 // Initialising Leaflet
 
@@ -39,30 +39,58 @@ map.on(L.Draw.Event.CREATED, function (e) {
 }).addTo(map);*/
 
 async function ***REMOVED***art() {
-    let ***REMOVED***atus = await verifyCred("***REMOVED***", "***REMOVED***")
+    await verifyCred("***REMOVED***", "***REMOVED***")
+        .then(async r => {
+            if(r) {
+                await getMissions()
+                    .then(async r => missions = r)
+                    .catch(() => console.error("Unable to load missions"));
+                await initLayers(missions)
+                    .then(async r => addLayersToMap(r, false))
+                    .catch(() => console.error("Unable to load layers"));
+                await FormatSidebar(missions, map)
+                    .then(loaded)
+                    .catch(() => console.error("Unable to load sidebar"));
+            } else {
+                console.error("Login details incorrect");
+            }
+        }).catch(e => console.error(e));
 }
 
 function loaded() {
     let spinner = document.getElementById("spinner-container");
     spinner.classLi***REMOVED***.add("invisible");
+    level = Levels.Marker;
 }
 
-
-***REMOVED***art()
-    .then(async () => missions = await getMissions())
-    .then(async () => {
-        let localLayers = await initLayers(missions);
-        console.log(localLayers + "h");
-        for(let i=0; i < localLayers.length; i++) {
-            let layer = localLayers[i];
-            layer.addTo(map);
+function addLayersToMap(localLayers: LayerGroup[], clear: boolean) {
+    if(clear) {
+        for(let i=0; i < layers.length; i++) {
+            map.removeLayer(layers[i].layerGroup);
         }
-    })
-    .then(async () => await FormatSidebar(missions, map))
-    .then(() => loaded())
-    .then(() => console.log(layers))
-    .then(() => map.eachLayer(function (e) {
-        console.log(e);
-    }))
-    /*.then(async () => await FormatSidebar(missions))
-    .then(() => loaded());*/
+    }
+    for(let i=0; i < localLayers.length; i++) {
+        let layer = localLayers[i];
+        layer.addTo(map);
+    }
+}
+
+map.on("zoomend", async function (e) {
+    let zoomLevel = map.getZoom();
+    if(zoomLevel > 6 && zoomLevel < 10 && level !== Levels.Footprint) {
+        level = Levels.Footprint;
+        let generatedLayers = await generateLayers(missions, level);
+        addLayersToMap(generatedLayers, true);
+    } else if(zoomLevel > 9 && level !== Levels.Frame) {
+        level = Levels.Frame;
+
+        let generatedLayers = await generateLayers(missions, level);
+        addLayersToMap(generatedLayers, true);
+    } else if(zoomLevel < 7 && level !== Levels.Marker) {
+        level = Levels.Marker;
+        let generatedLayers = await generateLayers(missions, level);
+        addLayersToMap(generatedLayers, true);
+    }
+})
+
+***REMOVED***art();
