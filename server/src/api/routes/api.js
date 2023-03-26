@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import {getSceneFramesHandler, getScenesHandler} from '../../services/scenes.js'
 import {getMissionsHandler, getMissionScenesHandler} from '../../services/missions.js'
-import { getScenes } from '../controllers/products.js'
+import { getScenes, getProducts } from '../controllers/products.js'
 
 con***REMOVED*** router = new Router()
 
@@ -18,6 +18,8 @@ router.po***REMOVED***('/scenes', getScenesHandler)
 router.get('/scenes/:id', getSceneFramesHandler)
 
 router.get('/products/scenes', getScenes)
+
+router.po***REMOVED***('/products', getProducts)
 
 
 export default router
