@@ -5,7 +5,7 @@ con***REMOVED*** getTokens = (tokenResponse) => {
     }
 }
 
-export class discoverClientFactory{
+export class DiscoverClientFactory{
 
     con***REMOVED***ructor(container){
         this.container = container

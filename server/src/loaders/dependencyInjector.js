@@ -1,9 +1,9 @@
 import { Container } from 'typedi'
-import { discoverClientFactory } from '../modules/discover.js'
+import { DiscoverClientFactory } from '../modules/discover.js'
 import { HttpClient } from '../modules/httpClient.js'
 import https from 'https'
 
-export default (redisClient, models, services) => {
+export default (sessionCache, models, services) => {
     try{
 
         //https agent for discover API
@@ -15,8 +15,8 @@ export default (redisClient, models, services) => {
         
 
         Container.set('discover.HttpClient', new HttpClient(agent, Container))
-        Container.set('discover.ClientFactory', new discoverClientFactory(Container))
-        Container.set('RedisClient', redisClient)
+        Container.set('discover.ClientFactory', new DiscoverClientFactory(Container))
+        Container.set('SessionCache', sessionCache)
 
         models.forEach(m => {
             Container.set(`models.${m.name}`, m.model(Container))

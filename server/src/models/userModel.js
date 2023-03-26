@@ -1,6 +1,6 @@
 export default class UserModel{
     con***REMOVED***ructor(container){
-        this.cache = container.get('RedisClient')
+        this.cache = container.get('SessionCache')
         this.discoverClientFactory = container.get('discover.ClientFactory')
     }
 
@@ -18,7 +18,11 @@ export default class UserModel{
 
     async userDiscoverClient(username){
         con***REMOVED*** userTokens = await this.cache.getJSON(username)
-        return await this.discoverClientFactory.createClient(userTokens)
+        if(userTokens !== undefined){
+            return await this.discoverClientFactory.createClient(userTokens)
+        }else{
+            return undefined
+        }
     }
 
 }
