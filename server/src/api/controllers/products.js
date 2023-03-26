@@ -8,3 +8,12 @@ export const getScenes = async (req, res) => {
 
     res.json({data: result})
 }
+
+export const getProducts = async(req, res) => {
+    const productServiceFactory = Container.get('services.ProductServiceFactory')
+    const productService = await productServiceFactory.createProductService(req.user.username)
+
+    const result = await productService.getProducts(req.body.products)
+
+    res.json({data: result})
+}
