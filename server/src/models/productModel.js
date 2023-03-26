@@ -1,4 +1,14 @@
-export default class ProductModel{
+export default class ProductModelFactory{
+    constructor(){
+
+    }
+
+    createProductModel(discoverClient){
+        return new ProductModel(discoverClient)
+    }
+}
+
+class ProductModel{
     constructor(discoverClient){
         this.discoverClient = discoverClient
         this.searchHistory = []
