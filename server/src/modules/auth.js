@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { nodeCache } from '../tempCache.js'
 
 export con***REMOVED*** createJWT = (user) => {
     con***REMOVED*** token = jwt.sign({username: user.username}, process.env.JWT_SECRET)
