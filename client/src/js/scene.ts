@@ -1,4 +1,5 @@
 import {GeoJSON, Layer} from "leaflet";
+import {layers} from "./index";
 
 export class Scene {
     private readonly _center: number[];
@@ -81,10 +82,12 @@ export class Scene {
 
 export class SceneLayer {
     private readonly _id: string;
+    private readonly _parentid: string;
     private readonly _layer: Layer;
 
-    constructor(id: string, layer: Layer) {
+    constructor(id: string, parentid: string, layer: Layer) {
         this._id = id;
+        this._parentid = parentid;
         this._layer = layer;
     }
 
@@ -92,8 +95,36 @@ export class SceneLayer {
         return this._id;
     }
 
+    get parentid(): string {
+        return this._parentid;
+    }
+
     get layer(): Layer {
         return this._layer;
     }
 }
 
+export async function getSceneLayerByIO(id: string, sceneLayers: SceneLayer[]): Promise<SceneLayer> {
+    for(let i=0; i < sceneLayers.length; i++) {
+        let layer = sceneLayers[i];
+        if(layer.id === id) {
+            return layer;
+        }
+    }
+
+    return null;
+}
+
+export async function getSceneLayerByID(id: string): Promise<SceneLayer> {
+    for(let i=0; i < layers.length; i++) {
+        let sceneLayers = layers[i].sceneLayers;
+        for(let j=0; j < sceneLayers.length; j++) {
+            let sceneLayer = sceneLayers[j];
+            if(sceneLayer.id === id) {
+                return sceneLayer;
+            }
+        }
+    }
+
+    return null;
+}
