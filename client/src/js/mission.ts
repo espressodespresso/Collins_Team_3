@@ -1,6 +1,7 @@
 import {getMissionSceneHandler, getMissionsHandler} from "./services/reque***REMOVED***";
 import {Scene, SceneLayer} from "./scene";
 import {LayerGroup} from "leaflet";
+import {layers} from "./index";
 
 export class Mission {
     private readonly _name: ***REMOVED***ring;
@@ -73,6 +74,8 @@ export class MissionLayerGroup {
     get sceneLayers(): SceneLayer[] {
         return this._sceneLayers;
     }
+
+
 }
 
 export async function getMissions(): Promise<Mission[]> {
@@ -87,6 +90,17 @@ export async function getMissions(): Promise<Mission[]> {
     }
 
     return missions
+}
+
+export async function getMissionLayerByID(id: ***REMOVED***ring): Promise<MissionLayerGroup> {
+    for(let i=0; i < layers.length; i++) {
+        let layer = layers[i];
+        if(layer.id === id) {
+            return layer;
+        }
+    }
+
+    return null;
 }
 
 /*export async function getMissionScenes(id: ***REMOVED***ring): Promise<Scene[]> {

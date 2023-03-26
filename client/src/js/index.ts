@@ -47,9 +47,9 @@ function loaded() {
     spinner.classLi***REMOVED***.add("invisible");
 }
 
+
 ***REMOVED***art()
     .then(async () => missions = await getMissions())
-    .then(async r => await FormatSidebar(r))
     .then(async () => {
         let localLayers = await initLayers(missions);
         console.log(localLayers + "h");
@@ -58,7 +58,11 @@ function loaded() {
             layer.addTo(map);
         }
     })
+    .then(async () => await FormatSidebar(missions, map))
     .then(() => loaded())
     .then(() => console.log(layers))
+    .then(() => map.eachLayer(function (e) {
+        console.log(e);
+    }))
     /*.then(async () => await FormatSidebar(missions))
     .then(() => loaded());*/
