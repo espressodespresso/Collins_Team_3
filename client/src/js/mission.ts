@@ -47,7 +47,6 @@ export class Mission {
             scenes.push(new Scene(center, data.countrycode, data.fir***REMOVED***FrameTime, coord
                 , data.id, data.name.split(" ")[1]));
         }
-        console.log(scenes)
         return scenes;
     }
 }
@@ -56,11 +55,13 @@ export class MissionLayerGroup {
     private readonly _id: ***REMOVED***ring;
     private readonly _layerGroup: LayerGroup;
     private readonly _sceneLayers: SceneLayer[];
+    private _***REMOVED***atus: boolean;
 
     con***REMOVED***ructor(id: ***REMOVED***ring, layerGroup: LayerGroup, sceneLayers: SceneLayer[]) {
         this._id = id;
         this._layerGroup = layerGroup;
         this._sceneLayers = sceneLayers;
+        this._***REMOVED***atus = true;
     }
 
     get id(): ***REMOVED***ring {
@@ -75,7 +76,13 @@ export class MissionLayerGroup {
         return this._sceneLayers;
     }
 
+    get ***REMOVED***atus(): boolean {
+        return this._***REMOVED***atus;
+    }
 
+    set ***REMOVED***atus(value: boolean) {
+        this._***REMOVED***atus = value;
+    }
 }
 
 export async function getMissions(): Promise<Mission[]> {

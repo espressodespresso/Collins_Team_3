@@ -84,11 +84,13 @@ export class SceneLayer {
     private readonly _id: ***REMOVED***ring;
     private readonly _parentid: ***REMOVED***ring;
     private readonly _layer: Layer;
+    private _***REMOVED***atus: boolean;
 
     con***REMOVED***ructor(id: ***REMOVED***ring, parentid: ***REMOVED***ring, layer: Layer) {
         this._id = id;
         this._parentid = parentid;
         this._layer = layer;
+        this._***REMOVED***atus = true;
     }
 
     get id(): ***REMOVED***ring {
@@ -101,6 +103,14 @@ export class SceneLayer {
 
     get layer(): Layer {
         return this._layer;
+    }
+
+    get ***REMOVED***atus(): boolean {
+        return this._***REMOVED***atus;
+    }
+
+    set ***REMOVED***atus(value: boolean) {
+        this._***REMOVED***atus = value;
     }
 }
 

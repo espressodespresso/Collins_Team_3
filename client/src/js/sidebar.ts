@@ -1,12 +1,9 @@
 import {getMissionLayerByID, Mission} from "./mission";
-import {layers} from "./index";
-import {LayerGroup} from "leaflet";
 import {getSceneLayerByID} from "./scene";
 
 export async function FormatSidebar(missions: Mission[], map): Promise<void> {
     for(let i=0; i < missions.length; i++) {
         let mission = missions[i];
-        console.log(mission)
         let div = document.createElement("div");
         div.classLi***REMOVED***.add("btn-group", "dropend");
 
@@ -40,11 +37,13 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
                 let sceneLayer = await getSceneLayerByID(e.target.id);
                 let missionLayer = await getMissionLayerByID(sceneLayer.parentid);
                 let layer = sceneLayer.layer;
-                if(missionLayer.layerGroup.hasLayer(layer)) {
-                    missionLayer.layerGroup.removeLayer(layer);
-                    console.log("hey i ran :)")
+                let layerGroup = missionLayer.layerGroup;
+                if(sceneLayer.***REMOVED***atus === true) {
+                    layerGroup.removeLayer(layer);
+                    sceneLayer.***REMOVED***atus = false;
                 } else {
-                    missionLayer.layerGroup.addLayer(layer);
+                    layerGroup.addLayer(layer);
+                    sceneLayer.***REMOVED***atus = true;
                 }
             })
             li.appendChild(a);
@@ -62,11 +61,14 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
         a.addEventLi***REMOVED***ener("click", async function (e: Event & {
             target: HTMLAnchorElement
         }) {
-            let sceneLayer = (await getMissionLayerByID(e.target.id)).layerGroup;
-            if(map.hasLayer(sceneLayer)) {
-                map.removeLayer(sceneLayer);
+            let missionLayer = await getMissionLayerByID(e.target.id);
+            let layterGroup = missionLayer.layerGroup;
+            if(missionLayer.***REMOVED***atus === true) {
+                map.removeLayer(layterGroup);
+                missionLayer.***REMOVED***atus = false;
             } else {
-                map.addLayer(sceneLayer);
+                map.addLayer(layterGroup);
+                missionLayer.***REMOVED***atus = true;
             }
         })
         li.appendChild(a);
