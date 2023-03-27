@@ -4,10 +4,10 @@ export default class MissionServiceFactory{
         this.missionModelFactory = container.get('models.MissionModelFactory')
     }
 
-    async createProductService(username){
+    async createMissionService(username){
         const discoverClient = await this.userModel.userDiscoverClient(username)
-        const productModel = this.missionModelFactory.createProductModel(discoverClient)
-        return new MissionModel(missionModel)
+        const missionModel = this.missionModelFactory.createMissionModel(discoverClient)
+        return new MissionService(missionModel)
     }
 }
 

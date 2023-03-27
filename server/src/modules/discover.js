@@ -24,7 +24,6 @@ export class DiscoverClientFactory{
         const body = `grant_type=password&username=${username}&password=${password}`
     
         const response = await this.httpClient.post(url, headers, body)
-        
         if(response.status === 200){
             const userTokens = getTokens(response)
             return userTokens

@@ -3,7 +3,7 @@ export default class MissionModelFactory{
 
     }
 
-    createProductModel(discoverClient){
+    createMissionModel(discoverClient){
         return new MissionModel(discoverClient)
     }
 }
@@ -15,7 +15,7 @@ class MissionModel{
 
     async getMissions(){
         const endpoint = `/discover/api/v1/missionfeed/missions`
-        const response = await discoverClient.get(endpoint)
+        const response = await this.discoverClient.get(endpoint)
         return response
     }
 
