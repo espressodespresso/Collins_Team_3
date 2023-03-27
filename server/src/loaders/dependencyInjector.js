@@ -1,6 +1,6 @@
 import { Container } from 'typedi'
 import { DiscoverClientFactory } from '../modules/discover.js'
-import { HttpClient } from '../modules/httpClient.js'
+import HttpClient from '../modules/httpClient.js'
 import https from 'https'
 
 export default (sessionCache, models, services) => {

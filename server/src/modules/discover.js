@@ -81,7 +81,7 @@ class DiscoverClient{
                 if(this.isConnected()){
                     result = await callerMethod.call(this, ...callerArgs)
                 }else{
-                    result = {status: 401, data: {message: "Client couldn't reauthenticate"}}
+                    throw new Error("Server failed")
                 }
                 break
             default:
