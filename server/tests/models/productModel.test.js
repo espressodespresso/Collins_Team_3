@@ -32,7 +32,6 @@ describe("ProductModel.get(li***REMOVED***OfProductIds)", () => {
     te***REMOVED***("An empty li***REMOVED*** of productIds returns a 404 response", async () => {
         con***REMOVED*** productIds = []
         con***REMOVED*** products = await productModel.get(productIds)
-        console.log(products)
         expect(products.***REMOVED***atus).toBe(404)
         expect(products.data).toHaveProperty('message')
     })
@@ -66,29 +65,28 @@ describe("ProductModel.get(li***REMOVED***OfProductIds)", () => {
         expect(products.***REMOVED***atus).toBe(400)
         expect(products.data).toHaveProperty('message')
     })
+    
+})
 
-    describe("ProductModel.search(productSearch)", () => {
-        te***REMOVED***("A valid product search returns a li***REMOVED*** of productIds", async () => {
-            productSearchBuilder.setKeywords("")
-            productSearchBuilder.setSize(10)
-            productSearchBuilder.setPercolate(false)
-            con***REMOVED*** productSearch = productSearchBuilder.getProductSearch()
+describe("ProductModel.search(productSearch)", () => {
+    te***REMOVED***("A valid product search returns a li***REMOVED*** of productIds", async () => {
+        productSearchBuilder.setKeywords("")
+        productSearchBuilder.setSize(10)
+        productSearchBuilder.setPercolate(false)
+        con***REMOVED*** productSearch = productSearchBuilder.getProductSearch()
 
-            con***REMOVED*** response = await productModel.search(productSearch)
-            expect(response.***REMOVED***atus).toBe(200)
-            expect(response.data).toHaveProperty('results')
-        })
+        con***REMOVED*** response = await productModel.search(productSearch)
+        expect(response.***REMOVED***atus).toBe(200)
+        expect(response.data).toHaveProperty('results')
+    })
 
-        te***REMOVED***("A search that matches no products returns an empty li***REMOVED*** of results", async () => {
-            productSearchBuilder.setKeywords("idnenienrneineo0r4000nnskdsndskn")
-            con***REMOVED*** productSearch = productSearchBuilder.getProductSearch()
-            
-            con***REMOVED*** response = await productModel.search(productSearch)
-            expect(response.***REMOVED***atus).toBe(200)
-            expect(response.data.results.searchresults.length).toBe(0)
-
-        })
+    te***REMOVED***("A search that matches no products returns an empty li***REMOVED*** of results", async () => {
+        productSearchBuilder.setKeywords("idnenienrneineo0r4000nnskdsndskn")
+        con***REMOVED*** productSearch = productSearchBuilder.getProductSearch()
         
+        con***REMOVED*** response = await productModel.search(productSearch)
+        expect(response.***REMOVED***atus).toBe(200)
+        expect(response.data.results.searchresults.length).toBe(0)
     })
 })
 

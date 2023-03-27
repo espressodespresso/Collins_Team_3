@@ -19,18 +19,20 @@ class ProductService{
     }
 
     async getProducts(productIds){
-        let result = undefined
+        con***REMOVED*** result = {}
         con***REMOVED*** response = await this.productModel.get(productIds)
-        if(response.***REMOVED***atus == 200){
-            result = response.data
-        }else{
-            result = {message: "error"}
+        result.***REMOVED***atus = response.***REMOVED***atus
+        if(result.***REMOVED***atus == 200){
+            result.data = response.data
+        }else if(result.***REMOVED***atus == 400){
+            result.data = {message: "Li***REMOVED*** contains invalid product identifiers"}
+        }else if(result.***REMOVED***atus == 404){
+            result.data = {message: "Li***REMOVED*** does not contain any product Ids"}
         }
         return result
     }
 
     async getScenes(){
-
         this.productSearchBuilder.setKeywords("")
         this.productSearchBuilder.setSize(200)
         this.productSearchBuilder.setPercolate(true)
@@ -40,11 +42,9 @@ class ProductService{
 
         con***REMOVED*** response = await this.productModel.search(productSearch)
 
-        let result = {}
         if(response.***REMOVED***atus == 200){
-            result = response.data
+            return response
         }
-        return result
     }
 
 }
