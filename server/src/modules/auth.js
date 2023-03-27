@@ -27,7 +27,6 @@ export const auth = (req, res, next) => {
         req.user = user
         next()
     }catch(e){
-        console.error(e)
         res.status(401)
         res.send("Invalid token")
         return

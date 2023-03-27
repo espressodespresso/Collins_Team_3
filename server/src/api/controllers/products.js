@@ -6,7 +6,7 @@ export const getScenes = async (req, res) => {
 
     const result = await productService.getScenes()
 
-    res.json({data: result})
+    res.json({data: result.data})
 }
 
 export const getProducts = async(req, res) => {
@@ -15,5 +15,5 @@ export const getProducts = async(req, res) => {
 
     const result = await productService.getProducts(req.body.products)
 
-    res.json({data: result})
+    res.status(result.status).json({data: result.data})
 }

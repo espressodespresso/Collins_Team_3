@@ -71,6 +71,6 @@ describe("ProductService.getScenes()", () => {
     test("Returns a list of scene product Ids for all scenes in the discover instance", async () => {
         const scenes = await productService.getScenes()
         expect(scenes.status).toBe(200)
-        expect(Array.isArray(scenes.data.results.searchresults)).toBe(true)
+        expect(scenes.data.every(e => e.hasOwnProperty('id'))).toBe(true)
     })
 })

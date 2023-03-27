@@ -43,7 +43,7 @@ class ProductService{
         const response = await this.productModel.search(productSearch)
 
         if(response.status == 200){
-            return response
+            return {status: 200, data: response.data.results.searchresults}
         }
     }
 
