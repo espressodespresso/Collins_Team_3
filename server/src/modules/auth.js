@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { nodeCache } from '../db.js'
 
 export con***REMOVED*** createJWT = (user) => {
     con***REMOVED*** token = jwt.sign({username: user.username}, process.env.JWT_SECRET)
@@ -26,10 +25,8 @@ export con***REMOVED*** auth = (req, res, next) => {
     try{
         con***REMOVED*** user = jwt.verify(token, process.env.JWT_SECRET)
         req.user = user
-        req.accessToken = nodeCache.get(user.username).access_token
         next()
     }catch(e){
-        console.error(e)
         res.***REMOVED***atus(401)
         res.send("Invalid token")
         return

@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "te***REMOVED***": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose --coverage",
+    "te***REMOVED***-script": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose",
+    "te***REMOVED***": "docker compose run --service-ports web sh -c 'npm run te***REMOVED***-script'",
+    "***REMOVED***art": "NODE_ENV=production node src/index.js",
     "dev": "node src/index.js",
     "generate-cert": "sh ./scripts/generate-cert.sh"
   },
@@ -14,7 +16,7 @@
     "url": "git+https://github.com/espressodespresso/Collins_Team_3.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "ISC", 
   "bugs": {
     "url": "https://github.com/espressodespresso/Collins_Team_3/issues"
   },
@@ -34,8 +36,10 @@
     "node-cache": "^5.1.2",
     "node-fetch": "^3.3.0",
     "redis": "^4.6.5",
+    "reflect-metadata": "^0.1.13",
     "spdy": "^4.0.2",
     "ssl-root-cas": "^1.3.1",
+    "typedi": "^0.10.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
