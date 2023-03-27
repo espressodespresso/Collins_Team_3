@@ -1,8 +1,9 @@
+import {LayerGroup, Map, TileLayer, FeatureGroup, Draw, Control} from "leaflet";
+import "leaflet-draw";
 import {verifyCred} from "./services/auth";
 import {getMissions, Mission, MissionLayerGroup} from "./mission";
 import {FormatSidebar} from "./sidebar";
 import {generateLayers, initLayers, Levels} from "./map";
-import {LayerGroup} from "leaflet";
 
 let missions: Mission[] = [];
 export let layers: MissionLayerGroup[] = [];
@@ -10,35 +11,34 @@ let level: Levels;
 
 // Initialising Leaflet
 
-let map = L.map('map', {
+let map = new Map('map', {
     zoomControl: false,
     center: [54.247468, -4.438477],
     zoom: 6
-});
+})
 
-L.tileLayer('https://tile.open***REMOVED***reetmap.org/{z}/{x}/{y}.png', {
+new TileLayer('https://tile.open***REMOVED***reetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.open***REMOVED***reetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+}).addTo(map)
 
-// Initialising Leaflet.Draw
-let drawControl = new L.Control.Draw({
-    position: "bottomright",
-});
-map.addControl(drawControl)
+map.addControl(new Control.Draw({
+    position: "bottomright"
+}));
 
-let drawFeatures = L.featureGroup();
+let drawFeatures = new FeatureGroup();
 map.addLayer(drawFeatures);
 
-map.on(L.Draw.Event.CREATED, function (e) {
+map.on(Draw.Event.CREATED, function (e) {
     let layer = e.layer;
-    drawFeatures.addLayer(layer)
+    drawFeatures.addLayer(layer);
 })
+
 
 /*(L.Control as any).geocoder({
     defaultMarkCode: true
 }).addTo(map);*/
 
-async function ***REMOVED***art() {
+async function ***REMOVED***art(): Promise<void> {
     await verifyCred("***REMOVED***", ***REMOVED***)
         .then(async r => {
             if(r) {
@@ -61,6 +61,7 @@ function loaded() {
     let spinner = document.getElementById("spinner-container");
     spinner.classLi***REMOVED***.add("invisible");
     level = Levels.Marker;
+    console.log("This is a tesyt")
 }
 
 function addLayersToMap(localLayers: LayerGroup[], clear: boolean) {
