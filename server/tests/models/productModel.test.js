@@ -32,7 +32,6 @@ describe("ProductModel.get(listOfProductIds)", () => {
     test("An empty list of productIds returns a 404 response", async () => {
         const productIds = []
         const products = await productModel.get(productIds)
-        console.log(products)
         expect(products.status).toBe(404)
         expect(products.data).toHaveProperty('message')
     })
@@ -66,29 +65,28 @@ describe("ProductModel.get(listOfProductIds)", () => {
         expect(products.status).toBe(400)
         expect(products.data).toHaveProperty('message')
     })
+    
+})
 
-    describe("ProductModel.search(productSearch)", () => {
-        test("A valid product search returns a list of productIds", async () => {
-            productSearchBuilder.setKeywords("")
-            productSearchBuilder.setSize(10)
-            productSearchBuilder.setPercolate(false)
-            const productSearch = productSearchBuilder.getProductSearch()
+describe("ProductModel.search(productSearch)", () => {
+    test("A valid product search returns a list of productIds", async () => {
+        productSearchBuilder.setKeywords("")
+        productSearchBuilder.setSize(10)
+        productSearchBuilder.setPercolate(false)
+        const productSearch = productSearchBuilder.getProductSearch()
 
-            const response = await productModel.search(productSearch)
-            expect(response.status).toBe(200)
-            expect(response.data).toHaveProperty('results')
-        })
+        const response = await productModel.search(productSearch)
+        expect(response.status).toBe(200)
+        expect(response.data).toHaveProperty('results')
+    })
 
-        test("A search that matches no products returns an empty list of results", async () => {
-            productSearchBuilder.setKeywords("idnenienrneineo0r4000nnskdsndskn")
-            const productSearch = productSearchBuilder.getProductSearch()
-            
-            const response = await productModel.search(productSearch)
-            expect(response.status).toBe(200)
-            expect(response.data.results.searchresults.length).toBe(0)
-
-        })
+    test("A search that matches no products returns an empty list of results", async () => {
+        productSearchBuilder.setKeywords("idnenienrneineo0r4000nnskdsndskn")
+        const productSearch = productSearchBuilder.getProductSearch()
         
+        const response = await productModel.search(productSearch)
+        expect(response.status).toBe(200)
+        expect(response.data.results.searchresults.length).toBe(0)
     })
 })
 

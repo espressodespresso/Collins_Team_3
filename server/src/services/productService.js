@@ -19,18 +19,20 @@ class ProductService{
     }
 
     async getProducts(productIds){
-        let result = undefined
+        const result = {}
         const response = await this.productModel.get(productIds)
-        if(response.status == 200){
-            result = response.data
-        }else{
-            result = {message: "error"}
+        result.status = response.status
+        if(result.status == 200){
+            result.data = response.data
+        }else if(result.status == 400){
+            result.data = {message: "List contains invalid product identifiers"}
+        }else if(result.status == 404){
+            result.data = {message: "List does not contain any product Ids"}
         }
         return result
     }
 
     async getScenes(){
-
         this.productSearchBuilder.setKeywords("")
         this.productSearchBuilder.setSize(200)
         this.productSearchBuilder.setPercolate(true)
@@ -40,11 +42,9 @@ class ProductService{
 
         const response = await this.productModel.search(productSearch)
 
-        let result = {}
         if(response.status == 200){
-            result = response.data
+            return response
         }
-        return result
     }
 
 }
