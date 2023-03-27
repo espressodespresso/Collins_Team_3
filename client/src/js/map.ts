@@ -1,9 +1,9 @@
+import {LayerGroup, GeoJSON} from "leaflet";
 import {getMissionLayerByID, Mission, MissionLayerGroup} from "./mission";
 import {getSceneLayerByID, SceneLayer} from "./scene";
 import {layers} from "./index";
-import {LayerGroup} from "leaflet";
 
-export enum Levels {
+ export enum Levels {
     Marker,
     Footprint,
     Frame
@@ -19,12 +19,12 @@ export async function initLayers(missions: Mission[]): Promise<LayerGroup[]> {
         for (let j=0; j < scenes.length; j++) {
             let scene = scenes[j];
             //footprints.push(new L.GeoJSON((await scene.GeoJSONFootprint() as any)))
-            let layer = new L.GeoJSON((await scene.GeoJSONCenter() as any));
+            let layer = new GeoJSON((await scene.GeoJSONCenter() as any));
             localLayers.push(layer)
             localSceneLayers.push(new SceneLayer(scene.id, mission.id, layer));
         }
 
-        let layerGroup = L.layerGroup(localLayers);
+        let layerGroup = new LayerGroup(localLayers);
         layers.push(new MissionLayerGroup(mission.id, layerGroup, localSceneLayers));
         localGroupLayers.push(layerGroup);
     }
@@ -54,10 +54,10 @@ export async function generateLayers(missions: Mission[], level: Levels): Promis
             let layer;
             switch (level) {
                 case Levels.Marker:
-                    layer = new L.GeoJSON((await scene.GeoJSONCenter() as any));
+                    layer = new GeoJSON((await scene.GeoJSONCenter() as any));
                     break;
                 case Levels.Footprint:
-                    layer = new L.GeoJSON((await scene.GeoJSONFootprint() as any));
+                    layer = new GeoJSON((await scene.GeoJSONFootprint() as any));
                     break;
                 case Levels.Frame:
                     break;
@@ -67,7 +67,7 @@ export async function generateLayers(missions: Mission[], level: Levels): Promis
             localSceneLayer.status = sceneStatus;
             localSceneLayers.push(localSceneLayer);
         }
-        let layerGroup = L.layerGroup(localLayers);
+        let layerGroup = new LayerGroup(localLayers);
         let localMissionLayerGroup = new MissionLayerGroup(mission.id, layerGroup, localSceneLayers);
         localMissionLayerGroup.status = missionStatus;
         layers.push(localMissionLayerGroup);
