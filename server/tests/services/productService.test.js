@@ -7,7 +7,6 @@ beforeAll(async () => {
     injectDependencies()
     const productServiceFactory = Container.get('services.ProductServiceFactory')
     const userModel = Container.get('models.User')
-    const productModelFactory = Container.get('models.ProductModelFactory')
     const status = await userModel.signIn(config.username, config.password)
     productService = await productServiceFactory.createProductService(config.username)
 })

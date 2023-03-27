@@ -5,6 +5,8 @@ import ProductModelFactory from '../../src/models/productModel.js'
 import ProductSearchBuilder from '../../src/models/ProductSearch.js'
 import AuthService from '../../src/services/authService.js'
 import ProductServiceFactory from '../../src/services/productService.js'
+import MissionModelFactory from '../../src/models/missionModel.js'
+import MissionServiceFactory from '../../src/services/missionService.js'
 
 export default () => {
 
@@ -26,6 +28,11 @@ export default () => {
         model: (container) => new ProductSearchBuilder(container)
     }
 
+    const missionModelFactory = {
+        name: "MissionModelFactory",
+        model: (container) => new MissionModelFactory()
+    }
+
     const authService = {
         name: "Auth",
         service: (container) => new AuthService(container)
@@ -36,8 +43,13 @@ export default () => {
         service: (container) => new ProductServiceFactory(container)
     }
 
-    const models = [userModel, productModelFactory, productSearchBuilder]
-    const services = [authService, productServiceFactory]
+    const missionerviceFactory = {
+        name: "MissionServiceFactory",
+        service: (container) => new MissionServiceFactory(container)
+    }
+
+    const models = [userModel, productModelFactory, productSearchBuilder, missionModelFactory]
+    const services = [authService, productServiceFactory, missionerviceFactory]
 
     dependencyInjector(localCache, models, services)
 }
