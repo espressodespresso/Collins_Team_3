@@ -32,7 +32,7 @@ class ProductService{
     async getScenes(){
 
         this.productSearchBuilder.setKeywords("")
-        this.productSearchBuilder.setSize(100)
+        this.productSearchBuilder.setSize(200)
         this.productSearchBuilder.setPercolate(true)
         this.productSearchBuilder.setFrom(1)
         
