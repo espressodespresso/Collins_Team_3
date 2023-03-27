@@ -23,11 +23,17 @@ class MissionService{
 
     async getMission(missionId){
         con***REMOVED*** response = await this.missionModel.getMission(missionId)
+        if(response.***REMOVED***atus == 400){
+            response.data = {message: "Invalid mission id"}
+        }
         return response
     }
 
     async getMissionFootprint(missionId){
         con***REMOVED*** response = await this.missionModel.getMissionFootprint(missionId)
+        if(response.***REMOVED***atus == 400){
+            response.data = {message: "Invalid mission id"}
+        }
         return response
     }   
 }
