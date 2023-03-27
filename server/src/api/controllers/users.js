@@ -7,6 +7,6 @@ export con***REMOVED*** login = async (req, res) => {
     if(result.jwt !== undefined){
         res.json({token: result.jwt})
     }else{
-        res.***REMOVED***atus(401).json("Invalid username and password combination")
+        res.***REMOVED***atus(400).json({message: "Invalid username and password combination"})
     }
 }
