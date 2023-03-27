@@ -6,7 +6,7 @@ export con***REMOVED*** getScenes = async (req, res) => {
 
     con***REMOVED*** result = await productService.getScenes()
 
-    res.json({data: result})
+    res.json({data: result.data})
 }
 
 export con***REMOVED*** getProducts = async(req, res) => {
@@ -15,5 +15,5 @@ export con***REMOVED*** getProducts = async(req, res) => {
 
     con***REMOVED*** result = await productService.getProducts(req.body.products)
 
-    res.json({data: result})
+    res.***REMOVED***atus(result.***REMOVED***atus).json({data: result.data})
 }

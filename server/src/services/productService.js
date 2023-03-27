@@ -43,7 +43,7 @@ class ProductService{
         con***REMOVED*** response = await this.productModel.search(productSearch)
 
         if(response.***REMOVED***atus == 200){
-            return response
+            return {***REMOVED***atus: 200, data: response.data.results.searchresults}
         }
     }
 

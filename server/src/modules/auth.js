@@ -27,7 +27,6 @@ export con***REMOVED*** auth = (req, res, next) => {
         req.user = user
         next()
     }catch(e){
-        console.error(e)
         res.***REMOVED***atus(401)
         res.send("Invalid token")
         return

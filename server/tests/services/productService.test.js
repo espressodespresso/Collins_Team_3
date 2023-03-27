@@ -71,6 +71,6 @@ describe("ProductService.getScenes()", () => {
     te***REMOVED***("Returns a li***REMOVED*** of scene product Ids for all scenes in the discover in***REMOVED***ance", async () => {
         con***REMOVED*** scenes = await productService.getScenes()
         expect(scenes.***REMOVED***atus).toBe(200)
-        expect(Array.isArray(scenes.data.results.searchresults)).toBe(true)
+        expect(scenes.data.every(e => e.hasOwnProperty('id'))).toBe(true)
     })
 })

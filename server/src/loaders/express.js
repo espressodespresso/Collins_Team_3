@@ -1,7 +1,6 @@
 import express from 'express'
 import router from '../api/routes/router.js'
 import cors from 'cors'
-import {Container} from 'typedi'
 
 con***REMOVED*** app = express()
 
