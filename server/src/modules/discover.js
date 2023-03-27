@@ -24,7 +24,6 @@ export class DiscoverClientFactory{
         con***REMOVED*** body = `grant_type=password&username=${username}&password=${password}`
     
         con***REMOVED*** response = await this.httpClient.po***REMOVED***(url, headers, body)
-        
         if(response.***REMOVED***atus === 200){
             con***REMOVED*** userTokens = getTokens(response)
             return userTokens
