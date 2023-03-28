@@ -1,6 +1,16 @@
 {
   "testEnvironment": "node",
   "roots": ["tests"],
-  "moduleDirectories": ["node_modules", "src"],
-  "transform": {}
+  "transform": {
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.mjs$": "babel-jest"
+  },
+  "transformIgnorePatterns": [
+    "src/node_modules/(?!@hokify)"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "mjs"
+  ],
+  "moduleDirectories": ["node_modules", "src"]
 }
