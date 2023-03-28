@@ -1,9 +1,10 @@
-import {LayerGroup, Map, TileLayer, FeatureGroup, Draw, Control} from "leaflet";
+import {Map, TileLayer, FeatureGroup, Draw, Control, Polygon, GeoJSON} from "leaflet";
 import "leaflet-draw";
 import {verifyCred} from "./services/auth";
 import {getMissions, Mission, MissionLayerGroup} from "./mission";
 import {FormatSidebar} from "./sidebar";
-import {generateLayers, initLayers, Levels} from "./map";
+import {addLayersToMap, calculateDrawnCoverage, clearMapLayers, generateLayers, initLayers, Levels} from "./map";
+import {polygon} from "@turf/helpers";
 
 let missions: Mission[] = [];
 export let layers: MissionLayerGroup[] = [];
@@ -28,9 +29,20 @@ map.addControl(new Control.Draw({
 let drawFeatures = new FeatureGroup();
 map.addLayer(drawFeatures);
 
-map.on(Draw.Event.CREATED, function (e) {
+map.on(Draw.Event.CREATED, async function (e) {
     let layer = e.layer;
-    drawFeatures.addLayer(layer);
+    let drawGeoJSON = layer.toGeoJSON();
+    switch (drawGeoJSON.geometry.type) {
+        case "Polygon":
+            let calculatedFeature: GeoJSON.Feature = await calculateDrawnCoverage(polygon(drawGeoJSON.geometry.coordinates), missions);
+            let calculatedLayer = new GeoJSON(calculatedFeature);
+            calculatedLayer.setStyle({color: '#ffc107'})
+            await clearMapLayers(map);
+            drawFeatures.addLayer(calculatedLayer);
+            layer.setStyle({color: '#5c5c5c'})
+            drawFeatures.addLayer(layer);
+            break;
+    }
 })
 
 
@@ -46,7 +58,7 @@ async function start(): Promise<void> {
                     .then(async r => missions = r)
                     .catch(() => console.error("Unable to load missions"));
                 await initLayers(missions)
-                    .then(async r => addLayersToMap(r, false))
+                    .then(async r => addLayersToMap(r, false, map))
                     .catch(() => console.error("Unable to load layers"));
                 await FormatSidebar(missions, map)
                     .then(loaded)
@@ -61,19 +73,6 @@ function loaded() {
     let spinner = document.getElementById("spinner-container");
     spinner.classList.add("invisible");
     level = Levels.Marker;
-    console.log("This is a tesyt")
-}
-
-function addLayersToMap(localLayers: LayerGroup[], clear: boolean) {
-    if(clear) {
-        for(let i=0; i < layers.length; i++) {
-            map.removeLayer(layers[i].layerGroup);
-        }
-    }
-    for(let i=0; i < localLayers.length; i++) {
-        let layer = localLayers[i];
-        layer.addTo(map);
-    }
 }
 
 map.on("zoomend", async function (e) {
@@ -81,16 +80,15 @@ map.on("zoomend", async function (e) {
     if(zoomLevel > 6 && zoomLevel < 10 && level !== Levels.Footprint) {
         level = Levels.Footprint;
         let generatedLayers = await generateLayers(missions, level);
-        addLayersToMap(generatedLayers, true);
+        addLayersToMap(generatedLayers, true, map);
     } else if(zoomLevel > 9 && level !== Levels.Frame) {
         level = Levels.Frame;
-
         let generatedLayers = await generateLayers(missions, level);
-        addLayersToMap(generatedLayers, true);
+        addLayersToMap(generatedLayers, true, map);
     } else if(zoomLevel < 7 && level !== Levels.Marker) {
         level = Levels.Marker;
         let generatedLayers = await generateLayers(missions, level);
-        addLayersToMap(generatedLayers, true);
+        addLayersToMap(generatedLayers, true, map);
     }
 })
 

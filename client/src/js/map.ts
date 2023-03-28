@@ -1,7 +1,10 @@
-import {LayerGroup, GeoJSON} from "leaflet";
+import {LayerGroup, GeoJSON, Map} from "leaflet";
 import {getMissionLayerByID, Mission, MissionLayerGroup} from "./mission";
 import {getSceneLayerByID, SceneLayer} from "./scene";
 import {layers} from "./index";
+import {Feature, MultiPolygon, multiPolygon, polygon, Polygon} from "@turf/helpers";
+import intersect from "@turf/intersect";
+import area from "@turf/area";
 
  export enum Levels {
     Marker,
@@ -58,6 +61,7 @@ export async function generateLayers(missions: Mission[], level: Levels): Promis
                     break;
                 case Levels.Footprint:
                     layer = new GeoJSON((await scene.GeoJSONFootprint() as any));
+                    layer.setStyle({color: '#5c5c5c'})
                     break;
                 case Levels.Frame:
                     break;
@@ -75,4 +79,53 @@ export async function generateLayers(missions: Mission[], level: Levels): Promis
     }
 
     return localGroupLayers;
+}
+
+export async function calculateDrawnCoverage(drawnFeature: Feature<Polygon>, missions: Mission[])
+    : Promise<Feature<Polygon | MultiPolygon>> {
+     let positions = [];
+     for(let i=0; i < missions.length; i++) {
+         let scenes = missions[i].scenes;
+         for(let j=0; j < scenes.length; j++) {
+             let sceneFootprint = scenes[j].footprint;
+             positions.push(polygon(sceneFootprint).geometry.coordinates);
+         }
+     }
+     let intersection = intersect(drawnFeature, multiPolygon(positions));
+     if(intersection !== null) {
+         let drawnFeatureArea = area(drawnFeature);
+         switch (intersection.geometry.type) {
+             case "Polygon":
+                 let intersectedArea = area(intersection);
+                 console.log("Percentage coverage : " + (100 / drawnFeatureArea) * intersectedArea);
+                 return intersection;
+             case "MultiPolygon":
+                 let intersectingTotalArea: number = 0;
+                 let intersectionCoords = intersection.geometry.coordinates;
+                 for(let i=0; i < intersectionCoords.length; i++) {
+                     intersectingTotalArea += area(polygon(intersectionCoords[i]));
+                 }
+                 console.log("Percentage coverage : " + (100 / drawnFeatureArea) * intersectingTotalArea);
+                 return intersection;
+         }
+     }
+}
+
+export async function clearMapLayers(map: Map): Promise<void> {
+     for(let i=0; i < layers.length; i++) {
+         let missionLayer = layers[i];
+         map.removeLayer(missionLayer.layerGroup);
+     }
+}
+
+export function addLayersToMap(localLayers: LayerGroup[], clear: boolean, map: Map) {
+     if(clear) {
+        for(let i=0; i < layers.length; i++) {
+            map.removeLayer(layers[i].layerGroup);
+        }
+     }
+     for(let i=0; i < localLayers.length; i++) {
+         let layer = localLayers[i];
+         layer.addTo(map);
+     }
 }
