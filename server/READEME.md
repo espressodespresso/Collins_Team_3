@@ -2,45 +2,32 @@ API ENDPOINTS
 -------------
 /POST login\
 Body: {username: <string>, password: <string>}\
-Description: 200 response sends a jwt to be used in requests to /api endpoints\\
+Description: 200 response sends a jwt to be used in requests to /api endpoints\
   
-/GET api/products/scenes
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends a list of all the scene ids for a user
+/GET api/products/scenes\
+Headers: Authorization : Bearer <token>\
+Description: Sends a list of all the scene ids for a user\
 
-/POST /api/products
-Headers:
-  Authorization : Bearer <token>
-Body:
-  {products: <list<productIds>>}
-Description:
-  Sends a list of all products corresponding with the productIds
+/POST /api/products\
+Headers: Authorization : Bearer <token>\
+Body: {products: <list<productIds>>}\
+Description: Sends a list of all products corresponding with the productIds\
 
-/GET /api/missions
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends a list of all the mission ids for a user
+/GET /api/missions\
+Headers: Authorization : Bearer <token>\
+Description: Sends a list of all the mission ids for a user\
   
-/GET /api/missions/<missionId>
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends the metadata for the mission with the given missionid
+/GET /api/missions/<missionId>\
+Headers: Authorization : Bearer <token>\
+Description: Sends the metadata for the mission with the given missionid\
   
-/GET /api/missions/<missionId>
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends the metadata for the mission with the given missionid
+/GET /api/missions/<missionId>\
+Headers: Authorization : Bearer <token>\
+Description: Sends the metadata for the mission with the given missionid\
   
-/GET /api/missions/<missionId>/footrpint
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends the footprint for the mission with the given missionid
+/GET /api/missions/<missionId>/footrpint\
+Headers: Authorization : Bearer <token>\
+Description: Sends the footprint for the mission with the given missionid\
 
 Loading Sequence
 1. /POST login
