@@ -8,7 +8,11 @@ export default class UserModel{
         let status = false
         const userTokens = await this.discoverClientFactory.signIn(username, password)
         if(userTokens !== undefined){
-            await this.cache.setJSON(username, userTokens)
+            const userData = {
+                tokens: userTokens,
+                products: []
+            }
+            await this.cache.setJSON(username, userData)
             status = true
         }else{
             status = false
@@ -17,12 +21,33 @@ export default class UserModel{
     }
 
     async userDiscoverClient(username){
-        const userTokens = await this.cache.getJSON(username)
-        if(userTokens !== undefined){
-            return await this.discoverClientFactory.createClient(userTokens)
+        const userData = await this.cache.getJSON(username)
+        if(userData !== undefined){
+            return await this.discoverClientFactory.createClient(userData.tokens)
         }else{
             return undefined
         }
     }
 
+    async setUserProducts(username, products){
+        let status = undefined
+        const userData = await this.cache.getJSON(username)
+        if(userData !== undefined){
+            userData.products = products
+            await this.cache.setJSON(username, userData)
+            status = true
+        }else{
+            status = false
+        }
+        return status
+    }
+
+    async getUserProducts(username){
+        const userData = await this.cache.getJSON(username)
+        if(userData !== undefined){
+            return userData.products
+        }else{
+            return undefined
+        }
+    }
 }
