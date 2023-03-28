@@ -138,5 +138,61 @@ describe("/api", () => {
             expect(responseInvalidValue.statusCode).toBe(400)
         })
     })
+
+    describe("/api/missions", () => {
+        test("/GET 200 response sends a list of misions", async () => {
+            const response = await request(app).get("/api/missions").set('Authorization', `Bearer ${jwt}`)
+            expect(response.statusCode).toBe(200)
+            expect(response._body.data).toHaveProperty("missions")
+        })
+    })
+
+    describe("/api/missions/:id", () => {
+        test("/GET 200 response sends the metadata for the mission with the id in the url", async () => {
+            const missionId = "339723da-cc2e-4279-8fb2-8339a971b096"
+            const response = await request(app).get(`/api/missions/${missionId}`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.statusCode).toBe(200)
+            expect(response._body.data).toHaveProperty("id", `${missionId}`)
+        })
+
+        test("/GET 500 response if missionId is in correct format but is invalid", async () => {
+            const missionId = "339723da-cc2e-4279-8fb4-8339a971b087"
+            const response = await request(app).get(`/api/missions/${missionId}`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.statusCode).toBe(500)
+            expect(response._body.data).toHaveProperty("message")
+        })
+
+        test("/GET 400 response if missionId is invalid", async () => {
+            const missionId = "339723djdsjiieiseijeij"
+            const response = await request(app).get(`/api/missions/${missionId}`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.statusCode).toBe(400)
+            expect(response._body.data).toHaveProperty("message")
+        })
+    })
+
+    describe("/api/missions/:id/footrpint", () => {
+        test("/GET 200 response sends the footprint for the mission with the id in the url", async () => {
+            const missionId = "339723da-cc2e-4279-8fb2-8339a971b096"
+            const response = await request(app).get(`/api/missions/${missionId}/footprint`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.statusCode).toBe(200)
+            expect(response._body.data).toHaveProperty("coordinates")
+        })
+
+        test("/GET 404 response if missionId is in correct format but is invalid", async () => {
+            const missionId = "339723da-cc2e-4279-8fb4-8339a971b087"
+            const response = await request(app).get(`/api/missions/${missionId}/footprint`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.statusCode).toBe(404)
+            expect(response._body.data).toHaveProperty("message")
+        })
+
+        test("/GET 400 response if missionId is invalid", async () => {
+            const missionId = "339723djdsjiieiseijeij"
+            const response = await request(app).get(`/api/missions/${missionId}/footprint`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.statusCode).toBe(400)
+            expect(response._body.data).toHaveProperty("message")
+        })
+    })
+
     
 })
+
