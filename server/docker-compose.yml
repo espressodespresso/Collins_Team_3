@@ -8,6 +8,7 @@ services:
       - /home/node/server/node_modules
     environment:
       - REDIS_URL=redis://redis_db:6379
+      - MONGO_URL=mongodb://mongo_db:27017
     links:
       - redis_db
     
@@ -18,9 +19,19 @@ services:
     command: "redis-server"
     volumes:
       - cache:/data
+  
+  mongo_db:
+    image: 
+      mongo:6
+    ports: 
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data
 
 volumes:
   cache:
+    driver: local
+  mongo_data:
     driver: local
 
 
