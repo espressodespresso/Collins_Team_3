@@ -6,6 +6,8 @@ import ProductModelFactory from '../models/productModel.js'
 import ProductSearchBuilder from '../models/ProductSearch.js'
 import AuthService from '../services/authService.js'
 import ProductServiceFactory from '../services/productService.js'
+import MissionModelFactory from '../models/missionModel.js'
+import MissionServiceFactory from '../services/missionService.js'
 
 
 export con***REMOVED*** createApp = async () => {
@@ -27,6 +29,11 @@ export con***REMOVED*** createApp = async () => {
         model: (container) => new ProductSearchBuilder(container)
     }
 
+    con***REMOVED*** missionModelFactory = {
+        name: "MissionModelFactory",
+        model: (container) => new MissionModelFactory(container)
+    }
+
     con***REMOVED*** authService = {
         name: "Auth",
         service: (container) => new AuthService(container)
@@ -37,8 +44,13 @@ export con***REMOVED*** createApp = async () => {
         service: (container) => new ProductServiceFactory(container)
     }
 
-    con***REMOVED*** models = [userModel, productModelFactory, productSearchBuilder]
-    con***REMOVED*** services = [authService, productServiceFactory]
+    con***REMOVED*** missionServiceFactory = {
+        name: "MissionServiceFactory",
+        service: (container) => new MissionServiceFactory(container)
+    }
+
+    con***REMOVED*** models = [userModel, productModelFactory, productSearchBuilder, missionModelFactory]
+    con***REMOVED*** services = [authService, productServiceFactory, missionServiceFactory]
 
     dependencyInjectorLoader(redisClient, models, services)
 
