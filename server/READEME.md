@@ -2,45 +2,32 @@ API ENDPOINTS
 -------------
 /POST login\
 Body: {username: <***REMOVED***ring>, password: <***REMOVED***ring>}\
-Description: 200 response sends a jwt to be used in reque***REMOVED***s to /api endpoints\\
+Description: 200 response sends a jwt to be used in reque***REMOVED***s to /api endpoints\
   
-/GET api/products/scenes
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends a li***REMOVED*** of all the scene ids for a user
+/GET api/products/scenes\
+Headers: Authorization : Bearer <token>\
+Description: Sends a li***REMOVED*** of all the scene ids for a user\
 
-/POST /api/products
-Headers:
-  Authorization : Bearer <token>
-Body:
-  {products: <li***REMOVED***<productIds>>}
-Description:
-  Sends a li***REMOVED*** of all products corresponding with the productIds
+/POST /api/products\
+Headers: Authorization : Bearer <token>\
+Body: {products: <li***REMOVED***<productIds>>}\
+Description: Sends a li***REMOVED*** of all products corresponding with the productIds\
 
-/GET /api/missions
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends a li***REMOVED*** of all the mission ids for a user
+/GET /api/missions\
+Headers: Authorization : Bearer <token>\
+Description: Sends a li***REMOVED*** of all the mission ids for a user\
   
-/GET /api/missions/<missionId>
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends the metadata for the mission with the given missionid
+/GET /api/missions/<missionId>\
+Headers: Authorization : Bearer <token>\
+Description: Sends the metadata for the mission with the given missionid\
   
-/GET /api/missions/<missionId>
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends the metadata for the mission with the given missionid
+/GET /api/missions/<missionId>\
+Headers: Authorization : Bearer <token>\
+Description: Sends the metadata for the mission with the given missionid\
   
-/GET /api/missions/<missionId>/footrpint
-Headers:
-  Authorization : Bearer <token>
-Description:
-  Sends the footprint for the mission with the given missionid
+/GET /api/missions/<missionId>/footrpint\
+Headers: Authorization : Bearer <token>\
+Description: Sends the footprint for the mission with the given missionid\
 
 Loading Sequence
 1. /POST login
