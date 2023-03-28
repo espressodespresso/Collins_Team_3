@@ -3,7 +3,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="***REMOVED***ylesheet" href="../node_modules/boot***REMOVED***rap/di***REMOVED***/css/boot***REMOVED***rap.min.css">
   <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet/di***REMOVED***/leaflet.css">
-  <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet-control-geocoder/di***REMOVED***/Control.Geocoder.css">
   <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet-draw/di***REMOVED***/leaflet.draw.css">
   <link rel="***REMOVED***ylesheet" href="***REMOVED***yles.css">
 </head>
@@ -25,8 +24,8 @@
       <div class="col-sm-1 col-xs-2 text-center text-light">
         <h2 class="pt-2">Collins</h2>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="">
-          <button class="btn btn-warning" type="submit">Search</button>
+          <input id="search-input" type="text" class="form-control" placeholder="">
+          <button id= "search-button" class="btn btn-warning" type="submit">Search</button>
         </div>
         <ul id="sidebar" class="li***REMOVED***-group li***REMOVED***-group-flush pt-4">
         </ul>
@@ -35,10 +34,9 @@
     </div>
   </div>
 
-  <!--<script>let exports = {};</script>-->
+  <script>let exports = {};</script>
   <script src="../node_modules/boot***REMOVED***rap/di***REMOVED***/js/boot***REMOVED***rap.bundle.min.js"></script>
   <script src="../node_modules/leaflet/di***REMOVED***/leaflet.js"></script>
-  <script src="../node_modules/leaflet-control-geocoder/di***REMOVED***/Control.Geocoder.min.js"></script>
   <script src="../node_modules/leaflet-draw/di***REMOVED***/leaflet.draw-src.js"></script>
   <script src="js/index.min.js"></script>
 </body>
