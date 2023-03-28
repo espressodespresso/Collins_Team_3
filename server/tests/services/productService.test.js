@@ -7,7 +7,6 @@ beforeAll(async () => {
     injectDependencies()
     con***REMOVED*** productServiceFactory = Container.get('services.ProductServiceFactory')
     con***REMOVED*** userModel = Container.get('models.User')
-    con***REMOVED*** productModelFactory = Container.get('models.ProductModelFactory')
     con***REMOVED*** ***REMOVED***atus = await userModel.signIn(config.username, config.password)
     productService = await productServiceFactory.createProductService(config.username)
 })

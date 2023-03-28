@@ -138,5 +138,61 @@ describe("/api", () => {
             expect(responseInvalidValue.***REMOVED***atusCode).toBe(400)
         })
     })
+
+    describe("/api/missions", () => {
+        te***REMOVED***("/GET 200 response sends a li***REMOVED*** of misions", async () => {
+            con***REMOVED*** response = await reque***REMOVED***(app).get("/api/missions").set('Authorization', `Bearer ${jwt}`)
+            expect(response.***REMOVED***atusCode).toBe(200)
+            expect(response._body.data).toHaveProperty("missions")
+        })
+    })
+
+    describe("/api/missions/:id", () => {
+        te***REMOVED***("/GET 200 response sends the metadata for the mission with the id in the url", async () => {
+            con***REMOVED*** missionId = "339723da-cc2e-4279-8fb2-8339a971b096"
+            con***REMOVED*** response = await reque***REMOVED***(app).get(`/api/missions/${missionId}`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.***REMOVED***atusCode).toBe(200)
+            expect(response._body.data).toHaveProperty("id", `${missionId}`)
+        })
+
+        te***REMOVED***("/GET 500 response if missionId is in correct format but is invalid", async () => {
+            con***REMOVED*** missionId = "339723da-cc2e-4279-8fb4-8339a971b087"
+            con***REMOVED*** response = await reque***REMOVED***(app).get(`/api/missions/${missionId}`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.***REMOVED***atusCode).toBe(500)
+            expect(response._body.data).toHaveProperty("message")
+        })
+
+        te***REMOVED***("/GET 400 response if missionId is invalid", async () => {
+            con***REMOVED*** missionId = "339723djdsjiieiseijeij"
+            con***REMOVED*** response = await reque***REMOVED***(app).get(`/api/missions/${missionId}`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.***REMOVED***atusCode).toBe(400)
+            expect(response._body.data).toHaveProperty("message")
+        })
+    })
+
+    describe("/api/missions/:id/footrpint", () => {
+        te***REMOVED***("/GET 200 response sends the footprint for the mission with the id in the url", async () => {
+            con***REMOVED*** missionId = "339723da-cc2e-4279-8fb2-8339a971b096"
+            con***REMOVED*** response = await reque***REMOVED***(app).get(`/api/missions/${missionId}/footprint`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.***REMOVED***atusCode).toBe(200)
+            expect(response._body.data).toHaveProperty("coordinates")
+        })
+
+        te***REMOVED***("/GET 404 response if missionId is in correct format but is invalid", async () => {
+            con***REMOVED*** missionId = "339723da-cc2e-4279-8fb4-8339a971b087"
+            con***REMOVED*** response = await reque***REMOVED***(app).get(`/api/missions/${missionId}/footprint`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.***REMOVED***atusCode).toBe(404)
+            expect(response._body.data).toHaveProperty("message")
+        })
+
+        te***REMOVED***("/GET 400 response if missionId is invalid", async () => {
+            con***REMOVED*** missionId = "339723djdsjiieiseijeij"
+            con***REMOVED*** response = await reque***REMOVED***(app).get(`/api/missions/${missionId}/footprint`).set('Authorization', `Bearer ${jwt}`)
+            expect(response.***REMOVED***atusCode).toBe(400)
+            expect(response._body.data).toHaveProperty("message")
+        })
+    })
+
     
 })
+
