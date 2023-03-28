@@ -1,13 +1,8 @@
 API ENDPOINTS
 -------------
-/POST login
-\
-  Body:
-    \
-    {username: <***REMOVED***ring>, password: <***REMOVED***ring>}
-  Description:
-    \
-    200 response sends a jwt to be used in reque***REMOVED***s to /api endpoints
+/POST login\
+Body: {username: <***REMOVED***ring>, password: <***REMOVED***ring>}\
+Description: 200 response sends a jwt to be used in reque***REMOVED***s to /api endpoints\\
   
 /GET api/products/scenes
 Headers:
