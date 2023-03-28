@@ -1,5 +1,8 @@
 import {getMissionLayerByID, Mission} from "./mission";
 import {getSceneLayerByID} from "./scene";
+import {NominatimJS} from "@owsas/nominatim-js";
+import {GeoJSON, LayerGroup, Map} from "leaflet";
+import {addLayersToMap} from "./map";
 
 export async function FormatSidebar(missions: Mission[], map): Promise<void> {
     for(let i=0; i < missions.length; i++) {
@@ -77,4 +80,64 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
 
         document.getElementById("sidebar").append(div);
     }
+}
+
+export async function initSearchEvent(map: Map) {
+    document.getElementById("search-button").addEventListener("click"
+        , async function(e: Event & { target: HTMLButtonElement}) {
+        let input: HTMLInputElement = document.getElementById("search-input") as HTMLInputElement;
+
+        NominatimJS.search({
+            q: input.value
+        }).then(r => {
+            //console.log(bbox(r[0].toGeoJSON()));
+            //addLayersToMap(new LayerGroup(nominatimRToGeoJSON(r)), false, map);
+        }).catch(e => {
+            console.error(e);
+        })
+    })
+}
+
+function nominatimRToGeoJSON(r: []) {
+    let geoJSON = [];
+    for(let i=0; i < r.length; i++) {
+        let item = JSON.parse(JSON.stringify(r[i]));
+        console.log(item);
+        let coord = [];
+        coord.push(item.lat);
+        coord.push(item.lon);
+        let data: GeoJSON.Feature = {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: coord
+            },
+            properties: {
+                display_name: item.display_name,
+                license: item.license
+            }
+        }
+        geoJSON.push(new GeoJSON(data as any));
+    }
+
+    /*for(let i=0; i < r.length; i++) {
+        let item:  = r[i]
+        let coord = [];
+        coord.push(item.lat);
+        coord.push(item.lon);
+        let data: GeoJSON.Feature = {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: coord
+            },
+            properties: {
+                display_name: item.display_name,
+                license: item.license
+            }
+        }
+        test.push(data);
+    }*/
+    console.log(GeoJSON);
+    return geoJSON;
 }

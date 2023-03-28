@@ -1,4 +1,4 @@
-import {LayerGroup, GeoJSON, Map} from "leaflet";
+import {LayerGroup, GeoJSON, Map, Draw, FeatureGroup} from "leaflet";
 import {getMissionLayerByID, Mission, MissionLayerGroup} from "./mission";
 import {getSceneLayerByID, SceneLayer} from "./scene";
 import {layers} from "./index";
@@ -128,4 +128,41 @@ export function addLayersToMap(localLayers: LayerGroup[], clear: boolean, map: M
          let layer = localLayers[i];
          layer.addTo(map);
      }
+}
+
+export function initZoomEvent(map: Map, level: Levels, missions: Mission[]): void {
+    map.on("zoomend", async function (e) {
+        let zoomLevel = map.getZoom();
+        if(zoomLevel > 6 && zoomLevel < 10 && level !== Levels.Footprint) {
+            level = Levels.Footprint;
+            let generatedLayers = await generateLayers(missions, level);
+            addLayersToMap(generatedLayers, true, map);
+        } else if(zoomLevel > 9 && level !== Levels.Frame) {
+            level = Levels.Frame;
+            let generatedLayers = await generateLayers(missions, level);
+            addLayersToMap(generatedLayers, true, map);
+        } else if(zoomLevel < 7 && level !== Levels.Marker) {
+            level = Levels.Marker;
+            let generatedLayers = await generateLayers(missions, level);
+            addLayersToMap(generatedLayers, true, map);
+        }
+    })
+}
+
+export function initDrawEvent(map: Map, drawFeatures: FeatureGroup, missions: Mission[]): void {
+    map.on(Draw.Event.CREATED, async function (e) {
+        let layer = e.layer;
+        let drawGeoJSON = layer.toGeoJSON();
+        switch (drawGeoJSON.geometry.type) {
+            case "Polygon":
+                let calculatedFeature: GeoJSON.Feature = await calculateDrawnCoverage(polygon(drawGeoJSON.geometry.coordinates), missions);
+                let calculatedLayer = new GeoJSON(calculatedFeature);
+                calculatedLayer.setStyle({color: '#ffc107'})
+                await clearMapLayers(map);
+                drawFeatures.addLayer(calculatedLayer);
+                layer.setStyle({color: '#5c5c5c'})
+                drawFeatures.addLayer(layer);
+                break;
+        }
+    })
 }
