@@ -25,6 +25,7 @@ class ProductService{
         con***REMOVED*** response = await this.productModel.get(productIds)
         result.***REMOVED***atus = response.***REMOVED***atus
         if(result.***REMOVED***atus == 200){
+            await this.userModel.setUserProducts(this.username, response.data.map(p => p.product))
             result.data = response.data
         }else if(result.***REMOVED***atus == 400){
             result.data = {message: "Li***REMOVED*** contains invalid product identifiers"}
@@ -44,11 +45,8 @@ class ProductService{
 
         con***REMOVED*** response = await this.productModel.search(productSearch)
 
-        console.log(response)
-
         if(response.***REMOVED***atus == 200){
             con***REMOVED*** data = response.data.results.searchresults
-            await this.userModel.setUserProducts(this.username, data.map(e => e.product))
             return {***REMOVED***atus: 200, data}
         }
     }
@@ -59,13 +57,17 @@ class ProductService{
         con***REMOVED*** deletedProducts = []
 
         con***REMOVED*** response = await this.getScenes()
-        con***REMOVED*** refreshedProductIds = response.map(e => e.id)
+        con***REMOVED*** refreshedProductIds = response.data.map(e => e.id)
 
-        con***REMOVED*** currentUserProducts = this.userModel.getUserProducts()
-        con***REMOVED*** refreshedProducts = await this.getProducts(refreshedProductIds)
+        con***REMOVED*** currentUserProducts = await this.userModel.getUserProducts(this.username)
+        con***REMOVED*** refreshedProductsRes = await this.getProducts(refreshedProductIds)
 
-        con***REMOVED*** currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p])))
-        con***REMOVED*** refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id. p.product]))
+        con***REMOVED*** refreshedProducts = refreshedProductsRes.data
+
+        console.log(refreshedProducts)
+
+        con***REMOVED*** currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p.result])))
+        con***REMOVED*** refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id, p.product.result]))
     
         refreshedProducts.forEach(p => {
             con***REMOVED*** refreshedProduct = p.product
@@ -76,7 +78,7 @@ class ProductService{
                 }
             }else{
                 userProducts.push(refreshedProduct)
-                modified.push(refreshedProduct)
+                modifiedProducts.push(refreshedProduct)
             }
         })
 
@@ -89,7 +91,7 @@ class ProductService{
             }
         })
 
-        await this.userModel.setUserProducts(username, userProducts)
+        await this.userModel.setUserProducts(this.username, userProducts)
         return {modifiedProducts, deletedProducts}
     }
 
