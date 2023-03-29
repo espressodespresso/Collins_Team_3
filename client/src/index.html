@@ -4,6 +4,8 @@
   <link rel="***REMOVED***ylesheet" href="../node_modules/boot***REMOVED***rap/di***REMOVED***/css/boot***REMOVED***rap.min.css">
   <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet/di***REMOVED***/leaflet.css">
   <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet-draw/di***REMOVED***/leaflet.draw.css">
+  <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.css">
+  <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.Default.css">
   <link rel="***REMOVED***ylesheet" href="***REMOVED***yles.css">
 </head>
 <body>
@@ -19,16 +21,21 @@
   <div id="spinner-container" class="clearfix position-absolute top-50 ***REMOVED***art-50 fixed-top">
     <div id="spinner" class="spinner-border text-warning" role="***REMOVED***atus"></div>
   </div>
+  <div id="dropdown-container" class="li***REMOVED***-group position-fixed fixed-top clearfix"></div>
   <div class="container-fluid">
     <div class="row bg-dark">
-      <div class="col-sm-1 col-xs-2 text-center text-light">
+      <div id="sidebar-container" class="col-lg-1 col-md-1 col-sm-1 text-center text-light">
         <h2 class="pt-2">Collins</h2>
         <div class="input-group">
           <input id="search-input" type="text" class="form-control" placeholder="">
-          <button id= "search-button" class="btn btn-warning" type="submit">Search</button>
+          <button id="search-button" class="btn btn-warning" type="submit">
+            <span id="search-span" class="fa-solid fa-magnifying-glass"></span>
+          </button>
         </div>
-        <ul id="sidebar" class="li***REMOVED***-group li***REMOVED***-group-flush pt-4">
-        </ul>
+        <div class="pt-2">
+          <ul id="sidebar" class="li***REMOVED***-group li***REMOVED***-group-flush">
+          </ul>
+        </div>
       </div>
       <div id="map" class="col m-0 p-0 w-auto"></div>
     </div>
@@ -38,5 +45,8 @@
   <script src="../node_modules/boot***REMOVED***rap/di***REMOVED***/js/boot***REMOVED***rap.bundle.min.js"></script>
   <script src="../node_modules/leaflet/di***REMOVED***/leaflet.js"></script>
   <script src="../node_modules/leaflet-draw/di***REMOVED***/leaflet.draw-src.js"></script>
+  <script src="../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/leaflet.markerclu***REMOVED***er.js"></script>
+  <script src="../node_modules/leaflet.markerclu***REMOVED***er.layersupport/di***REMOVED***/leaflet.markerclu***REMOVED***er.layersupport.js"></script>
+  <script src="https://kit.fontawesome.com/e87034706c.js" crossorigin="anonymous"></script>
   <script src="js/index.min.js"></script>
 </body>

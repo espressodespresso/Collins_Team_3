@@ -1,8 +1,32 @@
 #map{
 	height: 100vh;
+	/*-webkit-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+	background-color: #ccc;*/
 }
 
 #spinner {
 	width: 5rem;
 	height: 5rem;
+}
+
+#sidebar-container {
+	min-width: min-content;
+}
+
+#sidebar {
+	max-height: 85vh;
+	overflow-y: scroll;
+	-ms-overflow-***REMOVED***yle: none;
+	scrollbar-width: none;
+}
+
+#sidebar::-webkit-scrollbar {
+	display: none;
+}
+
+#dropdown-container {
+	max-width: fit-content;
+	pointer-events: none;
 }
