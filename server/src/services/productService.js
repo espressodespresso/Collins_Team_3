@@ -25,6 +25,7 @@ class ProductService{
         const response = await this.productModel.get(productIds)
         result.status = response.status
         if(result.status == 200){
+            await this.userModel.setUserProducts(this.username, response.data.map(p => p.product))
             result.data = response.data
         }else if(result.status == 400){
             result.data = {message: "List contains invalid product identifiers"}
@@ -44,11 +45,8 @@ class ProductService{
 
         const response = await this.productModel.search(productSearch)
 
-        console.log(response)
-
         if(response.status == 200){
             const data = response.data.results.searchresults
-            await this.userModel.setUserProducts(this.username, data.map(e => e.product))
             return {status: 200, data}
         }
     }
@@ -59,13 +57,17 @@ class ProductService{
         const deletedProducts = []
 
         const response = await this.getScenes()
-        const refreshedProductIds = response.map(e => e.id)
+        const refreshedProductIds = response.data.map(e => e.id)
 
-        const currentUserProducts = this.userModel.getUserProducts()
-        const refreshedProducts = await this.getProducts(refreshedProductIds)
+        const currentUserProducts = await this.userModel.getUserProducts(this.username)
+        const refreshedProductsRes = await this.getProducts(refreshedProductIds)
 
-        const currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p])))
-        const refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id. p.product]))
+        const refreshedProducts = refreshedProductsRes.data
+
+        console.log(refreshedProducts)
+
+        const currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p.result])))
+        const refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id, p.product.result]))
     
         refreshedProducts.forEach(p => {
             const refreshedProduct = p.product
@@ -76,7 +78,7 @@ class ProductService{
                 }
             }else{
                 userProducts.push(refreshedProduct)
-                modified.push(refreshedProduct)
+                modifiedProducts.push(refreshedProduct)
             }
         })
 
@@ -89,7 +91,7 @@ class ProductService{
             }
         })
 
-        await this.userModel.setUserProducts(username, userProducts)
+        await this.userModel.setUserProducts(this.username, userProducts)
         return {modifiedProducts, deletedProducts}
     }
 
