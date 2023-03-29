@@ -75,8 +75,20 @@ describe("ProductService.getProducts(productIds)", () => {
 describe("ProductService.getScenes()", () => {
     te***REMOVED***("Returns a li***REMOVED*** of scene product Ids for all scenes in the discover in***REMOVED***ance", async () => {
         con***REMOVED*** scenes = await productService.getScenes()
+        con***REMOVED*** sceneIds = scenes.data.map(f => f.id)
+        con***REMOVED*** sceneProducts = await productService.getProducts(sceneIds)
         expect(scenes.***REMOVED***atus).toBe(200)
-        expect(scenes.data.every(e => e.hasOwnProperty('id'))).toBe(true)
+        expect(sceneProducts.data.every(p => p.product.result.documentType === "scene")).toBe(true)
+    })
+})
+
+describe("ProductService.getFrames()", () => {
+    te***REMOVED***("Returns a li***REMOVED*** of frame product Ids for all scenes in the discover in***REMOVED***ance", async () => {
+        con***REMOVED*** frames = await productService.getFrames()
+        con***REMOVED*** frameIds = frames.data.map(f => f.id)
+        con***REMOVED*** frameProducts = await productService.getProducts(frameIds)
+        expect(frames.***REMOVED***atus).toBe(200)
+        expect(frameProducts.data.some(p => p.product.result.documentType == "image")).toBe(true)
     })
 })
 

@@ -61,7 +61,7 @@ class ProductService{
 
     async getFrames(){
         con***REMOVED*** ***REMOVED***ringFilter = []
-        con***REMOVED*** filter = new SearchFilter("documentType", ["image"], "terms")
+        con***REMOVED*** filter = new SearchFilter("sceneimagery", ["*"], "or")
         ***REMOVED***ringFilter.push(filter)
 
         this.productSearchBuilder.setKeywords("")
