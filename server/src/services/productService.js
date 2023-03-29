@@ -61,7 +61,7 @@ class ProductService{
 
     async getFrames(){
         const stringFilter = []
-        const filter = new SearchFilter("documentType", ["image"], "terms")
+        const filter = new SearchFilter("sceneimagery", ["*"], "or")
         stringFilter.push(filter)
 
         this.productSearchBuilder.setKeywords("")
