@@ -6,6 +6,11 @@ beforeAll(() => {
     httpClient = new HttpClient()
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 con***REMOVED*** scope = nock('http://www.te***REMOVED***url.com')
                 .persi***REMOVED***()
                 .get('/get/200')
