@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "te***REMOVED***-script": "node --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose",
+    "te***REMOVED***-script": "node --expose-gc --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose",
     "te***REMOVED***": "docker compose run --service-ports web sh -c 'npm run te***REMOVED***-script'",
     "***REMOVED***art": "NODE_ENV=production node src/index.js",
     "dev": "node src/index.js",
@@ -16,13 +16,14 @@
     "url": "git+https://github.com/espressodespresso/Collins_Team_3.git"
   },
   "author": "",
-  "license": "ISC", 
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/espressodespresso/Collins_Team_3/issues"
   },
   "homepage": "https://github.com/espressodespresso/Collins_Team_3#readme",
   "dependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.21.2",
+    "@hokify/agenda": "^6.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "dotenv-vault": "^1.18.0",

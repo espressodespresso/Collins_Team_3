@@ -1,6 +1,16 @@
 {
   "te***REMOVED***Environment": "node",
   "roots": ["te***REMOVED***s"],
-  "moduleDirectories": ["node_modules", "src"],
-  "transform": {}
+  "transform": {
+    "^.+\\.js$": "babel-je***REMOVED***",
+    "^.+\\.mjs$": "babel-je***REMOVED***"
+  },
+  "transformIgnorePatterns": [
+    "src/node_modules/(?!@hokify)"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "mjs"
+  ],
+  "moduleDirectories": ["node_modules", "src"]
 }
