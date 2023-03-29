@@ -12,6 +12,11 @@ beforeAll(async () => {
     missionModel = missionModelFactory.createMissionModel(discoverClient)
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("MissionModel.getMissions()", () => {
     test("Returns a list of missions", async () => {
         const missions = await missionModel.getMissions()

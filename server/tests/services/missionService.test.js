@@ -11,6 +11,11 @@ beforeAll(async () => {
     missionService = await missionServiceFactory.createMissionService(config.username)
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("missionService.getMissions()", () => {
     test("Returns a list of missions", async () => {
         const missions = await missionService.getMissions()

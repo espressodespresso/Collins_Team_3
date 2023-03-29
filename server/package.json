@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test-script": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
+    "test-script": "node --expose-gc --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "test": "docker compose run --service-ports web sh -c 'npm run test-script'",
     "start": "NODE_ENV=production node src/index.js",
     "dev": "node src/index.js",

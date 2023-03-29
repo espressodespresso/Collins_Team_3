@@ -11,6 +11,11 @@ beforeAll(async () => {
     productService = await productServiceFactory.createProductService(config.username)
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("ProductService.getProducts(productIds)", () => {
      test("A valid list of productIds returns a list of products", async () => {
         const productIds = [
