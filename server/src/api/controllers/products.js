@@ -9,6 +9,15 @@ export const getScenes = async (req, res) => {
     res.json({data: result.data})
 }
 
+export const getFrames = async (req, res) => {
+    const productServiceFactory = Container.get('services.ProductServiceFactory')
+    const productService = await productServiceFactory.createProductService(req.user.username)
+
+    const result = await productService.getFrames()
+
+    res.json({data: result.data})
+}
+
 export const getProducts = async(req, res) => {
     const productServiceFactory = Container.get('services.ProductServiceFactory')
     const productService = await productServiceFactory.createProductService(req.user.username)
@@ -38,3 +47,4 @@ export const updateProducts = async (req, res) => {
         res.end();
     });
 }
+

@@ -44,7 +44,28 @@ class ProductService{
         stringFilter.push(filter)
 
         this.productSearchBuilder.setKeywords("")
-        this.productSearchBuilder.setSize(200)
+        this.productSearchBuilder.setSize(500)
+        this.productSearchBuilder.setPercolate(true)
+        this.productSearchBuilder.setFrom(1)
+        this.productSearchBuilder.setStringsFilter(stringFilter)
+       
+        const productSearch = this.productSearchBuilder.getProductSearch()
+
+        const response = await this.productModel.search(productSearch)
+
+        if(response.status == 200){
+            const data = response.data.results.searchresults
+            return {status: 200, data}
+        }
+    }
+
+    async getFrames(){
+        const stringFilter = []
+        const filter = new SearchFilter("documentType", ["image"], "terms")
+        stringFilter.push(filter)
+
+        this.productSearchBuilder.setKeywords("")
+        this.productSearchBuilder.setSize(500)
         this.productSearchBuilder.setPercolate(true)
         this.productSearchBuilder.setFrom(1)
         this.productSearchBuilder.setStringsFilter(stringFilter)
