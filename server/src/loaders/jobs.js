@@ -3,7 +3,7 @@ export default (agenda) => {
         console.log('working')
     })
   
-    agenda.every('3 seconds', 'test')
+    agenda.every('one minute', 'test')
 
     agenda.start()
   };
