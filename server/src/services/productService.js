@@ -53,4 +53,44 @@ class ProductService{
         }
     }
 
+    async updateProducts(){
+        con***REMOVED*** modifiedProducts = []
+        con***REMOVED*** userProducts = []
+        con***REMOVED*** deletedProducts = []
+
+        con***REMOVED*** response = await this.getScenes()
+        con***REMOVED*** refreshedProductIds = response.map(e => e.id)
+
+        con***REMOVED*** currentUserProducts = this.userModel.getUserProducts()
+        con***REMOVED*** refreshedProducts = await this.getProducts(refreshedProductIds)
+
+        con***REMOVED*** currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p])))
+        con***REMOVED*** refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id. p.product]))
+    
+        refreshedProducts.forEach(p => {
+            con***REMOVED*** refreshedProduct = p.product
+            if(currentUserProductsMap.has(refreshedProduct.id)){
+                con***REMOVED*** currentUserProduct = (currentUserProductsMap.get(refreshedProduct.id))
+                if(refreshedProduct.datemodified > currentUserProduct.datemodified){
+                    modifiedProducts.push(refreshedProduct)
+                }
+            }else{
+                userProducts.push(refreshedProduct)
+                modified.push(refreshedProduct)
+            }
+        })
+
+        currentUserProductsMap.forEach(p => {
+            con***REMOVED*** currentUserProduct = p
+            if(refreshedProductsMap.has(currentUserProduct)){
+                products.push(currentUserProduct)
+            }else{
+                deletedProducts.push(currentUserProduct)
+            }
+        })
+
+        await this.userModel.setUserProducts(username, userProducts)
+        return {modifiedProducts, deletedProducts}
+    }
+
 }
