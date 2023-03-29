@@ -1,5 +1,5 @@
-export default class searchFilter{
-    con***REMOVED***ructor(field, value, operator){
+export default class SearchFilter{
+    con***REMOVED***ructor(field, value, operator = ""){
         this.field = field
         this.value = value,
         this.operator = operator

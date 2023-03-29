@@ -3,7 +3,7 @@ export default (agenda) => {
         console.log('working')
     })
   
-    agenda.every('3 seconds', 'te***REMOVED***')
+    agenda.every('one minute', 'te***REMOVED***')
 
     agenda.***REMOVED***art()
   };
