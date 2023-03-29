@@ -8,6 +8,11 @@ beforeEach(() => {
    userModel = Container.get('models.User')
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("UserModel.signIn(username, password)", () => {
     te***REMOVED***("A correct username and password gets the user API tokens and caches them, then returns true", async () => {
         con***REMOVED*** ***REMOVED***atus = await userModel.signIn(config.username, config.password)

@@ -11,6 +11,11 @@ beforeAll(async () => {
     missionService = await missionServiceFactory.createMissionService(config.username)
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("missionService.getMissions()", () => {
     te***REMOVED***("Returns a li***REMOVED*** of missions", async () => {
         con***REMOVED*** missions = await missionService.getMissions()
