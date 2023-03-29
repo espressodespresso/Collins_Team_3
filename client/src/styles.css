@@ -11,6 +11,10 @@
 	height: 5rem;
 }
 
+#toggle-heatmap {
+	max-width: min-content;
+}
+
 #sidebar-container {
 	min-width: min-content;
 }

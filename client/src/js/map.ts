@@ -7,6 +7,7 @@ import intersect from "@turf/intersect";
 import area from "@turf/area";
 import 'leaflet.markercluster'
 import 'leaflet.markercluster.layersupport'
+import 'leaflet.heat'
 
  export enum Levels {
     Marker,
@@ -129,6 +130,30 @@ async function calculateDrawnCoverage(drawnFeature: Feature<Polygon>, missions: 
      }
 }
 
+export async function calculateHeatmapCoverage(missions: Mission[]) {
+    let heatMapPoints = [];
+    let areaOfScenes = [];
+    for(let i=0; i < missions.length; i++) {
+        let scenes = missions[i].scenes;
+        for(let j=0; j < scenes.length; j++){
+            let scene = scenes[j];
+            areaOfScenes.push({
+                area: area(polygon(scene.footprint)),
+                lat: scene.center[1],
+                lng: scene.center[0]
+            });
+        }
+    }
+
+    let intensityRef = Math.max.apply(Math, areaOfScenes);
+    for(let i=0; i < areaOfScenes.length; i++) {
+        let data = areaOfScenes[i];
+        let intensity = data.area / intensityRef;
+        heatMapPoints.push([data.lat, data.lng, intensity])
+    }
+    return heatMapPoints;
+}
+
 // Map modification functions
 
 export async function clearMapLayers(map: Map): Promise<void> {
@@ -151,6 +176,8 @@ export function addLayersToMap(localLayers: LayerGroup[], clear: boolean, map: M
 }
 
 // Map relevant event listeners
+
+let prevZoomLevel = 0;
 
 export function initZoomEvent(map: Map, level: Levels, missions: Mission[]): void {
     map.on("zoomend", async function (e) {
