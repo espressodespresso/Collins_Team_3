@@ -3,7 +3,7 @@ import "leaflet-draw";
 import {verifyCred} from "./services/auth";
 import {getMissions, Mission, MissionLayerGroup} from "./mission";
 import {FormatSidebar, initSearchEvent} from "./sidebar";
-import {addLayersToMap, initDrawEvent, initLayers, initZoomEvent, Levels} from "./map";
+import {addLayersToMap, calculateHeatmapCoverage, initDrawEvent, initLayers, initZoomEvent, Levels} from "./map";
 
 let missions: Mission[] = [];
 export let layers: MissionLayerGroup[] = [];
@@ -28,6 +28,8 @@ map.addControl(new Control.Draw({
 let drawFeatures = new FeatureGroup();
 map.addLayer(drawFeatures);
 
+let heatMap;
+
 async function ***REMOVED***art(): Promise<void> {
     await verifyCred("***REMOVED***", ***REMOVED***)
         .then(async r => {
@@ -37,10 +39,10 @@ async function ***REMOVED***art(): Promise<void> {
                     .catch(() => console.error("Unable to load missions"));
                 await initLayers(missions, map)
                     .then(async r => addLayersToMap(r, false, map))
-                    .catch(e => console.error("Unable to load layers" + e));
+                    .catch(() => console.error("Unable to load layers"));
                 await FormatSidebar(missions, map)
                     .then(loaded)
-                    .catch(() => console.error("Unable to load sidebar"));
+                    .catch(e => console.error("Unable to load sidebar" + e));
             } else {
                 console.error("Login details incorrect");
             }
@@ -53,6 +55,9 @@ async function loaded() {
     level = Levels.Marker;
     initZoomEvent(map, level, missions);
     initDrawEvent(map, drawFeatures, missions);
+    // Using due to the lack of export support with Leaflet heatmap plugin
+    /*heatMap = window['L'].heatLayer(await calculateHeatmapCoverage(missions)
+        , { radius: (5 * map.getZoom()), maxZoom: 6 }).addTo(map);*/
     //await initSearchEvent();
 }
 
