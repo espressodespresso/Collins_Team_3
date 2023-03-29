@@ -8,14 +8,16 @@ export default class ProductServiceFactory{
     async createProductService(username){
         const discoverClient = await this.userModel.userDiscoverClient(username)
         const productModel = this.productModelFactory.createProductModel(discoverClient)
-        return new ProductService(productModel, this.productSearchBuilder)
+        return new ProductService(productModel, this.productSearchBuilder, this.userModel, username)
     }
 }
 
 class ProductService{
-    constructor(productModel, productSearchBuilder){
+    constructor(productModel, productSearchBuilder, userModel, username){
         this.productModel = productModel
         this.productSearchBuilder = productSearchBuilder
+        this.userModel = userModel
+        this.username = username
     }
 
     async getProducts(productIds){
@@ -42,8 +44,12 @@ class ProductService{
 
         const response = await this.productModel.search(productSearch)
 
+        console.log(response)
+
         if(response.status == 200){
-            return {status: 200, data: response.data.results.searchresults}
+            const data = response.data.results.searchresults
+            await this.userModel.setUserProducts(this.username, data.map(e => e.product))
+            return {status: 200, data}
         }
     }
 

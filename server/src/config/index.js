@@ -8,6 +8,7 @@ export default{
     clientSecret: process.env.CLIENT_SECRET,
     username: process.env.USER_NAME,
     password: process.env.PASSWORD,
-    http2Enabled: process.env.HTTP2_ENABLED
+    http2Enabled: process.env.HTTP2_ENABLED,
+    mongo_url: process.env.MONGO_URL
 }
 

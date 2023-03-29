@@ -14,6 +14,11 @@ beforeAll(async () => {
     productModel = productModelFactory.createProductModel(discoverClient)
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("ProductModel.get(listOfProductIds)", () => {
     test("A list of productIds which exist within the discoverClient returns a list of corresponding products", async () => {
         const productIds = [

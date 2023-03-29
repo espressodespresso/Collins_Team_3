@@ -4,6 +4,11 @@ import { createApp } from '../src/loaders/index.js'
 
 const app = await createApp()
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("/", () => {
     test("/GET returns a 200 response", async () => {
         const response = await request(app).get("/")

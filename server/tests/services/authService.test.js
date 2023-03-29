@@ -8,6 +8,11 @@ beforeAll(() => {
     authService = Container.get('services.Auth')
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("AuthService.login(username, password)", () => {
     test("A valid username and password returns a jwt", async () => {
         const jwt = await authService.login(config.username, config.password)

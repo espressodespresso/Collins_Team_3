@@ -6,6 +6,11 @@ beforeAll(() => {
     httpClient = new HttpClient()
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 const scope = nock('http://www.testurl.com')
                 .persist()
                 .get('/get/200')
