@@ -14,6 +14,11 @@ beforeAll(async () => {
     productModel = productModelFactory.createProductModel(discoverClient)
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("ProductModel.get(li***REMOVED***OfProductIds)", () => {
     te***REMOVED***("A li***REMOVED*** of productIds which exi***REMOVED*** within the discoverClient returns a li***REMOVED*** of corresponding products", async () => {
         con***REMOVED*** productIds = [

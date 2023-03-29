@@ -4,6 +4,11 @@ import { createApp } from '../src/loaders/index.js'
 
 con***REMOVED*** app = await createApp()
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("/", () => {
     te***REMOVED***("/GET returns a 200 response", async () => {
         con***REMOVED*** response = await reque***REMOVED***(app).get("/")

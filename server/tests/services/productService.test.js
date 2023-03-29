@@ -11,6 +11,11 @@ beforeAll(async () => {
     productService = await productServiceFactory.createProductService(config.username)
 })
 
+afterAll(() => {
+    global.gc && global.gc()
+  })
+  
+
 describe("ProductService.getProducts(productIds)", () => {
      te***REMOVED***("A valid li***REMOVED*** of productIds returns a li***REMOVED*** of products", async () => {
         con***REMOVED*** productIds = [
