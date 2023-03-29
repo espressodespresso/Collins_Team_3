@@ -1,8 +1,8 @@
 import {getMissionLayerByID, Mission} from "./mission";
 import {getSceneLayerByID} from "./scene";
 import {NominatimJS} from "@owsas/nominatim-js";
-import {GeoJSON, LayerGroup, Map} from "leaflet";
-import {addLayersToMap} from "./map";
+import {GeoJSON, Map} from "leaflet";
+
 
 export async function FormatSidebar(missions: Mission[], map): Promise<void> {
     for(let i=0; i < missions.length; i++) {
@@ -18,66 +18,71 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
             case missions.length-1: button.classList.add("rounded-top-0", "rounded-bottom-2"); break;
             default: button.classList.add("rounded-0"); break;
         }
-        button.setAttribute("type", "button");
-        button.setAttribute("data-bs-toggle", "dropdown")
-        div.appendChild(button);
-
-        let ul = document.createElement("ul");
-        ul.classList.add("dropdown-menu");
-        let scenes = mission.scenes;
-        let li;
-        for(let j=0; j < scenes.length; j++) {
-            let scene = scenes[j];
-            li = document.createElement("li");
+        //button.setAttribute("type", "button");
+        button.type = "button";
+        button.id = mission.id;
+        button.addEventListener("click", async function(e: Event & {
+            target: HTMLButtonElement
+        }) {
+            let element = document.getElementById("dropdown-container");
+            if(element !== null) {
+                element.innerHTML = ""
+            }
+            let scenes = mission.scenes;
+            let container = document.getElementById("dropdown-container");
+            let buttonBounding = e.target.getBoundingClientRect();
+            container.style.paddingTop = buttonBounding.top + "px";
+            let sidebarC = document.getElementById("sidebar-container");
+            let sidebarCBounding = sidebarC.getBoundingClientRect();
+            container.style.paddingLeft = sidebarCBounding.width + "px";
+            for(let j=0; j < scenes.length; j++) {
+                let scene = scenes[j];
+                let a = document.createElement("a");
+                a.id = scene.id;
+                a.classList.add("list-group-item");
+                a.href = "#";
+                a.innerHTML = "Toggle " + scene.name;
+                a.addEventListener("click", async function (e: Event & {
+                    target: HTMLAnchorElement
+                }) {
+                    let sceneLayer = await getSceneLayerByID(e.target.id);
+                    let missionLayer = await getMissionLayerByID(sceneLayer.parentid);
+                    let layer = sceneLayer.layer;
+                    let layerGroup = missionLayer.layerGroup;
+                    if(sceneLayer.status === true) {
+                        layerGroup.removeLayer(layer);
+                        sceneLayer.status = false;
+                    } else {
+                        layerGroup.addLayer(layer);
+                        sceneLayer.status = true;
+                    }
+                })
+                container.appendChild(a);
+            }
+            let li = document.createElement("li");
+            li.innerHTML = "<li><hr class=\"dropdown-divider\"></li>"
+            container.appendChild(li);
             let a = document.createElement("a");
-            a.id = scene.id;
-            a.classList.add("dropdown-item");
+            a.id = mission.id;
+            a.classList.add("list-group-item");
             a.href = "#";
-            a.innerHTML = "Toggle " + scene.name;
+            a.innerHTML = "Toggle " + mission.name;
             a.addEventListener("click", async function (e: Event & {
                 target: HTMLAnchorElement
             }) {
-                let sceneLayer = await getSceneLayerByID(e.target.id);
-                let missionLayer = await getMissionLayerByID(sceneLayer.parentid);
-                let layer = sceneLayer.layer;
+                let missionLayer = await getMissionLayerByID(e.target.id);
                 let layerGroup = missionLayer.layerGroup;
-                if(sceneLayer.status === true) {
-                    layerGroup.removeLayer(layer);
-                    sceneLayer.status = false;
+                if(missionLayer.status === true) {
+                    map.removeLayer(layerGroup);
+                    missionLayer.status = false;
                 } else {
-                    layerGroup.addLayer(layer);
-                    sceneLayer.status = true;
+                    map.addLayer(layerGroup);
+                    missionLayer.status = true;
                 }
             })
-            li.appendChild(a);
-            ul.appendChild(li);
-        }
-        li = document.createElement("li");
-        li.innerHTML = "<li><hr class=\"dropdown-divider\"></li>"
-        ul.appendChild(li);
-        li = document.createElement("li");
-        let a = document.createElement("a");
-        a.id = mission.id;
-        a.classList.add("dropdown-item");
-        a.href = "#";
-        a.innerHTML = "Toggle " + mission.name;
-        a.addEventListener("click", async function (e: Event & {
-            target: HTMLAnchorElement
-        }) {
-            let missionLayer = await getMissionLayerByID(e.target.id);
-            let layterGroup = missionLayer.layerGroup;
-            if(missionLayer.status === true) {
-                map.removeLayer(layterGroup);
-                missionLayer.status = false;
-            } else {
-                map.addLayer(layterGroup);
-                missionLayer.status = true;
-            }
-        })
-        li.appendChild(a);
-        ul.appendChild(li);
-        div.appendChild(ul);
-
+            container.appendChild(a);
+        });
+        div.appendChild(button);
         document.getElementById("sidebar").append(div);
     }
 }
