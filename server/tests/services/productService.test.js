@@ -81,8 +81,13 @@ describe("ProductService.getScenes()", () => {
 })
 
 describe("ProductService.updateProducts", () => {
-    te***REMOVED***("Returns an object containing a li***REMOVED*** of modified products and a li***REMOVED*** of deleted products, user products are updated", async () => {
+    te***REMOVED***("Returns an object containing a li***REMOVED*** of 115 deleted prodicts", async () => {
         
+        con***REMOVED*** userProductIdsRes = await productService.getScenes()
+        con***REMOVED*** userProductIds = userProductIdsRes.data.map(p => p.id)
+
+        await productService.getProducts(userProductIds)
+
         con***REMOVED*** products = {
             data: [
                 {id: "399c6c40-b7ce-4153-9894-f21fbe201e14"},
@@ -93,8 +98,10 @@ describe("ProductService.updateProducts", () => {
         productService.getScenes.mockReturnValue(products)
 
         con***REMOVED*** updates = await productService.updateProducts()
-        console.log(updates)
         expect(updates).toHaveProperty('modifiedProducts')
-        expect(updates).toHaveProperty('deletedProducts')
+        expect(updates).toHaveProperty('newProducts')
+        expect(updates.deletedProducts.length).toBe(115)
+
+        
     })
 })

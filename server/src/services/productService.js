@@ -1,3 +1,5 @@
+import SearchFilter from "../models/SearchFilter.js"
+
 export default class ProductServiceFactory{
     con***REMOVED***ructor(container){
         this.userModel = container.get('models.User')
@@ -36,11 +38,17 @@ class ProductService{
     }
 
     async getScenes(){
+
+        con***REMOVED*** ***REMOVED***ringFilter = []
+        con***REMOVED*** filter = new SearchFilter("type", ["SCENE"], "terms")
+        ***REMOVED***ringFilter.push(filter)
+
         this.productSearchBuilder.setKeywords("")
         this.productSearchBuilder.setSize(200)
         this.productSearchBuilder.setPercolate(true)
         this.productSearchBuilder.setFrom(1)
-        
+        this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilter)
+       
         con***REMOVED*** productSearch = this.productSearchBuilder.getProductSearch()
 
         con***REMOVED*** response = await this.productModel.search(productSearch)
@@ -53,6 +61,7 @@ class ProductService{
 
     async updateProducts(){
         con***REMOVED*** modifiedProducts = []
+        con***REMOVED*** newProducts = []
         con***REMOVED*** userProducts = []
         con***REMOVED*** deletedProducts = []
 
@@ -63,8 +72,6 @@ class ProductService{
         con***REMOVED*** refreshedProductsRes = await this.getProducts(refreshedProductIds)
 
         con***REMOVED*** refreshedProducts = refreshedProductsRes.data
-
-        console.log(refreshedProducts)
 
         con***REMOVED*** currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p.result])))
         con***REMOVED*** refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id, p.product.result]))
@@ -78,21 +85,21 @@ class ProductService{
                 }
             }else{
                 userProducts.push(refreshedProduct)
-                modifiedProducts.push(refreshedProduct)
+                newProducts.push(refreshedProduct)
             }
         })
 
-        currentUserProductsMap.forEach(p => {
+        currentUserProducts.forEach(p => {
             con***REMOVED*** currentUserProduct = p
-            if(refreshedProductsMap.has(currentUserProduct)){
-                products.push(currentUserProduct)
+            if(refreshedProductsMap.has(currentUserProduct.id)){
+                userProducts.push(currentUserProduct)
             }else{
                 deletedProducts.push(currentUserProduct)
             }
         })
 
         await this.userModel.setUserProducts(this.username, userProducts)
-        return {modifiedProducts, deletedProducts}
+        return {newProducts, modifiedProducts, deletedProducts}
     }
 
 }
