@@ -1,5 +1,5 @@
-export default class searchFilter{
-    constructor(field, value, operator){
+export default class SearchFilter{
+    constructor(field, value, operator = ""){
         this.field = field
         this.value = value,
         this.operator = operator

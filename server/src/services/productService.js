@@ -1,3 +1,5 @@
+import SearchFilter from "../models/SearchFilter.js"
+
 export default class ProductServiceFactory{
     constructor(container){
         this.userModel = container.get('models.User')
@@ -36,11 +38,17 @@ class ProductService{
     }
 
     async getScenes(){
+
+        const stringFilter = []
+        const filter = new SearchFilter("type", ["SCENE"], "terms")
+        stringFilter.push(filter)
+
         this.productSearchBuilder.setKeywords("")
         this.productSearchBuilder.setSize(200)
         this.productSearchBuilder.setPercolate(true)
         this.productSearchBuilder.setFrom(1)
-        
+        this.productSearchBuilder.setStringsFilter(stringFilter)
+       
         const productSearch = this.productSearchBuilder.getProductSearch()
 
         const response = await this.productModel.search(productSearch)
@@ -53,6 +61,7 @@ class ProductService{
 
     async updateProducts(){
         const modifiedProducts = []
+        const newProducts = []
         const userProducts = []
         const deletedProducts = []
 
@@ -63,8 +72,6 @@ class ProductService{
         const refreshedProductsRes = await this.getProducts(refreshedProductIds)
 
         const refreshedProducts = refreshedProductsRes.data
-
-        console.log(refreshedProducts)
 
         const currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p.result])))
         const refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id, p.product.result]))
@@ -78,21 +85,21 @@ class ProductService{
                 }
             }else{
                 userProducts.push(refreshedProduct)
-                modifiedProducts.push(refreshedProduct)
+                newProducts.push(refreshedProduct)
             }
         })
 
-        currentUserProductsMap.forEach(p => {
+        currentUserProducts.forEach(p => {
             const currentUserProduct = p
-            if(refreshedProductsMap.has(currentUserProduct)){
-                products.push(currentUserProduct)
+            if(refreshedProductsMap.has(currentUserProduct.id)){
+                userProducts.push(currentUserProduct)
             }else{
                 deletedProducts.push(currentUserProduct)
             }
         })
 
         await this.userModel.setUserProducts(this.username, userProducts)
-        return {modifiedProducts, deletedProducts}
+        return {newProducts, modifiedProducts, deletedProducts}
     }
 
 }
