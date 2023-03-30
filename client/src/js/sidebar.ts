@@ -1,10 +1,11 @@
-import {getMissionLayerByID, Mission} from "./mission";
-import {getSceneLayerByID} from "./scene";
-import {NominatimJS} from "@owsas/nominatim-js";
-import {GeoJSON, Map} from "leaflet";
+import M = require("./mission.js")
+import S = require("./scene.js")
+import NominatimJS = require("@owsas/nominatim-js");
+import Leaflet = require('leaflet');
+import V = require("./view.js");
 
-
-export async function FormatSidebar(missions: Mission[], map): Promise<void> {
+export async function FormatSidebar(missions: M.Mission[], map: Leaflet.Map, view: V.View)
+    : Promise<void> {
     for(let i=0; i < missions.length; i++) {
         let mission = missions[i];
         let div = document.createElement("div");
@@ -24,17 +25,8 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
         button.addEventLi***REMOVED***ener("click", async function(e: Event & {
             target: HTMLButtonElement
         }) {
-            let element = document.getElementById("dropdown-container");
-            if(element !== null) {
-                element.innerHTML = ""
-            }
             let scenes = mission.scenes;
-            let container = document.getElementById("dropdown-container");
-            let buttonBounding = e.target.getBoundingClientRect();
-            container.***REMOVED***yle.paddingTop = buttonBounding.top + "px";
-            let sidebarC = document.getElementById("sidebar-container");
-            let sidebarCBounding = sidebarC.getBoundingClientRect();
-            container.***REMOVED***yle.paddingLeft = sidebarCBounding.width + "px";
+            let container = initDropdownContainer(e.target);
             for(let j=0; j < scenes.length; j++) {
                 let scene = scenes[j];
                 let a = document.createElement("a");
@@ -45,8 +37,8 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
                 a.addEventLi***REMOVED***ener("click", async function (e: Event & {
                     target: HTMLAnchorElement
                 }) {
-                    let sceneLayer = await getSceneLayerByID(e.target.id);
-                    let missionLayer = await getMissionLayerByID(sceneLayer.parentid);
+                    let sceneLayer = await S.getSceneLayerByID(e.target.id);
+                    let missionLayer = await M.getMissionLayerByID(sceneLayer.parentid);
                     let layer = sceneLayer.layer;
                     let layerGroup = missionLayer.layerGroup;
                     if(sceneLayer.***REMOVED***atus === true) {
@@ -70,7 +62,7 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
             a.addEventLi***REMOVED***ener("click", async function (e: Event & {
                 target: HTMLAnchorElement
             }) {
-                let missionLayer = await getMissionLayerByID(e.target.id);
+                let missionLayer = await M.getMissionLayerByID(e.target.id);
                 let layerGroup = missionLayer.layerGroup;
                 if(missionLayer.***REMOVED***atus === true) {
                     map.removeLayer(layerGroup);
@@ -84,10 +76,57 @@ export async function FormatSidebar(missions: Mission[], map): Promise<void> {
         });
         div.appendChild(button);
         document.getElementById("sidebar").append(div);
+
+        let view_button = document.getElementById("view-button");
+        view_button.addEventLi***REMOVED***ener("click", async function(e: Event & {
+            target: HTMLButtonElement
+        }){
+            let container = initDropdownContainer(e.target);
+            let items = ["Map", "Table", "Hi***REMOVED***ogram"];
+            for(let i=0; i < items.length; i++) {
+                let item = items[i];
+                let a = document.createElement("a");
+                a.id = item.toString();
+                a.classLi***REMOVED***.add("li***REMOVED***-group-item");
+                a.href = "#";
+                a.innerHTML = item.toString();
+                a.addEventLi***REMOVED***ener("click", async function (e: Event & {
+                    target: HTMLAnchorElement
+                }) {
+                    switch (e.target.id) {
+                        case "Map" :
+                            view.setView(V.Stage.Map, missions);
+                            break;
+                        case "Table" :
+                            view.setView(V.Stage.Table, missions);
+                            break;
+                        case "Hi***REMOVED***ogram" :
+                            view.setView(V.Stage.Hi***REMOVED***ogram, missions);
+                            break;
+                    }
+                });
+                container.appendChild(a);
+            }
+        });
     }
 }
 
-export async function initSearchEvent(map: Map) {
+function initDropdownContainer(target) {
+    let element = document.getElementById("dropdown-container");
+    if(element !== null) {
+        element.innerHTML = ""
+    }
+
+    let container = document.getElementById("dropdown-container");
+    let buttonBounding = target.getBoundingClientRect();
+    container.***REMOVED***yle.paddingTop = buttonBounding.top + "px";
+    let sidebarC = document.getElementById("sidebar-container");
+    let sidebarCBounding = sidebarC.getBoundingClientRect();
+    container.***REMOVED***yle.paddingLeft = sidebarCBounding.width + "px";
+    return container;
+}
+
+export async function initSearchEvent(map: Leaflet.Map) {
     document.getElementById("search-button").addEventLi***REMOVED***ener("click"
         , async function(e: Event & { target: HTMLButtonElement}) {
         let input: HTMLInputElement = document.getElementById("search-input") as HTMLInputElement;
@@ -122,27 +161,7 @@ function nominatimRToGeoJSON(r: []) {
                 license: item.license
             }
         }
-        geoJSON.push(new GeoJSON(data as any));
+        geoJSON.push(Leaflet.geoJSON(data));
     }
-
-    /*for(let i=0; i < r.length; i++) {
-        let item:  = r[i]
-        let coord = [];
-        coord.push(item.lat);
-        coord.push(item.lon);
-        let data: GeoJSON.Feature = {
-            type: "Feature",
-            geometry: {
-                type: "Point",
-                coordinates: coord
-            },
-            properties: {
-                display_name: item.display_name,
-                license: item.license
-            }
-        }
-        te***REMOVED***.push(data);
-    }*/
-    console.log(GeoJSON);
     return geoJSON;
 }

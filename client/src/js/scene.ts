@@ -1,5 +1,5 @@
-import {GeoJSON, Layer} from "leaflet";
-import {layers} from "./index";
+import Leaflet = require('leaflet');
+import index = require("./index.js");
 
 export class Scene {
     private readonly _center: number[];
@@ -41,10 +41,12 @@ export class Scene {
 
     get name(): ***REMOVED***ring {
         return this._name;
+        return this._name;
     }
 
+
     GeoJSONCenter(): object {
-        let data: GeoJSON.Feature = {
+        let data = {
             type: "Feature",
             geometry: {
                 type: "Point",
@@ -62,7 +64,7 @@ export class Scene {
     }
 
     GeoJSONFootprint(): object {
-        let data: GeoJSON.Feature = {
+        let data = {
             type: "Feature",
             geometry: {
                 type: "Polygon",
@@ -83,10 +85,10 @@ export class Scene {
 export class SceneLayer {
     private readonly _id: ***REMOVED***ring;
     private readonly _parentid: ***REMOVED***ring;
-    private readonly _layer: Layer;
+    private readonly _layer: Leaflet.Layer;
     private _***REMOVED***atus: boolean;
 
-    con***REMOVED***ructor(id: ***REMOVED***ring, parentid: ***REMOVED***ring, layer: Layer) {
+    con***REMOVED***ructor(id: ***REMOVED***ring, parentid: ***REMOVED***ring, layer: Leaflet.Layer) {
         this._id = id;
         this._parentid = parentid;
         this._layer = layer;
@@ -101,7 +103,7 @@ export class SceneLayer {
         return this._parentid;
     }
 
-    get layer(): Layer {
+    get layer(): Leaflet.Layer {
         return this._layer;
     }
 
@@ -126,8 +128,8 @@ export async function getSceneLayerByIO(id: ***REMOVED***ring, sceneLayers: Scen
 }
 
 export async function getSceneLayerByID(id: ***REMOVED***ring): Promise<SceneLayer> {
-    for(let i=0; i < layers.length; i++) {
-        let sceneLayers = layers[i].sceneLayers;
+    for(let i=0; i < index.layers.length; i++) {
+        let sceneLayers = index.layers[i].sceneLayers;
         for(let j=0; j < sceneLayers.length; j++) {
             let sceneLayer = sceneLayers[j];
             if(sceneLayer.id === id) {
