@@ -93,9 +93,9 @@ describe("ProductService.getFrames()", () => {
 })
 
 describe("ProductService.updateProducts", () => {
-    te***REMOVED***("Returns an object containing a li***REMOVED*** of 115 deleted prodicts", async () => {
+    te***REMOVED***("When a product has a date modified greater than the current epoch", async () => {
         
         con***REMOVED*** updatedProducts = await productService.updatedProducts()
-        console.log(updatedProducts)
+        expect(updatedProducts.***REMOVED***atus).toBe(200)
     })
 })

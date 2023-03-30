@@ -84,9 +84,8 @@ class ProductService{
         con***REMOVED*** ***REMOVED***ringFilters = []
         con***REMOVED*** ***REMOVED***ringFilter = new SearchFilter("sceneimagery", ["*"], "or")
         ***REMOVED***ringFilters.push(***REMOVED***ringFilter)
-
         con***REMOVED*** dateFilters = []
-        con***REMOVED*** dateFilter = new SearchFilter("datemodified", [Date.now()], "gte")
+        con***REMOVED*** dateFilter = new SearchFilter("datemodified", [(Date.now() - 60)], "gte")
         dateFilters.push(dateFilter)
 
         this.productSearchBuilder.setKeywords("")

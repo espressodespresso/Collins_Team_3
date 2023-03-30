@@ -40,7 +40,7 @@ export con***REMOVED*** updateProducts = async (req, res) => {
     con***REMOVED*** intervalID = setInterval(async () => {
         con***REMOVED*** updates = await productService.updateProducts()
         res.write(JSON.***REMOVED***ringify(updates))
-    }, 10000)
+    }, 60000)
 
     res.on('close', () => {
         clearInterval(intervalID);
