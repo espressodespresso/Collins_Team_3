@@ -18,6 +18,9 @@ class MissionService{
 
     async getMissions(){
         const response = await this.missionModel.getMissions()
+        if(response.status != 200){
+            throw new Error
+        }
         return response
     }
 
@@ -25,6 +28,8 @@ class MissionService{
         const response = await this.missionModel.getMission(missionId)
         if(response.status == 400){
             response.data = {message: "Invalid mission id"}
+        }else if(response.status != 200){
+            throw new Error()
         }
         return response
     }
@@ -33,6 +38,8 @@ class MissionService{
         const response = await this.missionModel.getMissionFootprint(missionId)
         if(response.status == 400){
             response.data = {message: "Invalid mission id"}
+        }else if(response.status != 200){
+            throw new Error()
         }
         return response
     }   

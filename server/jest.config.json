@@ -5,9 +5,6 @@
     "^.+\\.js$": "babel-jest",
     "^.+\\.mjs$": "babel-jest"
   },
-  "transformIgnorePatterns": [
-    "src/node_modules/(?!@hokify)"
-  ],
   "moduleFileExtensions": [
     "js",
     "mjs"
