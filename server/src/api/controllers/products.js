@@ -9,6 +9,15 @@ export con***REMOVED*** getScenes = async (req, res) => {
     res.json({data: result.data})
 }
 
+export con***REMOVED*** getFrames = async (req, res) => {
+    con***REMOVED*** productServiceFactory = Container.get('services.ProductServiceFactory')
+    con***REMOVED*** productService = await productServiceFactory.createProductService(req.user.username)
+
+    con***REMOVED*** result = await productService.getFrames()
+
+    res.json({data: result.data})
+}
+
 export con***REMOVED*** getProducts = async(req, res) => {
     con***REMOVED*** productServiceFactory = Container.get('services.ProductServiceFactory')
     con***REMOVED*** productService = await productServiceFactory.createProductService(req.user.username)
@@ -38,3 +47,4 @@ export con***REMOVED*** updateProducts = async (req, res) => {
         res.end();
     });
 }
+

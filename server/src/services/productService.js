@@ -44,7 +44,28 @@ class ProductService{
         ***REMOVED***ringFilter.push(filter)
 
         this.productSearchBuilder.setKeywords("")
-        this.productSearchBuilder.setSize(200)
+        this.productSearchBuilder.setSize(500)
+        this.productSearchBuilder.setPercolate(true)
+        this.productSearchBuilder.setFrom(1)
+        this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilter)
+       
+        con***REMOVED*** productSearch = this.productSearchBuilder.getProductSearch()
+
+        con***REMOVED*** response = await this.productModel.search(productSearch)
+
+        if(response.***REMOVED***atus == 200){
+            con***REMOVED*** data = response.data.results.searchresults
+            return {***REMOVED***atus: 200, data}
+        }
+    }
+
+    async getFrames(){
+        con***REMOVED*** ***REMOVED***ringFilter = []
+        con***REMOVED*** filter = new SearchFilter("sceneimagery", ["*"], "or")
+        ***REMOVED***ringFilter.push(filter)
+
+        this.productSearchBuilder.setKeywords("")
+        this.productSearchBuilder.setSize(5000)
         this.productSearchBuilder.setPercolate(true)
         this.productSearchBuilder.setFrom(1)
         this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilter)
