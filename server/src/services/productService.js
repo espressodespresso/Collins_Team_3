@@ -80,47 +80,33 @@ class ProductService{
         }
     }
 
-    async updateProducts(){
-        con***REMOVED*** modifiedProducts = []
-        con***REMOVED*** newProducts = []
-        con***REMOVED*** userProducts = []
-        con***REMOVED*** deletedProducts = []
+    async updatedProducts(){
+        con***REMOVED*** ***REMOVED***ringFilters = []
+        con***REMOVED*** ***REMOVED***ringFilter = new SearchFilter("sceneimagery", ["*"], "or")
+        ***REMOVED***ringFilters.push(***REMOVED***ringFilter)
 
-        con***REMOVED*** response = await this.getScenes()
-        con***REMOVED*** refreshedProductIds = response.data.map(e => e.id)
+        con***REMOVED*** dateFilters = [{field: "objectenddate", value: [1522364568870], operator: "gte"}]
+        con***REMOVED*** dateFilter = new SearchFilter()
+        dateFilters.push(dateFilter)
 
-        con***REMOVED*** currentUserProducts = await this.userModel.getUserProducts(this.username)
-        con***REMOVED*** refreshedProductsRes = await this.getProducts(refreshedProductIds)
+        this.productSearchBuilder.setKeywords("")
+        this.productSearchBuilder.setSize(5000)
+        this.productSearchBuilder.setPercolate(true)
+        this.productSearchBuilder.setFrom(1)
+        this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilters)
+        this.productSearchBuilder.setDatesFilter(dateFilters)
+        
+        //Gets all products with date modified greater than current date
+        con***REMOVED*** productSearch = this.productSearchBuilder.getProductSearch()
+         
+        con***REMOVED*** response = await this.productModel.search(productSearch)
 
-        con***REMOVED*** refreshedProducts = refreshedProductsRes.data
+        console.log(response)
 
-        con***REMOVED*** currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p.result])))
-        con***REMOVED*** refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id, p.product.result]))
-    
-        refreshedProducts.forEach(p => {
-            con***REMOVED*** refreshedProduct = p.product
-            if(currentUserProductsMap.has(refreshedProduct.id)){
-                con***REMOVED*** currentUserProduct = (currentUserProductsMap.get(refreshedProduct.id))
-                if(refreshedProduct.datemodified > currentUserProduct.datemodified){
-                    modifiedProducts.push(refreshedProduct)
-                }
-            }else{
-                userProducts.push(refreshedProduct)
-                newProducts.push(refreshedProduct)
-            }
-        })
-
-        currentUserProducts.forEach(p => {
-            con***REMOVED*** currentUserProduct = p
-            if(refreshedProductsMap.has(currentUserProduct.id)){
-                userProducts.push(currentUserProduct)
-            }else{
-                deletedProducts.push(currentUserProduct)
-            }
-        })
-
-        await this.userModel.setUserProducts(this.username, userProducts)
-        return {newProducts, modifiedProducts, deletedProducts}
+        if(response.***REMOVED***atus == 200){
+            con***REMOVED*** data = response.data.results.searchresults
+            return {***REMOVED***atus: 200, data}
+        }
     }
 
 }
