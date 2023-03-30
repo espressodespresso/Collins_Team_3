@@ -93,9 +93,9 @@ describe("ProductService.getFrames()", () => {
 })
 
 describe("ProductService.updateProducts", () => {
-    test("Returns an object containing a list of 115 deleted prodicts", async () => {
+    test("When a product has a date modified greater than the current epoch", async () => {
         
         const updatedProducts = await productService.updatedProducts()
-        console.log(updatedProducts)
+        expect(updatedProducts.status).toBe(200)
     })
 })

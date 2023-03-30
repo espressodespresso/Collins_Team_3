@@ -84,9 +84,8 @@ class ProductService{
         const stringFilters = []
         const stringFilter = new SearchFilter("sceneimagery", ["*"], "or")
         stringFilters.push(stringFilter)
-
         const dateFilters = []
-        const dateFilter = new SearchFilter("datemodified", [Date.now()], "gte")
+        const dateFilter = new SearchFilter("datemodified", [(Date.now() - 60)], "gte")
         dateFilters.push(dateFilter)
 
         this.productSearchBuilder.setKeywords("")
