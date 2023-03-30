@@ -23,14 +23,6 @@ services:
     stdin_open: true
     volumes:
       - cache:/data
-  
-  mongo_db:
-    image: 
-      mongo:6
-    ports: 
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data
 
 volumes:
   cache:

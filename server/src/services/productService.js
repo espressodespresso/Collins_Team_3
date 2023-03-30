@@ -33,6 +33,8 @@ class ProductService{
             result.data = {message: "List contains invalid product identifiers"}
         }else if(result.status == 404){
             result.data = {message: "List does not contain any product Ids"}
+        }else{
+            throw new Error()
         }
         return result
     }
@@ -56,6 +58,8 @@ class ProductService{
         if(response.status == 200){
             const data = response.data.results.searchresults
             return {status: 200, data}
+        }else{
+            throw new Error()
         }
     }
 
@@ -77,6 +81,8 @@ class ProductService{
         if(response.status == 200){
             const data = response.data.results.searchresults
             return {status: 200, data}
+        }else{
+            throw new Error()
         }
     }
 
@@ -102,6 +108,8 @@ class ProductService{
         if(response.status == 200){
             const data = response.data.results.searchresults
             return {status: 200, data}
+        }else{
+            throw new Error
         }
     }
 
