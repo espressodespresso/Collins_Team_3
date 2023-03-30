@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="***REMOVED***ylesheet" href="../node_modules/boot***REMOVED***rap/di***REMOVED***/css/boot***REMOVED***rap.min.css">
-  <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet/di***REMOVED***/leaflet.css">
-  <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet-draw/di***REMOVED***/leaflet.draw.css">
-  <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.css">
-  <link rel="***REMOVED***ylesheet" href="../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.Default.css">
+  <link rel="***REMOVED***ylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.css">
+  <link rel="***REMOVED***ylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
   <link rel="***REMOVED***ylesheet" href="***REMOVED***yles.css">
 </head>
 <body>
@@ -24,7 +21,7 @@
   <button id="toggle-heatmap" class="btn btn-warning fa-solid fa-map position-fixed ***REMOVED***art-100 fixed-top clearfix" type="submit"></button>
   <div id="dropdown-container" class="li***REMOVED***-group position-fixed fixed-top clearfix"></div>
   <div class="container-fluid">
-    <div class="row bg-dark">
+    <div id="row-container" class="row bg-dark">
       <div id="sidebar-container" class="col-lg-1 col-md-1 col-sm-1 text-center text-light">
         <h2 class="pt-2">Collins</h2>
         <div class="input-group">
@@ -37,18 +34,11 @@
           <ul id="sidebar" class="li***REMOVED***-group li***REMOVED***-group-flush">
           </ul>
         </div>
+        <button id="view-button" class="btn btn-warning dropdown-toggle mt-2" type="submit">View</button>
       </div>
       <div id="map" class="col m-0 p-0 w-auto"></div>
     </div>
   </div>
-
-  <script>let exports = {};</script>
-  <script src="../node_modules/boot***REMOVED***rap/di***REMOVED***/js/boot***REMOVED***rap.bundle.min.js"></script>
-  <script src="../node_modules/leaflet/di***REMOVED***/leaflet.js"></script>
-  <script src="../node_modules/leaflet-draw/di***REMOVED***/leaflet.draw-src.js"></script>
-  <script src="../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/leaflet.markerclu***REMOVED***er.js"></script>
-  <script src="../node_modules/leaflet.markerclu***REMOVED***er.layersupport/di***REMOVED***/leaflet.markerclu***REMOVED***er.layersupport.js"></script>
-  <script src="../node_modules/leaflet.heat/di***REMOVED***/leaflet-heat.js"></script>
   <script src="https://kit.fontawesome.com/e87034706c.js" crossorigin="anonymous"></script>
   <script src="js/index.min.js"></script>
 </body>

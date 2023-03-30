@@ -3,7 +3,7 @@ echo "Attempting to build..."
 
 {
   tsc && echo "Compiling typescript..." &&
-  browserify ../src/js/index.js -o ../src/js/index.js && echo "Translating using browserify..." &&
+  browserify -t browserify-css ../src/js/index.js -o ../src/js/index.js && echo "Translating using browserify..." &&
   uglifyjs ../src/js/index.js -mc > ../src/js/index.min.js && echo "Minifying using uglifyjs..." &&
   echo "Success..."
 } || {
