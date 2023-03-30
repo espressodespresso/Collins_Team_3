@@ -65,7 +65,7 @@ class ProductService{
         ***REMOVED***ringFilter.push(filter)
 
         this.productSearchBuilder.setKeywords("")
-        this.productSearchBuilder.setSize(500)
+        this.productSearchBuilder.setSize(5000)
         this.productSearchBuilder.setPercolate(true)
         this.productSearchBuilder.setFrom(1)
         this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilter)

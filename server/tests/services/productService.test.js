@@ -86,7 +86,7 @@ describe("ProductService.getFrames()", () => {
     te***REMOVED***("Returns a li***REMOVED*** of frame product Ids for all scenes in the discover in***REMOVED***ance", async () => {
         con***REMOVED*** frames = await productService.getFrames()
         con***REMOVED*** frameIds = frames.data.map(f => f.id)
-        con***REMOVED*** frameProducts = await productService.getProducts(frameIds)
+        con***REMOVED*** frameProducts = await productService.getProducts(frameIds.slice(0,100))
         expect(frames.***REMOVED***atus).toBe(200)
         expect(frameProducts.data.some(p => p.product.result.documentType == "image")).toBe(true)
     })
