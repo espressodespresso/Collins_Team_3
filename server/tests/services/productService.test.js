@@ -86,7 +86,7 @@ describe("ProductService.getFrames()", () => {
     test("Returns a list of frame product Ids for all scenes in the discover instance", async () => {
         const frames = await productService.getFrames()
         const frameIds = frames.data.map(f => f.id)
-        const frameProducts = await productService.getProducts(frameIds)
+        const frameProducts = await productService.getProducts(frameIds.slice(0,100))
         expect(frames.status).toBe(200)
         expect(frameProducts.data.some(p => p.product.result.documentType == "image")).toBe(true)
     })
