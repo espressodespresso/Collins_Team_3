@@ -1,5 +1,5 @@
-import dependencyInjector from '../../src/loaders/dependencyInjector'
-import LocalCache from './localCache'
+import dependencyInjector from '../../src/loaders/dependencyInjector.js'
+import LocalCache from './localCache.js'
 import UserModel from '../../src/models/userModel.js'
 import ProductModelFactory from '../../src/models/productModel.js'
 import ProductSearchBuilder from '../../src/models/ProductSearch.js'
