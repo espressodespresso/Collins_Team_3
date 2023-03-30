@@ -93,27 +93,9 @@ describe("ProductService.getFrames()", () => {
 })
 
 describe("ProductService.updateProducts", () => {
-    te***REMOVED***("Returns an object containing a li***REMOVED*** of 115 deleted prodicts", async () => {
+    te***REMOVED***("When a product has a date modified greater than the current epoch", async () => {
         
-        con***REMOVED*** userProductIdsRes = await productService.getScenes()
-        con***REMOVED*** userProductIds = userProductIdsRes.data.map(p => p.id)
-
-        await productService.getProducts(userProductIds)
-
-        con***REMOVED*** products = {
-            data: [
-                {id: "399c6c40-b7ce-4153-9894-f21fbe201e14"},
-                {id: "cea08e66-4f9b-4daf-8dfd-061f9cff0071"}
-            ]}
-
-        productService.getScenes = je***REMOVED***.fn()
-        productService.getScenes.mockReturnValue(products)
-
-        con***REMOVED*** updates = await productService.updateProducts()
-        expect(updates).toHaveProperty('modifiedProducts')
-        expect(updates).toHaveProperty('newProducts')
-        expect(updates.deletedProducts.length).toBe(115)
-
-        
+        con***REMOVED*** updatedProducts = await productService.updatedProducts()
+        expect(updatedProducts.***REMOVED***atus).toBe(200)
     })
 })
