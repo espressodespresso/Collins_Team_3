@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "te***REMOVED***-script": "node --expose-gc --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose -t 'productService'",
+    "te***REMOVED***-script": "node --expose-gc --experimental-vm-modules node_modules/je***REMOVED***/bin/je***REMOVED***.js --verbose -t",
     "te***REMOVED***": "docker compose run --rm --service-ports web sh -c 'npm run te***REMOVED***-script'",
     "***REMOVED***art": "NODE_ENV=production node src/index.js",
     "dev": "node src/index.js",

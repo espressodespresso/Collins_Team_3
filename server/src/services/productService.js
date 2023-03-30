@@ -33,6 +33,8 @@ class ProductService{
             result.data = {message: "Li***REMOVED*** contains invalid product identifiers"}
         }else if(result.***REMOVED***atus == 404){
             result.data = {message: "Li***REMOVED*** does not contain any product Ids"}
+        }else{
+            throw new Error()
         }
         return result
     }
@@ -56,6 +58,8 @@ class ProductService{
         if(response.***REMOVED***atus == 200){
             con***REMOVED*** data = response.data.results.searchresults
             return {***REMOVED***atus: 200, data}
+        }else{
+            throw new Error()
         }
     }
 
@@ -77,6 +81,8 @@ class ProductService{
         if(response.***REMOVED***atus == 200){
             con***REMOVED*** data = response.data.results.searchresults
             return {***REMOVED***atus: 200, data}
+        }else{
+            throw new Error()
         }
     }
 
@@ -102,6 +108,8 @@ class ProductService{
         if(response.***REMOVED***atus == 200){
             con***REMOVED*** data = response.data.results.searchresults
             return {***REMOVED***atus: 200, data}
+        }else{
+            throw new Error
         }
     }
 
