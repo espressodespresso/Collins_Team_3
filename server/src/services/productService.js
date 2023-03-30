@@ -85,8 +85,8 @@ class ProductService{
         con***REMOVED*** ***REMOVED***ringFilter = new SearchFilter("sceneimagery", ["*"], "or")
         ***REMOVED***ringFilters.push(***REMOVED***ringFilter)
 
-        con***REMOVED*** dateFilters = [{field: "objectenddate", value: [1522364568870], operator: "gte"}]
-        con***REMOVED*** dateFilter = new SearchFilter()
+        con***REMOVED*** dateFilters = []
+        con***REMOVED*** dateFilter = new SearchFilter("datemodified", [Date.now()], "gte")
         dateFilters.push(dateFilter)
 
         this.productSearchBuilder.setKeywords("")
@@ -98,10 +98,7 @@ class ProductService{
         
         //Gets all products with date modified greater than current date
         con***REMOVED*** productSearch = this.productSearchBuilder.getProductSearch()
-         
         con***REMOVED*** response = await this.productModel.search(productSearch)
-
-        console.log(response)
 
         if(response.***REMOVED***atus == 200){
             con***REMOVED*** data = response.data.results.searchresults
