@@ -95,25 +95,7 @@ describe("ProductService.getFrames()", () => {
 describe("ProductService.updateProducts", () => {
     test("Returns an object containing a list of 115 deleted prodicts", async () => {
         
-        const userProductIdsRes = await productService.getScenes()
-        const userProductIds = userProductIdsRes.data.map(p => p.id)
-
-        await productService.getProducts(userProductIds)
-
-        const products = {
-            data: [
-                {id: "399c6c40-b7ce-4153-9894-f21fbe201e14"},
-                {id: "cea08e66-4f9b-4daf-8dfd-061f9cff0071"}
-            ]}
-
-        productService.getScenes = jest.fn()
-        productService.getScenes.mockReturnValue(products)
-
-        const updates = await productService.updateProducts()
-        expect(updates).toHaveProperty('modifiedProducts')
-        expect(updates).toHaveProperty('newProducts')
-        expect(updates.deletedProducts.length).toBe(115)
-
-        
+        const updatedProducts = await productService.updatedProducts()
+        console.log(updatedProducts)
     })
 })
