@@ -1,3 +1,7 @@
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
+@import url("../node_modules/leaflet.markercluster/dist/MarkerCluster.css");
+@import url("../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css");
+
 #map{
 	height: 100vh;
 	/*-webkit-filter: blur(5px);
@@ -32,5 +36,15 @@
 
 #dropdown-container {
 	max-width: fit-content;
-	pointer-events: none;
+
+}
+
+#table, #histogram {
+	min-height: 100vh;
+	max-height: 100vh;
+}
+
+#view-button {
+	width: 100%;
+	right: 0;
 }
