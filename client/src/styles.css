@@ -1,0 +1,50 @@
+@import url("../node_modules/boot***REMOVED***rap/di***REMOVED***/css/boot***REMOVED***rap.min.css");
+@import url("../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.css");
+@import url("../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.Default.css");
+
+#map{
+	height: 100vh;
+	/*-webkit-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+	background-color: #ccc;*/
+}
+
+#spinner {
+	width: 5rem;
+	height: 5rem;
+}
+
+#toggle-heatmap {
+	max-width: min-content;
+}
+
+#sidebar-container {
+	min-width: min-content;
+}
+
+#sidebar {
+	max-height: 85vh;
+	overflow-y: scroll;
+	-ms-overflow-***REMOVED***yle: none;
+	scrollbar-width: none;
+}
+
+#sidebar::-webkit-scrollbar {
+	display: none;
+}
+
+#dropdown-container {
+	max-width: fit-content;
+
+}
+
+#table, #hi***REMOVED***ogram {
+	min-height: 100vh;
+	max-height: 100vh;
+}
+
+#view-button {
+	width: 100%;
+	right: 0;
+}
