@@ -40,7 +40,7 @@ export const updateProducts = async (req, res) => {
     const intervalID = setInterval(async () => {
         const updates = await productService.updateProducts()
         res.write(JSON.stringify(updates))
-    }, 10000)
+    }, 60000)
 
     res.on('close', () => {
         clearInterval(intervalID);
