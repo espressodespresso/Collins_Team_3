@@ -1,10 +1,16 @@
-import M = require("./mission.js")
+import M = require("./mission.js");
 import {Chart, LinearScale, Title, Tooltip, Legend, BarController, BarElement} from "chart.js";
+import Map = require ("./map.js");
+import Leaflet = require("leaflet");
+import index = require("./index.js");
+import Sidebar = require("./sidebar.js")
+
 
 export enum Stage {
     Map,
     Table,
-    Hi***REMOVED***ogram
+    Hi***REMOVED***ogram,
+    Heatmap
 }
 
 export class View {
@@ -14,49 +20,77 @@ export class View {
         this._***REMOVED***age = Stage.Map;
     }
 
-     setView(value: Stage, missions: M.Mission[]) {
+    get ***REMOVED***age(): Stage {
+        return this._***REMOVED***age;
+    }
+
+     async setView(value: Stage, missions: M.Mission[]) {
         let container = document.getElementById("row-container");
         if(value !== this._***REMOVED***age) {
             switch (this._***REMOVED***age) {
                 case Stage.Map:
                     let map = document.getElementById("map");
-                    container.removeChild(map);
+                    map.remove();
+                    //container.removeChild(map);
                     break
                 case Stage.Table:
                     let table = document.getElementById("table");
-                    container.removeChild(table);
+                   // container.removeChild(table);
+                    table.remove();
                     break;
                 case Stage.Hi***REMOVED***ogram:
                     let hi***REMOVED***ogram = document.getElementById("hi***REMOVED***ogram");
-                    container.removeChild(hi***REMOVED***ogram);
+                    //container.removeChild(hi***REMOVED***ogram);
+                    hi***REMOVED***ogram.remove();
+                    break;
+                case Stage.Heatmap:
+                    let heatmap = document.getElementById("map");
+                    heatmap.remove();
+                    break;
             }
 
             switch (value) {
                 case Stage.Map:
-                    this.initMap();
+                    console.log("initMap");
+                    this._***REMOVED***age = Stage.Map;
+                    await this.initMap(missions);
                     break;
                 case Stage.Table:
+                    console.log("initMissions");
+                    this._***REMOVED***age = Stage.Table;
                     this.initTable(missions)
                     break;
                 case Stage.Hi***REMOVED***ogram:
+                    console.log("initHi***REMOVED***ogram");
+                    this._***REMOVED***age = Stage.Hi***REMOVED***ogram;
                     this.initHi***REMOVED***ogram(missions);
                     break;
+                case Stage.Heatmap:
+                    console.log("initHeatmap");
+                    this._***REMOVED***age = Stage.Heatmap;
+                    this.initHeatmap(missions);
             }
         }
     }
 
-    private initMap() {
+    private async initMap(missions: M.Mission[]) {
         let mapElement = document.createElement("div");
         mapElement.id = "map";
         mapElement.classLi***REMOVED***.add("col", "m-0", "p-0", "w-auto")
         document.getElementById("row-container").appendChild(mapElement);
+        index.map = new Map.Map;
+        await index.map.initLayers(missions)
+            .then(() => document.getElementById("sidebar").innerHTML = "")
+            .catch(e => console.error("Unable to reload layers\n" + e));
+        await Sidebar.FormatSidebar(missions, index.map.map, index.view)
+            .catch(e => console.error("Unable to reload sidebar\n" + e));
     }
 
     private initTable(missions: M.Mission[]) {
         // Create table container & define table element
         let divParent = document.createElement("div");
         divParent.id = "table";
-        divParent.classLi***REMOVED***.add("col", "p-3", "overflow-y");
+        divParent.classLi***REMOVED***.add("col", "p-3");
         let tableElement = document.createElement("table");
         tableElement.classLi***REMOVED***.add("table", "text-light");
 
@@ -79,25 +113,27 @@ export class View {
         // Define table body & dynamically add table data
 
         let tableBody = document.createElement("tbody");
+        let count = 0;
         for(let i=0; i < missions.length; i++) {
             let mission = missions[i];
-            trElement = document.createElement("tr");
-            let thElement = document.createElement("th");
-            thElement.scope = "row";
-            let count = 1;
-            thElement.append(document.createTextNode(count.toString()));
-            trElement.appendChild(thElement);
             for(let j=0; j < mission.scenes.length; j++) {
+                count++;
                 let scene = mission.scenes[j];
-                trElement.appendChild(this.createtdElement(`${mission.name} ${scene.name}`));
-                trElement.appendChild(this.createtdElement(scene.countrycode));
-                trElement.appendChild(this.createtdElement(scene.fir***REMOVED***FrameTime.toString()));
-                trElement.appendChild(this.createtdElement(mission.aircraftTakeTime.toString()));
-                trElement.appendChild(this.createtdElement(scene.center.toString()));
-                count += 1;
+                let tr = document.createElement("tr");
+                let th = document.createElement("th");
+                th.scope = "row";
+                th.innerHTML = count.toString();
+                tr.appendChild(th);
+                tr.appendChild(this.createtdElement(`${mission.name} ${scene.name}`));
+                tr.appendChild(this.createtdElement(scene.countrycode));
+                tr.appendChild(this.createtdElement(scene.fir***REMOVED***FrameTime.toString()));
+                tr.appendChild(this.createtdElement(""));
+                tr.appendChild(this.createtdElement(scene.center.toString()));
+                tableBody.appendChild(tr);
             }
-            tableBody.appendChild(trElement);
         }
+
+
         tableElement.appendChild(tableBody);
         divParent.appendChild(tableElement);
         console.log(divParent);
@@ -106,7 +142,7 @@ export class View {
 
     private createtdElement(value: ***REMOVED***ring) {
         let tdElement = document.createElement("td");
-        tdElement.append(document.createTextNode(value));
+        tdElement.innerHTML = value;
         return tdElement;
     }
 
@@ -201,5 +237,19 @@ export class View {
         });
         divParent.appendChild(ctx);
         document.getElementById("row-container").appendChild(divParent);
+    }
+
+    private async initHeatmap(missions: M.Mission[]) {
+        let mapElement = document.createElement("div");
+        mapElement.id = "map";
+        mapElement.classLi***REMOVED***.add("col", "m-0", "p-0", "w-auto")
+        document.getElementById("row-container").appendChild(mapElement);
+        index.map = new Map.Map;
+        await index.map.initLayers(missions)
+            .then(() => document.getElementById("sidebar").innerHTML = "")
+            .catch(e => console.error("Unable to reload layers\n" + e));
+        await Sidebar.FormatSidebar(missions, index.map.map, index.view)
+            .catch(e => console.error("Unable to reload sidebar\n" + e));
+        await index.map.calculateHeatmapCoverage(missions);
     }
 }
