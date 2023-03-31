@@ -24,7 +24,7 @@ export class Scene {
     }
 
     get countrycode(): ***REMOVED***ring {
-        return this.countrycode;
+        return this._countrycode;
     }
 
     get fir***REMOVED***FrameTime(): bigint {
@@ -80,6 +80,7 @@ export class Scene {
 
         return data;
     }
+
 }
 
 export class SceneLayer {

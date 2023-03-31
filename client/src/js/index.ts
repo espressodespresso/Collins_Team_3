@@ -4,7 +4,8 @@ import M = require("./mission.js");
 import Sidebar = require("./sidebar.js");
 import Map = require("./map.js");
 import Leaflet = require('leaflet');
-import {Stage, View} from "./view";
+import V  = require("./view.js")
+
 
 require("leaflet-draw");
 require("../***REMOVED***yles.css");
@@ -12,30 +13,11 @@ require("../***REMOVED***yles.css");
 let missions: M.Mission[] = [];
 export let layers: M.MissionLayerGroup[] = [];
 let level: Map.Levels;
-let view = new View();
+export let view = new V.View();
 
 // Initialising Leaflet
 
-let map = new Leaflet.Map('map', {
-    zoomControl: false,
-    center: [54.247468, -4.438477],
-    zoom: 6
-})
-
-Leaflet
-
-Leaflet.tileLayer('https://tile.open***REMOVED***reetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.open***REMOVED***reetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map)
-
-map.addControl(new Leaflet.Control.Draw({
-    position: "bottomright"
-}));
-
-let drawFeatures = new Leaflet.FeatureGroup();
-map.addLayer(drawFeatures);
-
-let heatMap;
+export let map = new Map.Map;
 
 async function ***REMOVED***art(): Promise<void> {
     await VerifyService.verifyCred("***REMOVED***", ***REMOVED***)
@@ -45,12 +27,14 @@ async function ***REMOVED***art(): Promise<void> {
                 await M.getMissions()
                     .then(async r => missions = r)
                     .catch(e => console.error("Unable to load missions\n" + e));
-                await Map.initLayers(missions, map)
-                    .then(async r => Map.addLayersToMap(r, false, map))
+                await map.initLayers(missions)
                     .catch(e => console.error("Unable to load layers\n" + e));
-                await Sidebar.FormatSidebar(missions, map, view)
-                    .then(loaded)
+                await Sidebar.FormatSidebar(missions, map.map, view)
+                    .then(() => document.getElementById("view-button").classLi***REMOVED***.remove("invisible"))
                     .catch(e => console.error("Unable to load sidebar\n" + e));
+                await view.setView(V.Stage.Map, missions)
+                    .catch(e => console.error("Unable to set view ***REMOVED***ate\n" + e))
+                    .then(loaded);
             } else {
                 console.error("Login details incorrect");
             }
@@ -61,13 +45,9 @@ async function loaded() {
     let spinner = document.getElementById("spinner-container");
     spinner.classLi***REMOVED***.add("invisible");
     level = Map.Levels.Marker;
-    Map.initZoomEvent(map, level, missions);
-    Map.initDrawEvent(map, drawFeatures, missions);
-    // Using due to the lack of export support with Leaflet heatmap plugin
-    /*heatMap = window['L'].heatLayer(await calculateHeatmapCoverage(missions)
-        , { radius: (5 * map.getZoom()), maxZoom: 6 }).addTo(map);*/
-    //await initSearchEvent();
-    //view.setView(Stage.Table, missions);
+    map.initZoomEvent(level, missions);
+    map.initDrawEvent(missions);
+    await Sidebar.initSearchEvent(missions, map.map);
 }
 
 ***REMOVED***art();

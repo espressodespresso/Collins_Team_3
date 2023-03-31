@@ -2,17 +2,17 @@ import Reque***REMOVED***Service = require("./services/reque***REMOVED***Service
 import S = require("./scene.js");
 import index = require("./index.js");
 import Leaflet = require('leaflet');
+import {Scene} from "./scene";
 
 export class Mission {
     private readonly _name: ***REMOVED***ring;
     private readonly _id: ***REMOVED***ring;
-    private readonly _aircraftTakeOffTime: bigint;
     private _scenes: S.Scene[];
 
-    con***REMOVED***ructor(name: ***REMOVED***ring, id: ***REMOVED***ring, aircraftTakeOffTime: bigint) {
+    con***REMOVED***ructor(name: ***REMOVED***ring, id: ***REMOVED***ring, scenes: S.Scene[]) {
         this._name = name;
         this._id = id;
-        this._aircraftTakeOffTime = aircraftTakeOffTime;
+        this._scenes = scenes;
     }
 
     get name(): ***REMOVED***ring {
@@ -23,32 +23,12 @@ export class Mission {
         return this._id;
     }
 
-    get aircraftTakeTime(): bigint {
-        return this._aircraftTakeOffTime;
-    }
-
     get scenes(): S.Scene[] {
         return this._scenes;
     }
 
     set scenes(Scenes: S.Scene[]) {
         this._scenes = Scenes;
-    }
-
-    async getMissionScenes(): Promise<S.Scene[]> {
-        let scenes: S.Scene[] = [];
-        //console.log(await Reque***REMOVED***Service.getMissionFootprintByID(this.id));
-        con***REMOVED*** req = (await Reque***REMOVED***Service.getMissionSceneHandler(this.id));
-        for (let i = 0; i < req.length; i++) {
-            con***REMOVED*** data = req[i];
-            let cString = data.centre.split(",");
-            let center = [];
-            center.push(cString[1], cString[0]);
-            let coord = data.footprint.coordinates;
-            scenes.push(new S.Scene(center, data.countrycode, data.fir***REMOVED***FrameTime, coord
-                , data.id, data.name.split(" ")[1]));
-        }
-        return scenes;
     }
 }
 
@@ -88,16 +68,48 @@ export class MissionLayerGroup {
 
 export async function getMissions(): Promise<Mission[]> {
     let missions: Mission[] = [];
-    con***REMOVED*** req = (await Reque***REMOVED***Service.getMissionsHandler()).data.missions;
-    for(let i=0; i < req.length; i++) {
-        con***REMOVED*** data = req[i]
-        con***REMOVED*** id = data.id;
-        let mission = new Mission(data.name, id, data.aircraftTakeOffTime);
-        mission.scenes = await mission.getMissionScenes();
-        missions.push(mission);
+    let products: [] = (await Reque***REMOVED***Service.getProductsHandler()).data;
+    console.log(products)
+    let sortMissions = [];
+    for(let i=0; i < products.length; i++) {
+        let result: object = (products[i]["product"]["result"]);
+        let data = null;
+        for(let j=0; j < sortMissions.length; j++) {
+            let missionLocal = sortMissions[j];
+            if(result["missionid"] === missionLocal["missionid"]) {
+                data = missionLocal;
+                break
+            }
+        }
+        let titleSplit = result["title"].split(" ");
+        let sceneName = titleSplit[1];
+        let sceneCenter = []
+        let centerSplit = result["centre"].split(",");
+        sceneCenter.push(centerSplit[1], centerSplit[0]);
+        let scene = new S.Scene(sceneCenter, result["countrycode"]
+            , result["object***REMOVED***artdate"], result["footprint"]["coordinates"], result["identifier"]
+            , sceneName);
+        if(data === null) {
+            data = {
+                missionid: result["missionid"],
+                missionname: titleSplit[0],
+                scenes: []
+            }
+            data["scenes"].push(scene);
+            sortMissions.push(data);
+        } else {
+            data["scenes"].push(scene);
+        }
     }
 
-    return missions
+    console.log(sortMissions)
+
+    for(let i=0; i < sortMissions.length; i++) {
+        let localMission = sortMissions[i];
+        missions.push(new Mission(localMission["missionname"],localMission["missionid"],  localMission["scenes"]))
+    }
+
+    return missions;
 }
 
 export async function getMissionLayerByID(id: ***REMOVED***ring): Promise<MissionLayerGroup> {
@@ -110,19 +122,3 @@ export async function getMissionLayerByID(id: ***REMOVED***ring): Promise<Missio
 
     return null;
 }
-
-export async function getMissionScenes(id: ***REMOVED***ring): Promise<S.Scene[]> {
-    let scenes: S.Scene[] = [];
-    con***REMOVED*** req = (await Reque***REMOVED***Service.getMissionSceneHandler(id)).data;
-    for(let i=0; i < req.length; i++) {
-        con***REMOVED*** data = req[i];
-        let cString = data.centre.split(",");
-        let center = [];
-        center.push(cString[0], cString[1]);
-        let coord = data.footprint.coordinates;
-        scenes.push(new S.Scene(center, data.countrycode, data.fir***REMOVED***FrameTime, coord
-            , data.id, data.name.split(" ")[1]));
-    }
-    return scenes;
-}
-
