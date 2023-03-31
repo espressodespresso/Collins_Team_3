@@ -10,6 +10,10 @@
 	background-color: #ccc;*/
 }
 
+#heatmap {
+	height: 100vh;
+}
+
 #spinner {
 	width: 5rem;
 	height: 5rem;
@@ -24,7 +28,7 @@
 }
 
 #sidebar {
-	max-height: 85vh;
+	max-height: 80vh;
 	overflow-y: scroll;
 	-ms-overflow-***REMOVED***yle: none;
 	scrollbar-width: none;
@@ -47,4 +51,24 @@
 #view-button {
 	width: 100%;
 	right: 0;
+}
+
+tr {
+	width: 100%;
+	display: inline-table;
+	table-layout: fixed;
+}
+
+table{
+	height:80vh;
+}
+
+table::-webkit-scrollbar {
+	display: none;
+}
+
+tbody{
+	overflow-y: scroll;
+	height: 80vh;
+	position: absolute;
 }

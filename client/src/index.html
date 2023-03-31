@@ -20,21 +20,22 @@
   </div>
   <button id="toggle-heatmap" class="btn btn-warning fa-solid fa-map position-fixed ***REMOVED***art-100 fixed-top clearfix" type="submit"></button>
   <div id="dropdown-container" class="li***REMOVED***-group position-fixed fixed-top clearfix"></div>
+  <div id="search-query-container" class="li***REMOVED***-group position-fixed fixed-top clearfix"></div>
   <div class="container-fluid">
     <div id="row-container" class="row bg-dark">
       <div id="sidebar-container" class="col-lg-1 col-md-1 col-sm-1 text-center text-light">
-        <h2 class="pt-2">Collins</h2>
-        <div class="input-group">
+        <h2 id="title" class="pt-2">Collins</h2>
+        <div id="search-container" class="input-group">
           <input id="search-input" type="text" class="form-control" placeholder="">
           <button id="search-button" class="btn btn-warning" type="submit">
             <span id="search-span" class="fa-solid fa-magnifying-glass"></span>
           </button>
         </div>
-        <div class="pt-2">
+        <div id="sidebar-padding" class="pt-2">
           <ul id="sidebar" class="li***REMOVED***-group li***REMOVED***-group-flush">
           </ul>
         </div>
-        <button id="view-button" class="btn btn-warning dropdown-toggle mt-2" type="submit">View</button>
+        <button id="view-button" class="btn btn-warning dropdown-toggle mt-2 invisible" type="submit">View</button>
       </div>
       <div id="map" class="col m-0 p-0 w-auto"></div>
     </div>
