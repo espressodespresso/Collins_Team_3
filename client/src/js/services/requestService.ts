@@ -1,5 +1,5 @@
 async function getProductSceneIDHandler() {
-    con***REMOVED*** url = "http://95.216.211.37:3000/api/products/scenes";
+    con***REMOVED*** url = "http://localho***REMOVED***:3000/api/products/scenes";
     return await getFetchReque***REMOVED***(url);
 }
 
