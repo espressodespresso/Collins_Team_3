@@ -3,7 +3,7 @@ version: '3'
 services:
   node:
     build:
-      context: ./server
+      context: .
       dockerfile: Dockerfile
     environment:
       - REDIS_URL=redis://redis_db:6379
