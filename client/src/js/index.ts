@@ -20,7 +20,7 @@ export let view = new V.View();
 export let map = new Map.Map;
 
 async function ***REMOVED***art(): Promise<void> {
-    await VerifyService.verifyCred("***REMOVED***", "***REMOVED***")
+    await VerifyService.verifyCred("username", "password")
         .then(async r => {
             if(r) {
                 console.log(await Reque***REMOVED***Service.getProductsHandler());
