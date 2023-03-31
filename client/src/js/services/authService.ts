@@ -1,21 +1,21 @@
-export async function verifyCred(username: ***REMOVED***ring, password: ***REMOVED***ring): Promise<boolean>{
-    let ***REMOVED***atus = true;
-    con***REMOVED*** loginURL = 'http://localho***REMOVED***:3000/login';
-    con***REMOVED*** res = await fetch(loginURL, {
+export async function verifyCred(username: string, password: string): Promise<boolean>{
+    let status = true;
+    const loginURL = 'http://localhost:3000/login';
+    const res = await fetch(loginURL, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.***REMOVED***ringify({"username": username, "password": password})
+        body: JSON.stringify({"username": username, "password": password})
     })
-    con***REMOVED*** resText = await res.text()
-    con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
-    con***REMOVED*** jwt = resJSON.token
+    const resText = await res.text()
+    const resJSON = resText === ""? {}: JSON.parse(resText)
+    const jwt = resJSON.token
     if(jwt){
         localStorage.jwt = jwt
     }else{
-        ***REMOVED***atus = false
+        status = false
     }
-    return ***REMOVED***atus
+    return status
 }

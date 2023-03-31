@@ -10,47 +10,47 @@ import MissionModelFactory from '../models/missionModel.js'
 import MissionServiceFactory from '../services/missionService.js'
 
 
-export con***REMOVED*** createApp = async () => {
+export const createApp = async () => {
 
-    con***REMOVED*** redisClient = await redisClientLoader()
+    const redisClient = await redisClientLoader()
 
-    con***REMOVED*** userModel = {
+    const userModel = {
         name: "User",
         model: (container) => new UserModel(container)
     }
 
-    con***REMOVED*** productModelFactory = {
+    const productModelFactory = {
         name: "ProductModelFactory",
         model: (container) => new ProductModelFactory(container)
     }
 
-    con***REMOVED*** productSearchBuilder = {
+    const productSearchBuilder = {
         name: "ProductSearchBuilder",
         model: (container) => new ProductSearchBuilder(container)
     }
 
-    con***REMOVED*** missionModelFactory = {
+    const missionModelFactory = {
         name: "MissionModelFactory",
         model: (container) => new MissionModelFactory(container)
     }
 
-    con***REMOVED*** authService = {
+    const authService = {
         name: "Auth",
         service: (container) => new AuthService(container)
     }
 
-    con***REMOVED*** productServiceFactory = {
+    const productServiceFactory = {
         name: "ProductServiceFactory",
         service: (container) => new ProductServiceFactory(container)
     }
 
-    con***REMOVED*** missionServiceFactory = {
+    const missionServiceFactory = {
         name: "MissionServiceFactory",
         service: (container) => new MissionServiceFactory(container)
     }
 
-    con***REMOVED*** models = [userModel, productModelFactory, productSearchBuilder, missionModelFactory]
-    con***REMOVED*** services = [authService, productServiceFactory, missionServiceFactory]
+    const models = [userModel, productModelFactory, productSearchBuilder, missionModelFactory]
+    const services = [authService, productServiceFactory, missionServiceFactory]
 
     dependencyInjectorLoader(redisClient, models, services)
     

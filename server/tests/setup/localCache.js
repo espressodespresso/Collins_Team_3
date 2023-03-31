@@ -1,12 +1,12 @@
 import NodeCache from "node-cache";
 
 export default class LocalCache{
-    con***REMOVED***ructor(){
+    constructor(){
         this.client = new NodeCache()
     }
 
     getJSON(key){
-        con***REMOVED*** jsonString = this.client.get(key)
+        const jsonString = this.client.get(key)
         if(jsonString !== undefined){
             return JSON.parse(jsonString)
         }
@@ -14,7 +14,7 @@ export default class LocalCache{
     }
 
     async setJSON(key, jsonValue){
-        con***REMOVED*** value = JSON.***REMOVED***ringify(jsonValue)
+        const value = JSON.stringify(jsonValue)
         return this.client.set(key, value)
     }
 }

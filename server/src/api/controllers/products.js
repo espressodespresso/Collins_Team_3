@@ -1,11 +1,11 @@
 import { Container } from 'typedi'
 
-export con***REMOVED*** getScenes = async (req, res, next) => {
+export const getScenes = async (req, res, next) => {
     try{
-        con***REMOVED*** productServiceFactory = Container.get('services.ProductServiceFactory')
-        con***REMOVED*** productService = await productServiceFactory.createProductService(req.user.username)
+        const productServiceFactory = Container.get('services.ProductServiceFactory')
+        const productService = await productServiceFactory.createProductService(req.user.username)
     
-        con***REMOVED*** result = await productService.getScenes()
+        const result = await productService.getScenes()
     
         res.json({data: result.data})
     }catch(e){
@@ -13,12 +13,12 @@ export con***REMOVED*** getScenes = async (req, res, next) => {
     }
 }
 
-export con***REMOVED*** getFrames = async (req, res, next) => {
+export const getFrames = async (req, res, next) => {
     try{
-        con***REMOVED*** productServiceFactory = Container.get('services.ProductServiceFactory')
-        con***REMOVED*** productService = await productServiceFactory.createProductService(req.user.username)
+        const productServiceFactory = Container.get('services.ProductServiceFactory')
+        const productService = await productServiceFactory.createProductService(req.user.username)
     
-        con***REMOVED*** result = await productService.getFrames()
+        const result = await productService.getFrames()
     
         res.json({data: result.data})
     }catch(e){
@@ -26,34 +26,34 @@ export con***REMOVED*** getFrames = async (req, res, next) => {
     }
 }
 
-export con***REMOVED*** getProducts = async(req, res, next) => {
+export const getProducts = async(req, res, next) => {
     try{
-        con***REMOVED*** productServiceFactory = Container.get('services.ProductServiceFactory')
-        con***REMOVED*** productService = await productServiceFactory.createProductService(req.user.username)
+        const productServiceFactory = Container.get('services.ProductServiceFactory')
+        const productService = await productServiceFactory.createProductService(req.user.username)
     
-        con***REMOVED*** result = await productService.getProducts(req.body.products)
+        const result = await productService.getProducts(req.body.products)
     
-        res.***REMOVED***atus(result.***REMOVED***atus).json({data: result.data})
+        res.status(result.status).json({data: result.data})
     }catch(e){
         next(e)
     }
 }
 
-export con***REMOVED*** updateProducts = async (req, res, next) => {
+export const updateProducts = async (req, res, next) => {
 
     try{
         res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Content-Type', 'text/event-***REMOVED***ream');
+        res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Connection', 'keep-alive');
         res.flushHeaders(); 
     
-        con***REMOVED*** productServiceFactory = Container.get('services.ProductServiceFactory')
-        con***REMOVED*** productService = await productServiceFactory.createProductService(req.user.username)
+        const productServiceFactory = Container.get('services.ProductServiceFactory')
+        const productService = await productServiceFactory.createProductService(req.user.username)
     
-        con***REMOVED*** intervalID = setInterval(async () => {
-            con***REMOVED*** updates = await productService.updateProducts()
-            res.write(JSON.***REMOVED***ringify(updates))
+        const intervalID = setInterval(async () => {
+            const updates = await productService.updateProducts()
+            res.write(JSON.stringify(updates))
         }, 60000)
     
         res.on('close', () => {

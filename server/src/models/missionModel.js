@@ -1,5 +1,5 @@
 export default class MissionModelFactory{
-    con***REMOVED***ructor(){
+    constructor(){
 
     }
 
@@ -9,25 +9,25 @@ export default class MissionModelFactory{
 }
 
 class MissionModel{
-    con***REMOVED***ructor(discoverClient){
+    constructor(discoverClient){
         this.discoverClient = discoverClient
     }
 
     async getMissions(){
-        con***REMOVED*** endpoint = `/discover/api/v1/missionfeed/missions`
-        con***REMOVED*** response = await this.discoverClient.get(endpoint)
+        const endpoint = `/discover/api/v1/missionfeed/missions`
+        const response = await this.discoverClient.get(endpoint)
         return response
     }
 
     async getMission(missionId){
-        con***REMOVED*** endpoint = `/discover/api/v1/missionfeed/missions/${missionId}`
-        con***REMOVED*** response = await this.discoverClient.get(endpoint)
+        const endpoint = `/discover/api/v1/missionfeed/missions/${missionId}`
+        const response = await this.discoverClient.get(endpoint)
         return response
     }
 
     async getMissionFootprint(missionId){
-        con***REMOVED*** endpoint = `/discover/api/v1/missionfeed/missions/${missionId}/footprint`
-        con***REMOVED*** response = await this.discoverClient.get(endpoint)
+        const endpoint = `/discover/api/v1/missionfeed/missions/${missionId}/footprint`
+        const response = await this.discoverClient.get(endpoint)
         return response
     }
 }

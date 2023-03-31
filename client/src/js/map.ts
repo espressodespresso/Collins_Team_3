@@ -3,10 +3,10 @@ import S = require("./scene.js");
 import index = require("./index.js");
 import Leaflet = require('leaflet');
 import turf = require("@turf/helpers");
-con***REMOVED*** intersect = require("@turf/intersect");
-con***REMOVED*** area = require("@turf/area");
-require('leaflet.markerclu***REMOVED***er');
-require('leaflet.markerclu***REMOVED***er.layersupport');
+const intersect = require("@turf/intersect");
+const area = require("@turf/area");
+require('leaflet.markercluster');
+require('leaflet.markercluster.layersupport');
 require('leaflet.heat')
 import fs = require("fs")
 
@@ -22,7 +22,7 @@ export class Map {
     private _heatMapSource: Leaflet.HeatLayer;
     private _prevZoomLevel: number;
 
-    con***REMOVED***ructor() {
+    constructor() {
         this._prevZoomLevel = 0;
         this.initMap();
     }
@@ -46,8 +46,8 @@ export class Map {
             zoom: 6
         })
 
-        Leaflet.tileLayer('https://tile.open***REMOVED***reetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.open***REMOVED***reetmap.org/copyright">OpenStreetMap</a> contributors'
+        Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this._map)
 
         this._map.addControl(new Leaflet.Control.Draw({
@@ -75,7 +75,7 @@ export class Map {
                 localSceneLayers.push(new S.SceneLayer(scene.id, mission.id, layer));
             }
 
-            let layerSupportGroup = Leaflet.markerClu***REMOVED***erGroup.layerSupport();
+            let layerSupportGroup = Leaflet.markerClusterGroup.layerSupport();
             let layerGroup = Leaflet.layerGroup(localLayers);
             layerSupportGroup.addTo(this._map);
             layerSupportGroup.checkIn(layerGroup);
@@ -90,9 +90,9 @@ export class Map {
         let localGroupLayers: Leaflet.LayerGroup[] = [];
         for (let i=0; i < missions.length; i++) {
             let mission = missions[i];
-            let exi***REMOVED***ingMissionLayer = await M.getMissionLayerByID(mission.id);
+            let existingMissionLayer = await M.getMissionLayerByID(mission.id);
             let missionStatus = true;
-            if(exi***REMOVED***ingMissionLayer.***REMOVED***atus === false) {
+            if(existingMissionLayer.status === false) {
                 missionStatus = false;
             }
             let scenes = mission.scenes;
@@ -100,9 +100,9 @@ export class Map {
             let localSceneLayers: S.SceneLayer[] = [];
             for (let j=0; j < scenes.length; j++) {
                 let scene = scenes[j];
-                let exi***REMOVED***ingSceneLayer = await S.getSceneLayerByID(scene.id);
+                let existingSceneLayer = await S.getSceneLayerByID(scene.id);
                 let sceneStatus = true;
-                if(exi***REMOVED***ingSceneLayer.***REMOVED***atus === false) {
+                if(existingSceneLayer.status === false) {
                     sceneStatus = false;
                 }
                 let layer;
@@ -121,17 +121,17 @@ export class Map {
                 }
                 localLayers.push(layer);
                 let localSceneLayer = new S.SceneLayer(scene.id, mission.id, layer);
-                localSceneLayer.***REMOVED***atus = sceneStatus;
+                localSceneLayer.status = sceneStatus;
                 localSceneLayers.push(localSceneLayer);
             }
             let layerGroup = Leaflet.layerGroup(localLayers);
             if(level === Levels.Marker) {
-                let layerSupportGroup = Leaflet.markerClu***REMOVED***erGroup.layerSupport();
+                let layerSupportGroup = Leaflet.markerClusterGroup.layerSupport();
                 layerSupportGroup.addTo(this._map);
                 layerSupportGroup.checkIn(layerGroup);
             }
             let localMissionLayerGroup = new M.MissionLayerGroup(mission.id, layerGroup, localSceneLayers);
-            localMissionLayerGroup.***REMOVED***atus = missionStatus;
+            localMissionLayerGroup.status = missionStatus;
             index.layers.push(localMissionLayerGroup);
             localGroupLayers.push(layerGroup);
         }
@@ -223,7 +223,7 @@ export class Map {
         }
     }
 
-    // Map relevant event li***REMOVED***eners
+    // Map relevant event listeners
 
     initZoomEvent(level: Levels, missions: M.Mission[]): void {
         let map = this;

@@ -1,10 +1,10 @@
 import {validationResult} from 'express-validator'
 
-export con***REMOVED*** handleInputErrors = (req, res, next) => {
-    con***REMOVED*** errors = validationResult(req)
+export const handleInputErrors = (req, res, next) => {
+    const errors = validationResult(req)
 
     if(!errors.isEmpty()){
-        res.***REMOVED***atus(400)
+        res.status(400)
         res.json({errors: errors.array()})
     }
     else next()

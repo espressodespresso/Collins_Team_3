@@ -1,35 +1,35 @@
 import fetch, {Headers} from 'node-fetch'
-import {getReasonPhrase} from 'http-***REMOVED***atus-codes';
+import {getReasonPhrase} from 'http-status-codes';
 
 export default class HttpClient{
-    con***REMOVED***ructor(httpsAgent = {}){
+    constructor(httpsAgent = {}){
         this.agent = httpsAgent
     }
 
-    resolveStatusCode(***REMOVED***atus){
-        return {***REMOVED***atus, data: {message: getReasonPhrase(***REMOVED***atus)}}
+    resolveStatusCode(status){
+        return {status, data: {message: getReasonPhrase(status)}}
     }
 
     async get(url, headers = {}){
         try{
-            con***REMOVED*** res = await fetch(url, {
+            const res = await fetch(url, {
                 method: "GET",
                 headers: new Headers(headers),
                 agent: this.agent
              })
-            con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
+            const statusCode = res.status
             
-            if(Math.floor(***REMOVED***atusCode/100) == 2){
-                con***REMOVED*** resText = await res.text()
-                con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
+            if(Math.floor(statusCode/100) == 2){
+                const resText = await res.text()
+                const resJSON = resText === ""? {}: JSON.parse(resText)
                 
                 return{
-                    ***REMOVED***atus: 200,
+                    status: 200,
                     data: resJSON
                 }
             }
             else{
-                return this.resolveStatusCode(***REMOVED***atusCode)
+                return this.resolveStatusCode(statusCode)
             }
     
         }catch(e){
@@ -38,28 +38,28 @@ export default class HttpClient{
         }
     }
 
-    async po***REMOVED***(url, headers = {}, body = {}){
+    async post(url, headers = {}, body = {}){
         try{
-            con***REMOVED*** res = await fetch(url, {
+            const res = await fetch(url, {
                 method: "POST",
                 headers: new Headers(headers),
                 body: body,
                 agent: this.agent
              })
     
-            con***REMOVED*** ***REMOVED***atusCode = res.***REMOVED***atus
+            const statusCode = res.status
             
-            if(***REMOVED***atusCode == 200){
-                con***REMOVED*** resText = await res.text()
-                con***REMOVED*** resJSON = resText === ""? {}: JSON.parse(resText)
+            if(statusCode == 200){
+                const resText = await res.text()
+                const resJSON = resText === ""? {}: JSON.parse(resText)
     
                 return{
-                    ***REMOVED***atus: 200,
+                    status: 200,
                     data: resJSON
                 }
             }
             else{
-                return this.resolveStatusCode(***REMOVED***atusCode)
+                return this.resolveStatusCode(statusCode)
             }
     
         }catch(e){

@@ -1,9 +1,9 @@
 {
-  "te***REMOVED***Environment": "node",
-  "roots": ["te***REMOVED***s"],
+  "testEnvironment": "node",
+  "roots": ["tests"],
   "transform": {
-    "^.+\\.js$": "babel-je***REMOVED***",
-    "^.+\\.mjs$": "babel-je***REMOVED***"
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.mjs$": "babel-jest"
   },
   "moduleFileExtensions": [
     "js",

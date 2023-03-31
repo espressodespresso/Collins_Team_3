@@ -14,4 +14,4 @@ COPY --chown=node:node ./server .
 
 EXPOSE 3000
 
-CMD ["npm", "***REMOVED***art"]
+CMD ["npm", "start"]

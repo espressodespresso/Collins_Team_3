@@ -14,50 +14,50 @@ afterAll(() => {
   
 
 describe("UserModel.signIn(username, password)", () => {
-    te***REMOVED***("A correct username and password gets the user API tokens and caches them, then returns true", async () => {
-        con***REMOVED*** ***REMOVED***atus = await userModel.signIn(config.username, config.password)
-        con***REMOVED*** localCache = Container.get('SessionCache')
-        con***REMOVED*** userData = localCache.getJSON(config.username)
-        con***REMOVED*** tokens = userData.tokens
-        expect(***REMOVED***atus).toBe(true)
+    test("A correct username and password gets the user API tokens and caches them, then returns true", async () => {
+        const status = await userModel.signIn(config.username, config.password)
+        const localCache = Container.get('SessionCache')
+        const userData = localCache.getJSON(config.username)
+        const tokens = userData.tokens
+        expect(status).toBe(true)
         expect(tokens).toHaveProperty('accessToken')
         expect(tokens).toHaveProperty('refreshToken')
     })
 
-    te***REMOVED***("An incorrect username and password combination, does not cache any user API tokens and returns false", async () => {
-        con***REMOVED*** ***REMOVED***atusWrongPassword = await userModel.signIn(config.username, "wrongpassword")
-        con***REMOVED*** ***REMOVED***atusWrongUsername = await userModel.signIn("wrongusername00000", config.password)
-        con***REMOVED*** localCache = Container.get('SessionCache')
-        con***REMOVED*** userData = localCache.getJSON(config.username)
-        expect(***REMOVED***atusWrongPassword).toBe(false)
-        expect(***REMOVED***atusWrongUsername).toBe(false)
+    test("An incorrect username and password combination, does not cache any user API tokens and returns false", async () => {
+        const statusWrongPassword = await userModel.signIn(config.username, "wrongpassword")
+        const statusWrongUsername = await userModel.signIn("wrongusername00000", config.password)
+        const localCache = Container.get('SessionCache')
+        const userData = localCache.getJSON(config.username)
+        expect(statusWrongPassword).toBe(false)
+        expect(statusWrongUsername).toBe(false)
         expect(userData).toBe(undefined)
     })
 
 })
 
 describe("UserModel.userDiscoverClient(username)", () => {
-    te***REMOVED***("A username of a signed in user, returns an in***REMOVED***ance of DiscoverClient", async () => {
-        con***REMOVED*** ***REMOVED***atus = await userModel.signIn(config.username, config.password)
-        con***REMOVED*** discoverClient = await userModel.userDiscoverClient(config.username)
+    test("A username of a signed in user, returns an instance of DiscoverClient", async () => {
+        const status = await userModel.signIn(config.username, config.password)
+        const discoverClient = await userModel.userDiscoverClient(config.username)
         expect(discoverClient.isConnected()).toBe(true)
     })
 
-    te***REMOVED***("A username that does not match a signed in user returns undefined", async () => {
-        con***REMOVED*** discoverClient = await userModel.userDiscoverClient("not signed in")
+    test("A username that does not match a signed in user returns undefined", async () => {
+        const discoverClient = await userModel.userDiscoverClient("not signed in")
         expect(discoverClient).toBe(undefined)
     })
 })
 
 describe("UserModel.getUserProducts(username)", () => {
-    te***REMOVED***("A username of a signed in user, returns a array", async () => {
-        con***REMOVED*** ***REMOVED***atus = await userModel.signIn(config.username, config.password)
-        con***REMOVED*** products = await userModel.getUserProducts(config.username)
+    test("A username of a signed in user, returns a array", async () => {
+        const status = await userModel.signIn(config.username, config.password)
+        const products = await userModel.getUserProducts(config.username)
         expect(Array.isArray(products)).toBe(true)
     })
     
-    te***REMOVED***("Set the products of a user", async () => {
-        con***REMOVED*** productIds = [
+    test("Set the products of a user", async () => {
+        const productIds = [
             "7dcecde2-391c-4f1d-b017-769bdbf587a8", 
             "e9992195-cebc-4cdf-9899-4b7e43d03392",
             "fed54abc-ae5e-44f4-bc8b-c7c431275cb7",
@@ -67,9 +67,9 @@ describe("UserModel.getUserProducts(username)", () => {
         ]
 
         await userModel.signIn(config.username, config.password)
-        con***REMOVED*** ***REMOVED***atus = await userModel.setUserProducts(config.username, productIds)
-        con***REMOVED*** products = await userModel.getUserProducts(config.username)
-        expect(***REMOVED***atus).toBe(true)
+        const status = await userModel.setUserProducts(config.username, productIds)
+        const products = await userModel.getUserProducts(config.username)
+        expect(status).toBe(true)
         expect(products).toMatchObject(productIds)
     })
 })

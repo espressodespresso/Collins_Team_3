@@ -1,9 +1,9 @@
 export default (agenda) => {
-    agenda.define('te***REMOVED***', async job => {
+    agenda.define('test', async job => {
         console.log('working')
     })
   
-    agenda.every('one minute', 'te***REMOVED***')
+    agenda.every('one minute', 'test')
 
-    agenda.***REMOVED***art()
+    agenda.start()
   };

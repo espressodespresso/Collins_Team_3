@@ -1,15 +1,15 @@
 export default class RedisClient{
-    con***REMOVED***ructor(client){
+    constructor(client){
         this.client = client
     }
 
     async getJSON(key){
-        con***REMOVED*** jsonString = await this.client.get(key)
+        const jsonString = await this.client.get(key)
         return JSON.parse(jsonString)
     }
 
     async setJSON(key, jsonValue){
-        con***REMOVED*** value = JSON.***REMOVED***ringify(jsonValue)
+        const value = JSON.stringify(jsonValue)
         return await this.client.set(key, value)
     }
 }

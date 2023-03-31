@@ -9,25 +9,25 @@ import Sidebar = require("./sidebar.js")
 export enum Stage {
     Map,
     Table,
-    Hi***REMOVED***ogram,
+    Histogram,
     Heatmap
 }
 
 export class View {
-    private _***REMOVED***age: Stage;
+    private _stage: Stage;
 
-    con***REMOVED***ructor() {
-        this._***REMOVED***age = Stage.Map;
+    constructor() {
+        this._stage = Stage.Map;
     }
 
-    get ***REMOVED***age(): Stage {
-        return this._***REMOVED***age;
+    get stage(): Stage {
+        return this._stage;
     }
 
      async setView(value: Stage, missions: M.Mission[]) {
         let container = document.getElementById("row-container");
-        if(value !== this._***REMOVED***age) {
-            switch (this._***REMOVED***age) {
+        if(value !== this._stage) {
+            switch (this._stage) {
                 case Stage.Map:
                     let map = document.getElementById("map");
                     map.remove();
@@ -38,10 +38,10 @@ export class View {
                    // container.removeChild(table);
                     table.remove();
                     break;
-                case Stage.Hi***REMOVED***ogram:
-                    let hi***REMOVED***ogram = document.getElementById("hi***REMOVED***ogram");
-                    //container.removeChild(hi***REMOVED***ogram);
-                    hi***REMOVED***ogram.remove();
+                case Stage.Histogram:
+                    let histogram = document.getElementById("histogram");
+                    //container.removeChild(histogram);
+                    histogram.remove();
                     break;
                 case Stage.Heatmap:
                     let heatmap = document.getElementById("map");
@@ -52,22 +52,22 @@ export class View {
             switch (value) {
                 case Stage.Map:
                     console.log("initMap");
-                    this._***REMOVED***age = Stage.Map;
+                    this._stage = Stage.Map;
                     await this.initMap(missions);
                     break;
                 case Stage.Table:
                     console.log("initMissions");
-                    this._***REMOVED***age = Stage.Table;
+                    this._stage = Stage.Table;
                     this.initTable(missions)
                     break;
-                case Stage.Hi***REMOVED***ogram:
-                    console.log("initHi***REMOVED***ogram");
-                    this._***REMOVED***age = Stage.Hi***REMOVED***ogram;
-                    this.initHi***REMOVED***ogram(missions);
+                case Stage.Histogram:
+                    console.log("initHistogram");
+                    this._stage = Stage.Histogram;
+                    this.initHistogram(missions);
                     break;
                 case Stage.Heatmap:
                     console.log("initHeatmap");
-                    this._***REMOVED***age = Stage.Heatmap;
+                    this._stage = Stage.Heatmap;
                     this.initHeatmap(missions);
             }
         }
@@ -76,7 +76,7 @@ export class View {
     private async initMap(missions: M.Mission[]) {
         let mapElement = document.createElement("div");
         mapElement.id = "map";
-        mapElement.classLi***REMOVED***.add("col", "m-0", "p-0", "w-auto")
+        mapElement.classList.add("col", "m-0", "p-0", "w-auto")
         document.getElementById("row-container").appendChild(mapElement);
         index.map = new Map.Map;
         await index.map.initLayers(missions)
@@ -90,15 +90,15 @@ export class View {
         // Create table container & define table element
         let divParent = document.createElement("div");
         divParent.id = "table";
-        divParent.classLi***REMOVED***.add("col", "p-3");
+        divParent.classList.add("col", "p-3");
         let tableElement = document.createElement("table");
-        tableElement.classLi***REMOVED***.add("table", "text-light");
+        tableElement.classList.add("table", "text-light");
 
         // Define table head, append to table element
 
         let tableHead = document.createElement("thead");
         let trElement = document.createElement("tr");
-        let headItems = ["#", "Products", "Countrycode", "Fir***REMOVED*** FrameTime"
+        let headItems = ["#", "Products", "Countrycode", "First FrameTime"
             , "Aircraft Takeoff Time", "Center Position"];
         for(let i=0; i < headItems.length; i++) {
             let thElement = document.createElement("th");
@@ -126,7 +126,7 @@ export class View {
                 tr.appendChild(th);
                 tr.appendChild(this.createtdElement(`${mission.name} ${scene.name}`));
                 tr.appendChild(this.createtdElement(scene.countrycode));
-                tr.appendChild(this.createtdElement(scene.fir***REMOVED***FrameTime.toString()));
+                tr.appendChild(this.createtdElement(scene.firstFrameTime.toString()));
                 tr.appendChild(this.createtdElement(""));
                 tr.appendChild(this.createtdElement(scene.center.toString()));
                 tableBody.appendChild(tr);
@@ -140,19 +140,19 @@ export class View {
         document.getElementById("row-container").appendChild(divParent);
     }
 
-    private createtdElement(value: ***REMOVED***ring) {
+    private createtdElement(value: string) {
         let tdElement = document.createElement("td");
         tdElement.innerHTML = value;
         return tdElement;
     }
 
-    private initHi***REMOVED***ogram(mission: M.Mission[]) {
+    private initHistogram(mission: M.Mission[]) {
         let divParent = document.createElement("div");
-        divParent.id = "hi***REMOVED***ogram";
-        divParent.classLi***REMOVED***.add("col", "p-3");
+        divParent.id = "histogram";
+        divParent.classList.add("col", "p-3");
         let ctx = document.createElement("canvas");
-        Chart.regi***REMOVED***er(LinearScale, Title, Tooltip, Legend, BarController, BarElement);
-        let te***REMOVED*** = [ // Replace with data once available
+        Chart.register(LinearScale, Title, Tooltip, Legend, BarController, BarElement);
+        let test = [ // Replace with data once available
             {x: 0.5, y: 10},
             {x: 1.5, y: 9},
             {x: 2.5, y: 8},
@@ -184,7 +184,7 @@ export class View {
                 labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                 datasets: [{
                     label: '# of Votes',
-                    data: te***REMOVED***,
+                    data: test,
                     borderWidth: 1,
                     barPercentage: 1,
                     categoryPercentage: 1,
@@ -200,7 +200,7 @@ export class View {
                             offset: false
                         },
                         ticks: {
-                            ***REMOVED***epSize: 3
+                            stepSize: 3
                         },
                         title: {
                             display: true,
@@ -220,14 +220,14 @@ export class View {
                     },
                     tooltip: {
                         callbacks: {
-                            title: (te***REMOVED***) => {
-                                if(!te***REMOVED***.length) {
+                            title: (test) => {
+                                if(!test.length) {
                                     return "";
                                 }
-                                con***REMOVED*** item = te***REMOVED***[0];
-                                con***REMOVED*** x = item.parsed.x;
-                                con***REMOVED*** min = x - 0.5;
-                                con***REMOVED*** max = x + 0.5;
+                                const item = test[0];
+                                const x = item.parsed.x;
+                                const min = x - 0.5;
+                                const max = x + 0.5;
                                 return `Hours: ${min} - ${max}`;
                             }
                         }
@@ -242,7 +242,7 @@ export class View {
     private async initHeatmap(missions: M.Mission[]) {
         let mapElement = document.createElement("div");
         mapElement.id = "map";
-        mapElement.classLi***REMOVED***.add("col", "m-0", "p-0", "w-auto")
+        mapElement.classList.add("col", "m-0", "p-0", "w-auto")
         document.getElementById("row-container").appendChild(mapElement);
         index.map = new Map.Map;
         await index.map.initLayers(missions)

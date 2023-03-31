@@ -1,6 +1,6 @@
-@import url("../node_modules/boot***REMOVED***rap/di***REMOVED***/css/boot***REMOVED***rap.min.css");
-@import url("../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.css");
-@import url("../node_modules/leaflet.markerclu***REMOVED***er/di***REMOVED***/MarkerClu***REMOVED***er.Default.css");
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
+@import url("../node_modules/leaflet.markercluster/dist/MarkerCluster.css");
+@import url("../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css");
 
 #map{
 	height: 100vh;
@@ -30,7 +30,7 @@
 #sidebar {
 	max-height: 80vh;
 	overflow-y: scroll;
-	-ms-overflow-***REMOVED***yle: none;
+	-ms-overflow-style: none;
 	scrollbar-width: none;
 }
 
@@ -43,7 +43,7 @@
 
 }
 
-#table, #hi***REMOVED***ogram {
+#table, #histogram {
 	min-height: 100vh;
 	max-height: 100vh;
 }

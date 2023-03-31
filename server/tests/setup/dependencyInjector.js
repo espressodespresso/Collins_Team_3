@@ -11,45 +11,45 @@ import MissionServiceFactory from '../../src/services/missionService.js'
 export default () => {
 
     //Local cache used as mock for redis
-    con***REMOVED*** localCache = new LocalCache()
+    const localCache = new LocalCache()
 
-    con***REMOVED*** userModel = {
+    const userModel = {
         name: "User",
         model: (container) => new UserModel(container)
     }
 
-    con***REMOVED*** productModelFactory = {
+    const productModelFactory = {
         name: "ProductModelFactory",
         model: (container) => new ProductModelFactory(container)
     }
 
-    con***REMOVED*** productSearchBuilder = {
+    const productSearchBuilder = {
         name: "ProductSearchBuilder",
         model: (container) => new ProductSearchBuilder(container)
     }
 
-    con***REMOVED*** missionModelFactory = {
+    const missionModelFactory = {
         name: "MissionModelFactory",
         model: (container) => new MissionModelFactory()
     }
 
-    con***REMOVED*** authService = {
+    const authService = {
         name: "Auth",
         service: (container) => new AuthService(container)
     }
 
-    con***REMOVED*** productServiceFactory = {
+    const productServiceFactory = {
         name: "ProductServiceFactory",
         service: (container) => new ProductServiceFactory(container)
     }
 
-    con***REMOVED*** missionerviceFactory = {
+    const missionerviceFactory = {
         name: "MissionServiceFactory",
         service: (container) => new MissionServiceFactory(container)
     }
 
-    con***REMOVED*** models = [userModel, productModelFactory, productSearchBuilder, missionModelFactory]
-    con***REMOVED*** services = [authService, productServiceFactory, missionerviceFactory]
+    const models = [userModel, productModelFactory, productSearchBuilder, missionModelFactory]
+    const services = [authService, productServiceFactory, missionerviceFactory]
 
     dependencyInjector(localCache, models, services)
 }

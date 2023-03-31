@@ -12,7 +12,7 @@ services:
     links:
       - redis_db
     tty: true
-    ***REMOVED***din_open: true
+    stdin_open: true
     
   redis_db:
     image: redis:7.0-alpine3.17
@@ -20,7 +20,7 @@ services:
       - "6379:6379"
     command: "redis-server"
     tty: true
-    ***REMOVED***din_open: true
+    stdin_open: true
     volumes:
       - cache:/data
 

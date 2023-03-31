@@ -1,5 +1,5 @@
 export default class ProductSearchBuilder{
-    con***REMOVED***ructor(){
+    constructor(){
         this.productSearch = undefined
         this.reset()
     }
@@ -8,8 +8,8 @@ export default class ProductSearchBuilder{
         this.productSearch = new ProductSearch()
     }
 
-    setKeywords(***REMOVED***ring){
-        this.productSearch.keywords = ***REMOVED***ring
+    setKeywords(string){
+        this.productSearch.keywords = string
     }
 
     setDatesFilter(filterArray){
@@ -21,7 +21,7 @@ export default class ProductSearchBuilder{
     }
 
     setStringsFilter(filterArray){
-        this.productSearch.***REMOVED***rings = filterArray
+        this.productSearch.strings = filterArray
     }
 
     setIntsFilter(filterArray){
@@ -49,17 +49,17 @@ export default class ProductSearchBuilder{
     }
 
     getProductSearch(){
-        con***REMOVED*** result = this.productSearch
+        const result = this.productSearch
         this.reset()
         return result
     }
 }
 
 class ProductSearch{
-    con***REMOVED***ructor(){
+    constructor(){
         this.keywords = ""
         this.dates = []
-        this.***REMOVED***rings = []
+        this.strings = []
         this.doubles = []
         this.ints = []
         this.booleans = []
@@ -75,7 +75,7 @@ class ProductSearch{
             indentifier: this.identifier,
             paginationIdentifier: this.paginationIdentifier,
             dates: this.dates,
-            ***REMOVED***rings: this.***REMOVED***rings,
+            strings: this.strings,
             doubles: this.doubles,
             ints: this.ints,
             booleans: this.booleans,

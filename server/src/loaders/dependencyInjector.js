@@ -7,11 +7,11 @@ export default (sessionCache, models, services) => {
     try{
 
         //https agent for discover API
-        con***REMOVED*** options = {
+        const options = {
             rejectUnauthorized: false,
             ca: process.env.SCI_DISCOVER_CA
         }
-        con***REMOVED*** agent = new https.Agent(options)
+        const agent = new https.Agent(options)
         
 
         Container.set('discover.HttpClient', new HttpClient(agent, Container))

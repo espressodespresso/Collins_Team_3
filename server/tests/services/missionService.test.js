@@ -5,9 +5,9 @@ import config from '../../src/config/index.js'
 let missionService = undefined
 beforeAll(async () => {
     injectDependencies()
-    con***REMOVED*** missionServiceFactory = Container.get('services.MissionServiceFactory')
-    con***REMOVED*** userModel = Container.get('models.User')
-    con***REMOVED*** ***REMOVED***atus = await userModel.signIn(config.username, config.password)
+    const missionServiceFactory = Container.get('services.MissionServiceFactory')
+    const userModel = Container.get('models.User')
+    const status = await userModel.signIn(config.username, config.password)
     missionService = await missionServiceFactory.createMissionService(config.username)
 })
 
@@ -17,38 +17,38 @@ afterAll(() => {
   
 
 describe("missionService.getMissions()", () => {
-    te***REMOVED***("Returns a li***REMOVED*** of missions", async () => {
-        con***REMOVED*** missions = await missionService.getMissions()
-        expect(missions.***REMOVED***atus).toBe(200)
+    test("Returns a list of missions", async () => {
+        const missions = await missionService.getMissions()
+        expect(missions.status).toBe(200)
     })
 })
 
 describe("MissionService.getMission(missionId)", () => {
-    te***REMOVED***("Returns metadata for a mission corresponding to the given missionId", async () => {
-        con***REMOVED*** missionId = "9fe9dfca-1bce-4292-afd8-221e99be12eb"
-        con***REMOVED*** mission = await missionService.getMission(missionId)
-        expect(mission.***REMOVED***atus).toBe(200)
+    test("Returns metadata for a mission corresponding to the given missionId", async () => {
+        const missionId = "9fe9dfca-1bce-4292-afd8-221e99be12eb"
+        const mission = await missionService.getMission(missionId)
+        expect(mission.status).toBe(200)
     })
 
-    te***REMOVED***("Returns a 400 response for an invalid missionId", async () => {
-        con***REMOVED*** missionId = "9fe9dfca-1bce-4292-afd8-221m99be12ef"
-        con***REMOVED*** mission = await missionService.getMission(missionId)
-        expect(mission.***REMOVED***atus).toBe(400)
+    test("Returns a 400 response for an invalid missionId", async () => {
+        const missionId = "9fe9dfca-1bce-4292-afd8-221m99be12ef"
+        const mission = await missionService.getMission(missionId)
+        expect(mission.status).toBe(400)
         expect(mission.data).toHaveProperty("message")
     })
 })
 
 describe("MissionService.getMissionFootprint(missionId)", () => {
-    te***REMOVED***("Returns footprint for a mission corresponding to the given missionId", async () => {
-        con***REMOVED*** missionId = "9fe9dfca-1bce-4292-afd8-221e99be12eb"
-        con***REMOVED*** mission = await missionService.getMissionFootprint(missionId)
-        expect(mission.***REMOVED***atus).toBe(200)
+    test("Returns footprint for a mission corresponding to the given missionId", async () => {
+        const missionId = "9fe9dfca-1bce-4292-afd8-221e99be12eb"
+        const mission = await missionService.getMissionFootprint(missionId)
+        expect(mission.status).toBe(200)
     })
 
-    te***REMOVED***("Returns a 400 response for an invalid missionId", async () => {
-        con***REMOVED*** missionId = "9fe9dfca-1bce-4292-afd8-221m99be12ef"
-        con***REMOVED*** mission = await missionService.getMissionFootprint(missionId)
-        expect(mission.***REMOVED***atus).toBe(400)
+    test("Returns a 400 response for an invalid missionId", async () => {
+        const missionId = "9fe9dfca-1bce-4292-afd8-221m99be12ef"
+        const mission = await missionService.getMissionFootprint(missionId)
+        expect(mission.status).toBe(400)
         expect(mission.data).toHaveProperty("message")
     })
 })

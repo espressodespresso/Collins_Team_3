@@ -3,5 +3,5 @@
 3. "npm ci"
 4. Build the docker container group "docker compose build"
 5. Run the container group using "docker compose up"
-6. Run the te***REMOVED*** suites using "npm run te***REMOVED***-script"
-7. Rn the te***REMOVED*** suites inside docker using "npm run te***REMOVED***"
+6. Run the test suites using "npm run test-script"
+7. Rn the test suites inside docker using "npm run test"

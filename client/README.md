@@ -8,7 +8,8 @@ Before running, make sure you have the following global npm modules
 * uglify-js
 * typescript
 
-## In***REMOVED***ructions
+## Instructions
+* Add username and password to index.ts
 * Upon pull, run `npm run watch` to add watchers for typescript & browserify (Note: This will NOT compress // minify js)
 * To compile (Dev), run `npm run dev`
 * To compile (Build), run `npm run build` (Compiles typescript & browserify, ignores watches)

@@ -3,17 +3,17 @@ import index = require("./index.js");
 
 export class Scene {
     private readonly _center: number[];
-    private readonly _countrycode: ***REMOVED***ring;
-    private readonly _fir***REMOVED***FrameTime: bigint;
+    private readonly _countrycode: string;
+    private readonly _firstFrameTime: bigint;
     private readonly _footprint: [];
-    private readonly _id: ***REMOVED***ring;
-    private readonly _name: ***REMOVED***ring;
+    private readonly _id: string;
+    private readonly _name: string;
 
-    con***REMOVED***ructor(center: number[], countrycode: ***REMOVED***ring, fir***REMOVED***FrameTime: bigint ,footprint: [],
-    id: ***REMOVED***ring, name: ***REMOVED***ring) {
+    constructor(center: number[], countrycode: string, firstFrameTime: bigint ,footprint: [],
+    id: string, name: string) {
         this._center = center;
         this._countrycode = countrycode;
-        this._fir***REMOVED***FrameTime = fir***REMOVED***FrameTime;
+        this._firstFrameTime = firstFrameTime;
         this._footprint = footprint;
         this._id = id;
         this._name = name;
@@ -23,23 +23,23 @@ export class Scene {
         return this._center;
     }
 
-    get countrycode(): ***REMOVED***ring {
+    get countrycode(): string {
         return this._countrycode;
     }
 
-    get fir***REMOVED***FrameTime(): bigint {
-        return this._fir***REMOVED***FrameTime;
+    get firstFrameTime(): bigint {
+        return this._firstFrameTime;
     }
 
     get footprint(): [] {
         return this._footprint;
     }
 
-    get id(): ***REMOVED***ring {
+    get id(): string {
         return this._id;
     }
 
-    get name(): ***REMOVED***ring {
+    get name(): string {
         return this._name;
         return this._name;
     }
@@ -56,7 +56,7 @@ export class Scene {
                 id: this._id,
                 name: this._name,
                 countrycode: this._countrycode,
-                fir***REMOVED***FrameTime: this._fir***REMOVED***FrameTime
+                firstFrameTime: this._firstFrameTime
             }
         }
 
@@ -74,7 +74,7 @@ export class Scene {
                 id: this._id,
                 name: this._name,
                 countrycode: this._countrycode,
-                fir***REMOVED***FrameTime: this._fir***REMOVED***FrameTime
+                firstFrameTime: this._firstFrameTime
             }
         }
 
@@ -84,23 +84,23 @@ export class Scene {
 }
 
 export class SceneLayer {
-    private readonly _id: ***REMOVED***ring;
-    private readonly _parentid: ***REMOVED***ring;
+    private readonly _id: string;
+    private readonly _parentid: string;
     private readonly _layer: Leaflet.Layer;
-    private _***REMOVED***atus: boolean;
+    private _status: boolean;
 
-    con***REMOVED***ructor(id: ***REMOVED***ring, parentid: ***REMOVED***ring, layer: Leaflet.Layer) {
+    constructor(id: string, parentid: string, layer: Leaflet.Layer) {
         this._id = id;
         this._parentid = parentid;
         this._layer = layer;
-        this._***REMOVED***atus = true;
+        this._status = true;
     }
 
-    get id(): ***REMOVED***ring {
+    get id(): string {
         return this._id;
     }
 
-    get parentid(): ***REMOVED***ring {
+    get parentid(): string {
         return this._parentid;
     }
 
@@ -108,16 +108,16 @@ export class SceneLayer {
         return this._layer;
     }
 
-    get ***REMOVED***atus(): boolean {
-        return this._***REMOVED***atus;
+    get status(): boolean {
+        return this._status;
     }
 
-    set ***REMOVED***atus(value: boolean) {
-        this._***REMOVED***atus = value;
+    set status(value: boolean) {
+        this._status = value;
     }
 }
 
-export async function getSceneLayerByIO(id: ***REMOVED***ring, sceneLayers: SceneLayer[]): Promise<SceneLayer> {
+export async function getSceneLayerByIO(id: string, sceneLayers: SceneLayer[]): Promise<SceneLayer> {
     for(let i=0; i < sceneLayers.length; i++) {
         let layer = sceneLayers[i];
         if(layer.id === id) {
@@ -128,7 +128,7 @@ export async function getSceneLayerByIO(id: ***REMOVED***ring, sceneLayers: Scen
     return null;
 }
 
-export async function getSceneLayerByID(id: ***REMOVED***ring): Promise<SceneLayer> {
+export async function getSceneLayerByID(id: string): Promise<SceneLayer> {
     for(let i=0; i < index.layers.length; i++) {
         let sceneLayers = index.layers[i].sceneLayers;
         for(let j=0; j < sceneLayers.length; j++) {

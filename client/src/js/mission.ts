@@ -1,25 +1,25 @@
-import Reque***REMOVED***Service = require("./services/reque***REMOVED***Service");
+import RequestService = require("./services/requestService");
 import S = require("./scene.js");
 import index = require("./index.js");
 import Leaflet = require('leaflet');
 import {Scene} from "./scene";
 
 export class Mission {
-    private readonly _name: ***REMOVED***ring;
-    private readonly _id: ***REMOVED***ring;
+    private readonly _name: string;
+    private readonly _id: string;
     private _scenes: S.Scene[];
 
-    con***REMOVED***ructor(name: ***REMOVED***ring, id: ***REMOVED***ring, scenes: S.Scene[]) {
+    constructor(name: string, id: string, scenes: S.Scene[]) {
         this._name = name;
         this._id = id;
         this._scenes = scenes;
     }
 
-    get name(): ***REMOVED***ring {
+    get name(): string {
         return this._name;
     }
 
-    get id(): ***REMOVED***ring {
+    get id(): string {
         return this._id;
     }
 
@@ -33,19 +33,19 @@ export class Mission {
 }
 
 export class MissionLayerGroup {
-    private readonly _id: ***REMOVED***ring;
+    private readonly _id: string;
     private readonly _layerGroup: Leaflet.LayerGroup;
     private readonly _sceneLayers: S.SceneLayer[];
-    private _***REMOVED***atus: boolean;
+    private _status: boolean;
 
-    con***REMOVED***ructor(id: ***REMOVED***ring, layerGroup: Leaflet.LayerGroup, sceneLayers: S.SceneLayer[]) {
+    constructor(id: string, layerGroup: Leaflet.LayerGroup, sceneLayers: S.SceneLayer[]) {
         this._id = id;
         this._layerGroup = layerGroup;
         this._sceneLayers = sceneLayers;
-        this._***REMOVED***atus = true;
+        this._status = true;
     }
 
-    get id(): ***REMOVED***ring {
+    get id(): string {
         return this._id;
     }
 
@@ -57,18 +57,18 @@ export class MissionLayerGroup {
         return this._sceneLayers;
     }
 
-    get ***REMOVED***atus(): boolean {
-        return this._***REMOVED***atus;
+    get status(): boolean {
+        return this._status;
     }
 
-    set ***REMOVED***atus(value: boolean) {
-        this._***REMOVED***atus = value;
+    set status(value: boolean) {
+        this._status = value;
     }
 }
 
 export async function getMissions(): Promise<Mission[]> {
     let missions: Mission[] = [];
-    let products: [] = (await Reque***REMOVED***Service.getProductsHandler()).data;
+    let products: [] = (await RequestService.getProductsHandler()).data;
     console.log(products)
     let sortMissions = [];
     for(let i=0; i < products.length; i++) {
@@ -87,7 +87,7 @@ export async function getMissions(): Promise<Mission[]> {
         let centerSplit = result["centre"].split(",");
         sceneCenter.push(centerSplit[1], centerSplit[0]);
         let scene = new S.Scene(sceneCenter, result["countrycode"]
-            , result["object***REMOVED***artdate"], result["footprint"]["coordinates"], result["identifier"]
+            , result["objectstartdate"], result["footprint"]["coordinates"], result["identifier"]
             , sceneName);
         if(data === null) {
             data = {
@@ -112,7 +112,7 @@ export async function getMissions(): Promise<Mission[]> {
     return missions;
 }
 
-export async function getMissionLayerByID(id: ***REMOVED***ring): Promise<MissionLayerGroup> {
+export async function getMissionLayerByID(id: string): Promise<MissionLayerGroup> {
     for(let i=0; i < index.layers.length; i++) {
         let layer = index.layers[i];
         if(layer.id === id) {

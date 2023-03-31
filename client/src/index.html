@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="***REMOVED***ylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.css">
-  <link rel="***REMOVED***ylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
-  <link rel="***REMOVED***ylesheet" href="***REMOVED***yles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -15,12 +15,12 @@
     </div>
   </div>-->
 
-  <div id="spinner-container" class="clearfix position-absolute top-50 ***REMOVED***art-50 fixed-top">
-    <div id="spinner" class="spinner-border text-warning" role="***REMOVED***atus"></div>
+  <div id="spinner-container" class="clearfix position-absolute top-50 start-50 fixed-top">
+    <div id="spinner" class="spinner-border text-warning" role="status"></div>
   </div>
-  <button id="toggle-heatmap" class="btn btn-warning fa-solid fa-map position-fixed ***REMOVED***art-100 fixed-top clearfix" type="submit"></button>
-  <div id="dropdown-container" class="li***REMOVED***-group position-fixed fixed-top clearfix"></div>
-  <div id="search-query-container" class="li***REMOVED***-group position-fixed fixed-top clearfix"></div>
+  <button id="toggle-heatmap" class="btn btn-warning fa-solid fa-map position-fixed start-100 fixed-top clearfix" type="submit"></button>
+  <div id="dropdown-container" class="list-group position-fixed fixed-top clearfix"></div>
+  <div id="search-query-container" class="list-group position-fixed fixed-top clearfix"></div>
   <div class="container-fluid">
     <div id="row-container" class="row bg-dark">
       <div id="sidebar-container" class="col-lg-1 col-md-1 col-sm-1 text-center text-light">
@@ -32,7 +32,7 @@
           </button>
         </div>
         <div id="sidebar-padding" class="pt-2">
-          <ul id="sidebar" class="li***REMOVED***-group li***REMOVED***-group-flush">
+          <ul id="sidebar" class="list-group list-group-flush">
           </ul>
         </div>
         <button id="view-button" class="btn btn-warning dropdown-toggle mt-2 invisible" type="submit">View</button>

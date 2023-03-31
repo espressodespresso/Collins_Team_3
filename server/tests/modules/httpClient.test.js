@@ -11,50 +11,50 @@ afterAll(() => {
   })
   
 
-con***REMOVED*** scope = nock('http://www.te***REMOVED***url.com')
-                .persi***REMOVED***()
+const scope = nock('http://www.testurl.com')
+                .persist()
                 .get('/get/200')
                 .reply(200, {
                     "key": "value"
                 })
                 .get('/get/400')
                 .reply(400)
-                .po***REMOVED***('/po***REMOVED***/200')
+                .post('/post/200')
                 .reply(200, {
                     "key": "value"
                 })
-                .po***REMOVED***('/po***REMOVED***/400')
+                .post('/post/400')
                 .reply(400)
 
 describe("HttpClient.get(url, headers)", () => {
-    te***REMOVED***("A successful /GET reque***REMOVED*** returns a 200 ***REMOVED***atus and data object", async () => {
-        con***REMOVED*** response = await httpClient.get('http://www.te***REMOVED***url.com/get/200', {})
+    test("A successful /GET request returns a 200 status and data object", async () => {
+        const response = await httpClient.get('http://www.testurl.com/get/200', {})
         
-        expect(response.***REMOVED***atus).toBe(200)
+        expect(response.status).toBe(200)
         expect(response).toHaveProperty("data")
     })
 
-    te***REMOVED***("A non 20x /GET reque***REMOVED*** returns a ***REMOVED***atus code and an error code message in its data field", async () => {
-        con***REMOVED*** response = await httpClient.get('http://www.te***REMOVED***url.com/get/400', {})
+    test("A non 20x /GET request returns a status code and an error code message in its data field", async () => {
+        const response = await httpClient.get('http://www.testurl.com/get/400', {})
 
-        expect(response.***REMOVED***atus).toBe(400)
+        expect(response.status).toBe(400)
         expect(response.data).toHaveProperty("message")
     })
 })
 
 
-describe("HttpClient.po***REMOVED***(url, headers, body", () => {
-    te***REMOVED***("A successful /POST reque***REMOVED*** returns a 200 ***REMOVED***atus and data object", async () => {
-        con***REMOVED*** body = {method: "po***REMOVED***"}
-        con***REMOVED*** response = await httpClient.po***REMOVED***('http://www.te***REMOVED***url.com/po***REMOVED***/200', {} , body)
-        expect(response.***REMOVED***atus).toBe(200)
+describe("HttpClient.post(url, headers, body", () => {
+    test("A successful /POST request returns a 200 status and data object", async () => {
+        const body = {method: "post"}
+        const response = await httpClient.post('http://www.testurl.com/post/200', {} , body)
+        expect(response.status).toBe(200)
         expect(response).toHaveProperty("data")
     })
 
-    te***REMOVED***("A non 20x /GET reque***REMOVED*** returns a ***REMOVED***atus code and an error code message in its data field", async () => {
-        con***REMOVED*** body = {method: "po***REMOVED***"}
-        con***REMOVED*** response = await httpClient.po***REMOVED***('http://www.te***REMOVED***url.com/po***REMOVED***/400', {} , body)
-        expect(response.***REMOVED***atus).toBe(400)
+    test("A non 20x /GET request returns a status code and an error code message in its data field", async () => {
+        const body = {method: "post"}
+        const response = await httpClient.post('http://www.testurl.com/post/400', {} , body)
+        expect(response.status).toBe(400)
         expect(response.data).toHaveProperty("message")
     })
 
