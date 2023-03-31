@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  node:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    re***REMOVED***art: unless-***REMOVED***opped
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:mainline-alpine
+    re***REMOVED***art: unless-***REMOVED***opped
+    ports:
+      "80:80"
+    volumes:
+      - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - node
+    networks:
+      - app-network
+    
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/var/www/html --email appserver@shucollin***REMOVED***hree.we***REMOVED***europe.cloudapp.azure.com --agree-tos --no-eff-email --***REMOVED***aging -d shucollin***REMOVED***hree.we***REMOVED***europe.cloudapp.azure.com  -d www.shucollin***REMOVED***hree.we***REMOVED***europe.cloudapp.azure.com
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver-opts:
+      type: none
+      device: /home/appserver/COLLINS_TEAM_3/client/
+      o: bind
+
