@@ -54,7 +54,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/appserver/collinsapp/client/
+      device: /home/appserver/collinsapp/client/src
       o: bind
 
 networks:
