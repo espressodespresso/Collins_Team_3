@@ -1,6 +1,6 @@
 export async function verifyCred(username: ***REMOVED***ring, password: ***REMOVED***ring): Promise<boolean>{
     let ***REMOVED***atus = true;
-    con***REMOVED*** loginURL = 'http://95.216.211.37:3000/login';
+    con***REMOVED*** loginURL = 'http://localho***REMOVED***:3000/login';
     con***REMOVED*** res = await fetch(loginURL, {
         method: "POST",
         headers: {
