@@ -1,7 +1,6 @@
 import app from './express.js'
 import redisClientLoader from './redisClient.js'
-import LocalCache from '../../tests/setup/localCache.js'
-import dependencyInjectorLoader from '../../tests/setup/dependencyInjector.js'
+import dependencyInjectorLoader from './dependencyInjector.js'
 import UserModel from '../models/userModel.js'
 import ProductModelFactory from '../models/productModel.js'
 import ProductSearchBuilder from '../models/ProductSearch.js'
@@ -13,7 +12,7 @@ import MissionServiceFactory from '../services/missionService.js'
 
 export const createApp = async () => {
 
-    const localCache = new LocalCache()
+    const redisClient = await redisClientLoader()
 
     const userModel = {
         name: "User",
@@ -53,7 +52,7 @@ export const createApp = async () => {
     const models = [userModel, productModelFactory, productSearchBuilder, missionModelFactory]
     const services = [authService, productServiceFactory, missionServiceFactory]
 
-    dependencyInjectorLoader(localCache, models, services)
+    dependencyInjectorLoader(redisClient, models, services)
     
     return app
 }
