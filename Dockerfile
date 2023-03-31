@@ -10,7 +10,7 @@ COPY --chown=node:node ./server/package-lock.json ./server/package.json ./
 
 RUN npm ci --production
 
-COPY --chown=node:node . .
+COPY --chown=node:node ./server .
 
 EXPOSE 3000
 
