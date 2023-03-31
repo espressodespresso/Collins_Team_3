@@ -33,6 +33,8 @@ class ProductService{
             result.data = {message: "Li***REMOVED*** contains invalid product identifiers"}
         }else if(result.***REMOVED***atus == 404){
             result.data = {message: "Li***REMOVED*** does not contain any product Ids"}
+        }else{
+            throw new Error()
         }
         return result
     }
@@ -44,7 +46,7 @@ class ProductService{
         ***REMOVED***ringFilter.push(filter)
 
         this.productSearchBuilder.setKeywords("")
-        this.productSearchBuilder.setSize(200)
+        this.productSearchBuilder.setSize(500)
         this.productSearchBuilder.setPercolate(true)
         this.productSearchBuilder.setFrom(1)
         this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilter)
@@ -56,50 +58,59 @@ class ProductService{
         if(response.***REMOVED***atus == 200){
             con***REMOVED*** data = response.data.results.searchresults
             return {***REMOVED***atus: 200, data}
+        }else{
+            throw new Error()
         }
     }
 
-    async updateProducts(){
-        con***REMOVED*** modifiedProducts = []
-        con***REMOVED*** newProducts = []
-        con***REMOVED*** userProducts = []
-        con***REMOVED*** deletedProducts = []
+    async getFrames(){
+        con***REMOVED*** ***REMOVED***ringFilter = []
+        con***REMOVED*** filter = new SearchFilter("sceneimagery", ["*"], "or")
+        ***REMOVED***ringFilter.push(filter)
 
-        con***REMOVED*** response = await this.getScenes()
-        con***REMOVED*** refreshedProductIds = response.data.map(e => e.id)
+        this.productSearchBuilder.setKeywords("")
+        this.productSearchBuilder.setSize(5000)
+        this.productSearchBuilder.setPercolate(true)
+        this.productSearchBuilder.setFrom(1)
+        this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilter)
+       
+        con***REMOVED*** productSearch = this.productSearchBuilder.getProductSearch()
 
-        con***REMOVED*** currentUserProducts = await this.userModel.getUserProducts(this.username)
-        con***REMOVED*** refreshedProductsRes = await this.getProducts(refreshedProductIds)
+        con***REMOVED*** response = await this.productModel.search(productSearch)
 
-        con***REMOVED*** refreshedProducts = refreshedProductsRes.data
+        if(response.***REMOVED***atus == 200){
+            con***REMOVED*** data = response.data.results.searchresults
+            return {***REMOVED***atus: 200, data}
+        }else{
+            throw new Error()
+        }
+    }
 
-        con***REMOVED*** currentUserProductsMap = new Map((currentUserProducts.map(p => [p.id, p.result])))
-        con***REMOVED*** refreshedProductsMap = new Map(refreshedProducts.map(p => [p.product.id, p.product.result]))
-    
-        refreshedProducts.forEach(p => {
-            con***REMOVED*** refreshedProduct = p.product
-            if(currentUserProductsMap.has(refreshedProduct.id)){
-                con***REMOVED*** currentUserProduct = (currentUserProductsMap.get(refreshedProduct.id))
-                if(refreshedProduct.datemodified > currentUserProduct.datemodified){
-                    modifiedProducts.push(refreshedProduct)
-                }
-            }else{
-                userProducts.push(refreshedProduct)
-                newProducts.push(refreshedProduct)
-            }
-        })
+    async updatedProducts(){
+        con***REMOVED*** ***REMOVED***ringFilters = []
+        con***REMOVED*** ***REMOVED***ringFilter = new SearchFilter("sceneimagery", ["*"], "or")
+        ***REMOVED***ringFilters.push(***REMOVED***ringFilter)
+        con***REMOVED*** dateFilters = []
+        con***REMOVED*** dateFilter = new SearchFilter("datemodified", [(Date.now() - 65000)], "gte")
+        dateFilters.push(dateFilter)
 
-        currentUserProducts.forEach(p => {
-            con***REMOVED*** currentUserProduct = p
-            if(refreshedProductsMap.has(currentUserProduct.id)){
-                userProducts.push(currentUserProduct)
-            }else{
-                deletedProducts.push(currentUserProduct)
-            }
-        })
+        this.productSearchBuilder.setKeywords("")
+        this.productSearchBuilder.setSize(5000)
+        this.productSearchBuilder.setPercolate(true)
+        this.productSearchBuilder.setFrom(1)
+        this.productSearchBuilder.setStringsFilter(***REMOVED***ringFilters)
+        this.productSearchBuilder.setDatesFilter(dateFilters)
+        
+        //Gets all products with date modified greater than current date
+        con***REMOVED*** productSearch = this.productSearchBuilder.getProductSearch()
+        con***REMOVED*** response = await this.productModel.search(productSearch)
 
-        await this.userModel.setUserProducts(this.username, userProducts)
-        return {newProducts, modifiedProducts, deletedProducts}
+        if(response.***REMOVED***atus == 200){
+            con***REMOVED*** data = response.data.results.searchresults
+            return {***REMOVED***atus: 200, data}
+        }else{
+            throw new Error
+        }
     }
 
 }

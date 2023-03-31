@@ -16,4 +16,4 @@ COPY --chown=node:node . .
 
 EXPOSE 3000
 
-CMD ["nodemon", "src/index.js"]
+CMD ["npm", "***REMOVED***art"]

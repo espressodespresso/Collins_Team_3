@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis_db:6379
+    re***REMOVED***art: unless-***REMOVED***opped
+    depends_on:
+      - redis_db
+    networks:
+      - app-network
+  
+  redis_db:
+    image: redis:7.0-alpine3.17
+    expose: 
+      - "6379"
+    command: "redis-server"
+    re***REMOVED***art: unless-***REMOVED***opped
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:mainline-alpine
+    re***REMOVED***art: unless-***REMOVED***opped
+    ports:
+      - "80:80"
+    volumes:
+      - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - node
+    networks:
+      - app-network
+    
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/var/www/html --email appserver@shucollin***REMOVED***hree.we***REMOVED***europe.cloudapp.azure.com --agree-tos --no-eff-email --***REMOVED***aging -d shucollin***REMOVED***hree.we***REMOVED***europe.cloudapp.azure.com  -d www.shucollin***REMOVED***hree.we***REMOVED***europe.cloudapp.azure.com
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/appserver/collinsapp/client/src
+      o: bind
+
+networks:
+  app-network:
+    driver: bridge
+
+

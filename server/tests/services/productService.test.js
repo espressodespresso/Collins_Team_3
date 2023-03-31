@@ -75,33 +75,27 @@ describe("ProductService.getProducts(productIds)", () => {
 describe("ProductService.getScenes()", () => {
     te***REMOVED***("Returns a li***REMOVED*** of scene product Ids for all scenes in the discover in***REMOVED***ance", async () => {
         con***REMOVED*** scenes = await productService.getScenes()
+        con***REMOVED*** sceneIds = scenes.data.map(f => f.id)
+        con***REMOVED*** sceneProducts = await productService.getProducts(sceneIds)
         expect(scenes.***REMOVED***atus).toBe(200)
-        expect(scenes.data.every(e => e.hasOwnProperty('id'))).toBe(true)
+        expect(sceneProducts.data.every(p => p.product.result.documentType === "scene")).toBe(true)
+    })
+})
+
+describe("ProductService.getFrames()", () => {
+    te***REMOVED***("Returns a li***REMOVED*** of frame product Ids for all scenes in the discover in***REMOVED***ance", async () => {
+        con***REMOVED*** frames = await productService.getFrames()
+        con***REMOVED*** frameIds = frames.data.map(f => f.id)
+        con***REMOVED*** frameProducts = await productService.getProducts(frameIds.slice(0,100))
+        expect(frames.***REMOVED***atus).toBe(200)
+        expect(frameProducts.data.some(p => p.product.result.documentType == "image")).toBe(true)
     })
 })
 
 describe("ProductService.updateProducts", () => {
-    te***REMOVED***("Returns an object containing a li***REMOVED*** of 115 deleted prodicts", async () => {
+    te***REMOVED***("When a product has a date modified greater than the current epoch", async () => {
         
-        con***REMOVED*** userProductIdsRes = await productService.getScenes()
-        con***REMOVED*** userProductIds = userProductIdsRes.data.map(p => p.id)
-
-        await productService.getProducts(userProductIds)
-
-        con***REMOVED*** products = {
-            data: [
-                {id: "399c6c40-b7ce-4153-9894-f21fbe201e14"},
-                {id: "cea08e66-4f9b-4daf-8dfd-061f9cff0071"}
-            ]}
-
-        productService.getScenes = je***REMOVED***.fn()
-        productService.getScenes.mockReturnValue(products)
-
-        con***REMOVED*** updates = await productService.updateProducts()
-        expect(updates).toHaveProperty('modifiedProducts')
-        expect(updates).toHaveProperty('newProducts')
-        expect(updates.deletedProducts.length).toBe(115)
-
-        
+        con***REMOVED*** updatedProducts = await productService.updatedProducts()
+        expect(updatedProducts.***REMOVED***atus).toBe(200)
     })
 })
